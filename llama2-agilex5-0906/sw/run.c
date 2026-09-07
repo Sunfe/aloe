@@ -16,8 +16,9 @@
 
 #ifdef USE_ACCEL
 #include "accel/accel.h"
-static float *g_wbase = NULL;   /* 权重区起始 (虚拟) */
-#define ACCEL_MIN_ELEMS (256*256)
+static int      g_accel_on = 0;      /* -a 1 打开 */
+static char    *g_w_virt   = NULL;   /* 文件 mmap 中权重起点 (CPU 用) */
+static uint64_t g_w_phys   = 0;      /* reserved 区中同一段的物理地址 (FPGA 用) */
 #endif
 
 // ----------------------------------------------------------------------------
@@ -167,14 +168,14 @@ void read_checkpoint(char* checkpoint, Config* config, TransformerWeights* weigh
     float* weights_ptr = *data + sizeof(Config)/sizeof(float);
 
 #ifdef USE_ACCEL
-    size_t wbytes = *file_size - sizeof(Config);
-    uint64_t phys;
-    float *wbuf = accel_alloc_weights(wbytes, &phys);
-    if (!wbuf) exit(EXIT_FAILURE);
-    fprintf(stderr, "copying %zu MB weights to reserved memory...\n", wbytes >> 20);
-    accel_copy_in(wbuf, weights_ptr, wbytes / sizeof(float));
-    g_wbase = wbuf;
-    weights_ptr = wbuf;          /* 之后 memory_map_weights 的所有指针都落在权重区内 */
+    if (g_accel_on) {
+        size_t wbytes = *file_size - sizeof(Config);
+        float *wdev = accel_alloc_weights(wbytes, &g_w_phys);
+        if (!wdev) exit(EXIT_FAILURE);
+        fprintf(stderr, "copying %zu MB weights to reserved memory...\n", wbytes >> 20);
+        accel_copy_in(wdev, weights_ptr, wbytes / sizeof(float));
+        g_w_virt = (char *)weights_ptr;
+    }
 #endif
 
     memory_map_weights(weights, config, weights_ptr, shared_weights);
@@ -238,8 +239,9 @@ void matmul(float* xout, float* x, float* w, int n, int d) {
     // by far the most amount of time is spent inside this little function
 
 #ifdef USE_ACCEL
-    if (g_accel_on && (long)n * d >= ACCEL_MIN_ELEMS) {
-        accel_matvec(xout, x, accel_phys_of(w), n, d);
+    if (g_accel_on) {
+        uint64_t phys = g_w_phys + (uint64_t)((char *)w - g_w_virt);
+        accel_matvec(xout, x, phys, /*rows=*/d, /*cols=*/n);
         return;
     }
 #endif
@@ -927,6 +929,7 @@ void error_usage() {
     fprintf(stderr, "  -z <string> optional path to custom tokenizer\n");
     fprintf(stderr, "  -m <string> mode: generate|chat, default: generate\n");
     fprintf(stderr, "  -y <string> (optional) system prompt in chat mode\n");
+    fprintf(stderr, "  -a <int> 1 = use FPGA accelerator, default 0\n");
     exit(EXIT_FAILURE);
 }
 
@@ -959,6 +962,11 @@ int main(int argc, char *argv[]) {
         else if (argv[i][1] == 'z') { tokenizer_path = argv[i + 1]; }
         else if (argv[i][1] == 'm') { mode = argv[i + 1]; }
         else if (argv[i][1] == 'y') { system_prompt = argv[i + 1]; }
+        else if (argv[i][1] == 'a') {
+#ifdef USE_ACCEL
+            g_accel_on = atoi(argv[i + 1]);
+#endif
+        }
         else { error_usage(); }
     }
 
@@ -967,6 +975,10 @@ int main(int argc, char *argv[]) {
     if (temperature < 0.0) temperature = 0.0;
     if (topp < 0.0 || 1.0 < topp) topp = 0.9;
     if (steps < 0) steps = 0;
+
+#ifdef USE_ACCEL
+    if (g_accel_on && accel_open() != 0) exit(EXIT_FAILURE);
+#endif
 
     // build the Transformer via the model .bin file
     Transformer transformer;
@@ -995,6 +1007,11 @@ int main(int argc, char *argv[]) {
     free_sampler(&sampler);
     free_tokenizer(&tokenizer);
     free_transformer(&transformer);
+    
+#ifdef USE_ACCEL 
+    if (g_accel_on) accel_close(); 
+#endif
+    
     return 0;
 }
 #endif

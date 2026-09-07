@@ -16,7 +16,7 @@
 #define YBUF_OFF     0x00100000UL     /* y_buf 在 H2F 中的偏移 */
 #define MEM_WIN_SIZE 0x00200000UL
 
-#define WMEM_PHYS    0x60000000UL     /* 设备树 reserved-memory */
+#define WMEM_PHYS    0xA0000000UL     /* Agilex 5 HPS DDR 从 0x8000_0000 起; 取 1GB 的上半段 */
 #define WMEM_SIZE    0x20000000UL     /* 512MB */
 
 /* ---------------- 寄存器 (与 matvec_pkg.sv 一一对应) ---------------- */
@@ -112,8 +112,9 @@ uint64_t accel_phys_of(const void *virt) {
 }
 
 void accel_matvec(float *y, const float *x, uint64_t w_phys, int n, int d) {
-    if (d % 8 != 0 || d < 32 || d > 8192 || n > 32768) {
-        fprintf(stderr, "accel_matvec: unsupported shape n=%d d=%d\n", n, d);
+    if (d % 8 != 0 || d < 32 || d > 8192 || n > 32768 || (w_phys & 31)) {
+        fprintf(stderr, "accel_matvec: unsupported shape/alignment n=%d d=%d phys=0x%llx\n",
+                n, d, (unsigned long long)w_phys);
         exit(EXIT_FAILURE);
     }
 

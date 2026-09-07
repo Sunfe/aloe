@@ -1,0 +1,9 @@
+fdt addr ${fdt_addr}
+fdt resize 4096
+fdt mknode / reserved-memory
+fdt set /reserved-memory #address-cells <2>
+fdt set /reserved-memory #size-cells <2>
+fdt set /reserved-memory ranges
+fdt mknode /reserved-memory llama@a0000000
+fdt set /reserved-memory/llama@a0000000 reg <0 0xa0000000 0 0x20000000>
+fdt set /reserved-memory/llama@a0000000 no-map

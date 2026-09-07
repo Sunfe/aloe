@@ -1,0 +1,17 @@
+/dts-v1/;
+/plugin/;
+
+/* 节点名/标签以 Terasic 镜像自带的基础 dts 为准 (通常是 fpga_region0) */
+&fpga_region0 {
+    #address-cells = <2>;
+    #size-cells = <2>;
+    firmware-name = "de25_llama.core.rbf";
+    fpga-bridges = <&fpga_bridge0>, <&fpga_bridge1>, <&fpga_bridge2>;   /* LWH2F, H2F, F2H */
+
+    matvec@20000000 {
+        compatible = "generic-uio";
+        reg = <0x0 0x20000000 0x0 0x1000>;      /* LWH2F 基址 + csr 偏移 */
+        interrupt-parent = <&intc>;
+        interrupts = <0 17 4>;                  /* F2H IRQ0 对应的 SPI 号以 Agilex 5 TRM/GHRD 为准 */
+    };
+};
