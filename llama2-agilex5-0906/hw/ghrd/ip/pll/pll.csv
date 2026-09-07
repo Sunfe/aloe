@@ -1,0 +1,18 @@
+# system info pll on 2025.05.28.15:40:48
+system_info:
+name,value
+DEVICE,A5ED013BB32AE4SR1
+DEVICE_FAMILY,Agilex 5
+GENERATION_ID,0
+#
+#
+# Files generated for pll on 2025.05.28.15:40:48
+files:
+filepath,kind,attributes,module,is_top
+sim/pll.v,VERILOG,CONTAINS_INLINE_CONFIGURATION,pll,true
+altera_iopll_2000/sim/pll_altera_iopll_2000_mfe5any.vo,VERILOG,,pll_altera_iopll_2000_mfe5any,false
+#
+# Map from instance-path to kind of module
+instances:
+instancePath,module
+pll.iopll_0,pll_altera_iopll_2000_mfe5any

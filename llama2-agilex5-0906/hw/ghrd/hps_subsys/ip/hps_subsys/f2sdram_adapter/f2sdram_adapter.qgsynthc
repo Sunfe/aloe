@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<node xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:altera="http://www.altera.com/XMLSchema/Qsys/SystemTree">
+  <instanceKey xsi:type="xs:string">f2sdram_adapter</instanceKey>
+  <instanceData xsi:type="data">
+    <parameters></parameters>
+    <interconnectAssignments></interconnectAssignments>
+    <className>f2sdram_adapter</className>
+    <version>1.0</version>
+    <name>f2sdram_adapter</name>
+    <uniqueName>f2sdram_adapter</uniqueName>
+    <nonce>0</nonce>
+    <incidentConnections></incidentConnections>
+  </instanceData>
+  <children>
+    <node>
+      <instanceKey xsi:type="xs:string">f2sdram_adapter_inst</instanceKey>
+      <instanceData xsi:type="data">
+        <parameters>
+          <parameter>
+            <name>DATA_WIDTH</name>
+            <value>256</value>
+          </parameter>
+        </parameters>
+        <interconnectAssignments></interconnectAssignments>
+        <className>f2sdram_adapter</className>
+        <version>1.0</version>
+        <name>f2sdram_adapter_inst</name>
+        <uniqueName>f2sdram_adapter_f2sdram_adapter_10_ebbsmiq</uniqueName>
+        <nonce>0</nonce>
+        <incidentConnections></incidentConnections>
+        <path>f2sdram_adapter.f2sdram_adapter_inst</path>
+      </instanceData>
+      <children></children>
+    </node>
+  </children>
+</node>

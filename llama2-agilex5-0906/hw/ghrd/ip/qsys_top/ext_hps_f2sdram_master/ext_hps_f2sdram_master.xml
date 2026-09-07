@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2025.09.05.17:18:22"
+ outputDirectory="D:/DE25-Standard/RevD/GHRD/ip/qsys_top/ext_hps_f2sdram_master/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Agilex 5"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="A5ED065BB32AE6SR0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="6"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_BOARD"
+     type="String"
+     defaultValue="default"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_CLOCK_RATE"
+     type="Long"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_CLOCK_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_RESET_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_WINDOWED_SLAVE_CPU_INFO_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_EXPANDED_MASTER_ADDRESS_MAP"
+     type="AddressMap"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_EXPANDED_MASTER_ADDRESS_WIDTH"
+     type="AddressWidthType"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="clock" kind="clock" start="0">
+   <property name="clockRate" value="0" />
+   <property name="externallyDriven" value="false" />
+   <property name="ptfSchematicName" value="" />
+   <port name="clk" direction="input" role="clk" width="1" />
+  </interface>
+  <interface name="reset" kind="reset" start="0">
+   <property name="associatedClock" value="clock" />
+   <property name="synchronousEdges" value="DEASSERT" />
+   <port name="reset" direction="input" role="reset" width="1" />
+  </interface>
+  <interface name="windowed_slave" kind="avalon" start="0">
+   <property name="addressAlignment" value="DYNAMIC" />
+   <property name="addressGroup" value="0" />
+   <property name="addressSpan" value="4294967296" />
+   <property name="addressUnits" value="WORDS" />
+   <property name="alwaysBurstMaxBurst" value="false" />
+   <property name="associatedClock" value="clock" />
+   <property name="associatedReset" value="reset" />
+   <property name="bitsPerSymbol" value="8" />
+   <property name="bridgedAddressOffset" value="0" />
+   <property name="bridgesToMaster" value="ext_hps_f2sdram_master.expanded_master" />
+   <property name="burstOnBurstBoundariesOnly" value="false" />
+   <property name="burstcountUnits" value="WORDS" />
+   <property name="constantBurstBehavior" value="false" />
+   <property name="explicitAddressSpan" value="0" />
+   <property name="holdTime" value="0" />
+   <property name="interleaveBursts" value="false" />
+   <property name="isBigEndian" value="false" />
+   <property name="isFlash" value="false" />
+   <property name="isMemoryDevice" value="false" />
+   <property name="isNonVolatileStorage" value="false" />
+   <property name="linewrapBursts" value="false" />
+   <property name="maximumPendingReadTransactions" value="1" />
+   <property name="maximumPendingWriteTransactions" value="0" />
+   <property name="minimumReadLatency" value="1" />
+   <property name="minimumResponseLatency" value="1" />
+   <property name="minimumUninterruptedRunLength" value="1" />
+   <property name="prSafe" value="false" />
+   <property name="printableDevice" value="false" />
+   <property name="readLatency" value="0" />
+   <property name="readWaitStates" value="1" />
+   <property name="readWaitTime" value="1" />
+   <property name="registerIncomingSignals" value="false" />
+   <property name="registerOutgoingSignals" value="false" />
+   <property name="setupTime" value="0" />
+   <property name="timingUnits" value="Cycles" />
+   <property name="transparentBridge" value="false" />
+   <property name="waitrequestAllowance" value="0" />
+   <property name="waitrequestTimeout" value="1024" />
+   <property name="wellBehavedWaitrequest" value="false" />
+   <property name="writeLatency" value="0" />
+   <property name="writeWaitStates" value="0" />
+   <property name="writeWaitTime" value="0" />
+   <property name="dfhFeatureGuid" value="0" />
+   <property name="dfhGroupId" value="0" />
+   <property name="dfhParameterId" value="" />
+   <property name="dfhParameterName" value="" />
+   <property name="dfhParameterVersion" value="" />
+   <property name="dfhParameterData" value="" />
+   <property name="dfhParameterDataLength" value="" />
+   <property name="dfhFeatureMajorVersion" value="0" />
+   <property name="dfhFeatureMinorVersion" value="0" />
+   <property name="dfhFeatureId" value="35" />
+   <property name="dfhFeatureType" value="3" />
+   <port name="avs_s0_address" direction="input" role="address" width="30" />
+   <port name="avs_s0_read" direction="input" role="read" width="1" />
+   <port name="avs_s0_readdata" direction="output" role="readdata" width="32" />
+   <port name="avs_s0_write" direction="input" role="write" width="1" />
+   <port name="avs_s0_writedata" direction="input" role="writedata" width="32" />
+   <port
+       name="avs_s0_readdatavalid"
+       direction="output"
+       role="readdatavalid"
+       width="1" />
+   <port
+       name="avs_s0_waitrequest"
+       direction="output"
+       role="waitrequest"
+       width="1" />
+   <port
+       name="avs_s0_byteenable"
+       direction="input"
+       role="byteenable"
+       width="4" />
+   <port
+       name="avs_s0_burstcount"
+       direction="input"
+       role="burstcount"
+       width="1" />
+  </interface>
+  <interface name="expanded_master" kind="avalon" start="1">
+   <property name="adaptsTo" value="" />
+   <property name="addressGroup" value="0" />
+   <property name="addressUnits" value="SYMBOLS" />
+   <property name="alwaysBurstMaxBurst" value="false" />
+   <property name="associatedClock" value="clock" />
+   <property name="associatedReset" value="reset" />
+   <property name="bitsPerSymbol" value="8" />
+   <property name="burstOnBurstBoundariesOnly" value="false" />
+   <property name="burstcountUnits" value="WORDS" />
+   <property name="constantBurstBehavior" value="false" />
+   <property name="dBSBigEndian" value="false" />
+   <property name="doStreamReads" value="false" />
+   <property name="doStreamWrites" value="false" />
+   <property name="holdTime" value="0" />
+   <property name="interleaveBursts" value="false" />
+   <property name="isAsynchronous" value="false" />
+   <property name="isBigEndian" value="false" />
+   <property name="isReadable" value="false" />
+   <property name="isWriteable" value="false" />
+   <property name="linewrapBursts" value="false" />
+   <property name="maxAddressWidth" value="32" />
+   <property name="maximumPendingReadTransactions" value="0" />
+   <property name="maximumPendingWriteTransactions" value="0" />
+   <property name="minimumReadLatency" value="1" />
+   <property name="minimumResponseLatency" value="1" />
+   <property name="prSafe" value="false" />
+   <property name="readLatency" value="0" />
+   <property name="readWaitTime" value="1" />
+   <property name="registerIncomingSignals" value="false" />
+   <property name="registerOutgoingSignals" value="false" />
+   <property name="setupTime" value="0" />
+   <property name="timingUnits" value="Cycles" />
+   <property name="waitrequestAllowance" value="0" />
+   <property name="waitrequestTimeout" value="1024" />
+   <property name="writeWaitTime" value="0" />
+   <property name="enableConcurrentSubordinateAccess" value="0" />
+   <property name="optimizedReadsWithBE" value="0" />
+   <port name="avm_m0_address" direction="output" role="address" width="33" />
+   <port name="avm_m0_read" direction="output" role="read" width="1" />
+   <port
+       name="avm_m0_waitrequest"
+       direction="input"
+       role="waitrequest"
+       width="1" />
+   <port name="avm_m0_readdata" direction="input" role="readdata" width="32" />
+   <port name="avm_m0_write" direction="output" role="write" width="1" />
+   <port
+       name="avm_m0_writedata"
+       direction="output"
+       role="writedata"
+       width="32" />
+   <port
+       name="avm_m0_readdatavalid"
+       direction="input"
+       role="readdatavalid"
+       width="1" />
+   <port
+       name="avm_m0_byteenable"
+       direction="output"
+       role="byteenable"
+       width="4" />
+   <port
+       name="avm_m0_burstcount"
+       direction="output"
+       role="burstcount"
+       width="1" />
+  </interface>
+ </perimeter>
+ <entity
+   kind="ext_hps_f2sdram_master"
+   version="1.0"
+   name="ext_hps_f2sdram_master">
+  <parameter name="AUTO_CLOCK_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_CLOCK_CLOCK_DOMAIN" value="-1" />
+  <parameter name="AUTO_CLOCK_RESET_DOMAIN" value="-1" />
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_DEVICE" value="A5ED013BB32AE4SCS" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Agilex 5" />
+  <parameter name="AUTO_BOARD" value="default" />
+  <parameter name="AUTO_WINDOWED_SLAVE_CPU_INFO_ID" value="" />
+  <parameter name="AUTO_EXPANDED_MASTER_ADDRESS_MAP" value="" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="4" />
+  <parameter name="AUTO_EXPANDED_MASTER_ADDRESS_WIDTH" value="-1" />
+  <generatedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\ext_hps_f2sdram_master\synth\ext_hps_f2sdram_master.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\ext_hps_f2sdram_master\synth\ext_hps_f2sdram_master.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="D:/DE25-Standard/RevD/GHRD/ip/qsys_top/ext_hps_f2sdram_master.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="D:/altera_pro/25.1.1/ip/altera/merlin/altera_address_span_extender/altera_address_span_extender_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="ext_hps_f2sdram_master">"Generating: ext_hps_f2sdram_master"</message>
+   <message level="Info" culprit="ext_hps_f2sdram_master">"Generating: ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y"</message>
+  </messages>
+ </entity>
+ <entity
+   kind="altera_address_span_extender"
+   version="19.2.0"
+   name="ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y">
+  <parameter name="ENABLE_SLAVE_PORT" value="false" />
+  <parameter name="MAX_PENDING_READS" value="1" />
+  <parameter name="BURSTCOUNT_WIDTH" value="1" />
+  <parameter name="MASTER_ADDRESS_WIDTH" value="33" />
+  <parameter name="CNTL_ADDRESS_WIDTH" value="1" />
+  <parameter name="SLAVE_ADDRESS_WIDTH" value="30" />
+  <parameter name="SUB_WINDOW_SPAN" value="4 gigabytes" />
+  <parameter name="SLAVE_ADDRESS_SHIFT" value="2" />
+  <parameter name="MAX_BURST_WORDS" value="1" />
+  <parameter name="MAX_BURST_BYTES" value="4" />
+  <parameter name="DATA_WORD_WIDTH" value="4" />
+  <parameter name="DATA_WIDTH" value="32" />
+  <parameter name="BYTEENABLE_WIDTH" value="4" />
+  <parameter name="MASTER_ADDRESS_DEF" value="0" />
+  <parameter name="MASTER_ADDRESS_SPAN" value="8 gigabytes" />
+  <parameter name="SUB_WINDOW_COUNT" value="1" />
+  <parameter name="SLAVE_ADDRESS_SPAN" value="4 gigabytes" />
+  <generatedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\ext_hps_f2sdram_master\altera_address_span_extender_1920\synth\ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y.sv"
+       attributes="" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\ext_hps_f2sdram_master\altera_address_span_extender_1920\synth\ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y.sv"
+       attributes="" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="D:/altera_pro/25.1.1/ip/altera/merlin/altera_address_span_extender/altera_address_span_extender_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator
+     instantiator="ext_hps_f2sdram_master"
+     as="altera_address_span_extender_inst" />
+  <messages>
+   <message level="Info" culprit="ext_hps_f2sdram_master">"Generating: ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y"</message>
+  </messages>
+ </entity>
+</deploy>

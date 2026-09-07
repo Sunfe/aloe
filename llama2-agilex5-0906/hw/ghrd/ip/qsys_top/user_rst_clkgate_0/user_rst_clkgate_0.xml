@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2025.09.05.17:18:08"
+ outputDirectory="D:/DE25-Standard/RevD/GHRD/ip/qsys_top/user_rst_clkgate_0/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Agilex 5"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="A5ED065BB32AE6SR0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="6"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_BOARD"
+     type="String"
+     defaultValue="default"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="ninit_done" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="ninit_done" direction="output" role="ninit_done" width="1" />
+  </interface>
+ </perimeter>
+ <entity kind="user_rst_clkgate_0" version="1.0" name="user_rst_clkgate_0">
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_DEVICE" value="A5ED013BB32AE4SCS" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Agilex 5" />
+  <parameter name="AUTO_BOARD" value="default" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="4" />
+  <generatedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\user_rst_clkgate_0\synth\user_rst_clkgate_0.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\user_rst_clkgate_0\synth\user_rst_clkgate_0.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file path="D:/DE25-Standard/RevD/GHRD/ip/qsys_top/user_rst_clkgate_0.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="D:/altera_pro/25.1.1/ip/altera/pgm/intel_user_rst_clkgate/intel_user_rst_clkgate_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="user_rst_clkgate_0">"Generating: user_rst_clkgate_0"</message>
+   <message level="Info" culprit="user_rst_clkgate_0">"Generating: intel_user_rst_clkgate"</message>
+   <message level="Info" culprit="intel_user_rst_clkgate_inst">generating top-level entity intel_user_rst_clkgate</message>
+  </messages>
+ </entity>
+ <entity
+   kind="intel_user_rst_clkgate"
+   version="1.0.1"
+   name="intel_user_rst_clkgate">
+  <parameter name="DEVICE_FAMILY" value="Agilex 5" />
+  <parameter name="outputType" value="Conduit Interface" />
+  <generatedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\user_rst_clkgate_0\intel_user_rst_clkgate_101\synth\intel_user_rst_clkgate.sv"
+       attributes="TOP_LEVEL_FILE" />
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\user_rst_clkgate_0\intel_user_rst_clkgate_101\synth\intel_user_rst_clkgate_agilex.sdc"
+       attributes="NO_AUTO_INSTANCE_DISCOVERY NO_SDC_PROMOTION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\user_rst_clkgate_0\intel_user_rst_clkgate_101\synth\intel_user_rst_clkgate.sv"
+       attributes="TOP_LEVEL_FILE" />
+   <file
+       path="D:\DE25-Standard\RevD\GHRD\ip\qsys_top\user_rst_clkgate_0\intel_user_rst_clkgate_101\synth\intel_user_rst_clkgate_agilex.sdc"
+       attributes="NO_AUTO_INSTANCE_DISCOVERY NO_SDC_PROMOTION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="D:/altera_pro/25.1.1/ip/altera/pgm/intel_user_rst_clkgate/intel_user_rst_clkgate_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="user_rst_clkgate_0" as="intel_user_rst_clkgate_inst" />
+  <messages>
+   <message level="Info" culprit="user_rst_clkgate_0">"Generating: intel_user_rst_clkgate"</message>
+   <message level="Info" culprit="intel_user_rst_clkgate_inst">generating top-level entity intel_user_rst_clkgate</message>
+  </messages>
+ </entity>
+</deploy>

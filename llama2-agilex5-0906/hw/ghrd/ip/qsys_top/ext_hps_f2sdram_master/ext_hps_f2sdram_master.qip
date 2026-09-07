@@ -1,0 +1,39 @@
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_TOOL_NAME "QsysPrimePro"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_TOOL_VERSION "25.1.1"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_TOOL_ENV "QsysPrimePro"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_TOOL_VENDOR_NAME "Intel Corporation"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_TOP_LEVEL_COMPONENT_NAME "altera_address_span_extender"
+set_global_assignment -library "ext_hps_f2sdram_master" -name SOPCINFO_FILE [file join $::quartus(qip_path) "ext_hps_f2sdram_master.sopcinfo"]
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name SLD_INFO "QSYS_NAME ext_hps_f2sdram_master HAS_SOPCINFO 1 GENERATION_ID 0"
+set_global_assignment -library "ext_hps_f2sdram_master" -name MISC_FILE [file join $::quartus(qip_path) "ext_hps_f2sdram_master.cmp"]
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_TARGETED_DEVICE_FAMILY "Agilex 5"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_GENERATED_DEVICE_FAMILY "{Agilex 5}"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_QSYS_MODE "STANDALONE"
+set_global_assignment -name SYNTHESIS_ONLY_QIP ON
+set_global_assignment -library "ext_hps_f2sdram_master" -name MISC_FILE [file join $::quartus(qip_path) "../ext_hps_f2sdram_master.ip"]
+
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_NAME "ZXh0X2hwc19mMnNkcmFtX21hc3Rlcl9hbHRlcmFfYWRkcmVzc19zcGFuX2V4dGVuZGVyXzE5MjBfbXlpeWI0eQ=="
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_DISPLAY_NAME "QWRkcmVzcyBTcGFuIEV4dGVuZGVyIEludGVsIEZQR0EgSVA="
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_AUTHOR "SW50ZWwgQ29ycG9yYXRpb24="
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_VERSION "MTkuMi4w"
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_DESCRIPTION "Q3JlYXRlcyBhIHdpbmRvd2VkIGJyaWRnZSB0byBhbGxvdyBtYXN0ZXJzIHRvIGFjY2VzcyBhIGxhcmdlciBhZGRyZXNzIG1hcC4="
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_GROUP "QmFzaWMgRnVuY3Rpb25zL0JyaWRnZXMgYW5kIEFkYXB0b3JzL01lbW9yeSBNYXBwZWQ="
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_COMPONENT_DOCUMENTATION_LINK "aHR0cHM6Ly93d3cuaW50ZWwuY29tL2NvbnRlbnQvZGFtL3d3dy9wcm9ncmFtbWFibGUvdXMvZW4vcGRmcy9saXRlcmF0dXJlL3VnL3VnLXFwcC1wbGF0Zm9ybS1kZXNpZ25lci5wZGYjcGFnZT0yOTQ="
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_COMPONENT_NAME "ZXh0X2hwc19mMnNkcmFtX21hc3Rlcg=="
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_COMPONENT_DISPLAY_NAME "c3lzdGVt"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_COMPONENT_REPORT_HIERARCHY "On"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_COMPONENT_AUTHOR "SW50ZWwgQ29ycG9yYXRpb24="
+set_global_assignment -entity "ext_hps_f2sdram_master" -library "ext_hps_f2sdram_master" -name IP_COMPONENT_VERSION "MS4w"
+
+
+set_global_assignment -library "altera_address_span_extender_1920" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "altera_address_span_extender_1920/synth/ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y.sv"]
+set_global_assignment -library "ext_hps_f2sdram_master" -name VERILOG_FILE [file join $::quartus(qip_path) "synth/ext_hps_f2sdram_master.v"]
+
+
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_TOOL_NAME "altera_address_span_extender"
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_TOOL_VERSION "19.2.0"
+set_global_assignment -entity "ext_hps_f2sdram_master_altera_address_span_extender_1920_myiyb4y" -library "altera_address_span_extender_1920" -name IP_TOOL_ENV "QsysPrimePro"
+

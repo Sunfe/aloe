@@ -1,0 +1,40 @@
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_TOOL_NAME "QsysPrimePro"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_TOOL_VERSION "25.1.1"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_TOOL_ENV "QsysPrimePro"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_TOOL_VENDOR_NAME "Intel Corporation"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_TOP_LEVEL_COMPONENT_NAME "altera_ace5lite_cache_coherency_translator"
+set_global_assignment -library "altera_ace5lite_cache_coherency_translator_0" -name SOPCINFO_FILE [file join $::quartus(qip_path) "altera_ace5lite_cache_coherency_translator_0.sopcinfo"]
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name SLD_INFO "QSYS_NAME altera_ace5lite_cache_coherency_translator_0 HAS_SOPCINFO 1 GENERATION_ID 0"
+set_global_assignment -library "altera_ace5lite_cache_coherency_translator_0" -name MISC_FILE [file join $::quartus(qip_path) "altera_ace5lite_cache_coherency_translator_0.cmp"]
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_TARGETED_DEVICE_FAMILY "Agilex 5"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_GENERATED_DEVICE_FAMILY "{Agilex 5}"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_QSYS_MODE "STANDALONE"
+set_global_assignment -name SYNTHESIS_ONLY_QIP ON
+set_global_assignment -library "altera_ace5lite_cache_coherency_translator_0" -name MISC_FILE [file join $::quartus(qip_path) "../altera_ace5lite_cache_coherency_translator_0.ip"]
+
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_NAME "YWx0ZXJhX2FjZTVsaXRlX2NhY2hlX2NvaGVyZW5jeV90cmFuc2xhdG9y"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_DISPLAY_NAME "QWx0ZXJhIEFDRTUtTGl0ZSBDYWNoZSBDb2hlcmVuY3kgVHJhbnNsYXRvcg=="
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_AUTHOR "SW50ZWwgQ29ycG9yYXRpb24="
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_VERSION "Mi4xLjE="
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_DESCRIPTION "VGhlIEFsdGVyYSBDYWNoZSBDb2hlcmVuY3kgVHJhbnNsYXRvciBJUCBwcm92aWRlcyB0aGUgYWJpbGl0eSB0byBwZXJmb3JtIHRyYW5zbGF0aW9uIGZyb20gQVhJLTQgaW50ZXJmYWNlIHRvIEFDRTUtTGl0ZSBpbnRlcmZhY2U="
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_COMPONENT_GROUP "UHJvY2Vzc29ycyBhbmQgUGVyaXBoZXJhbHMvSGFyZCBQcm9jZXNzb3IgQ29tcG9uZW50cw=="
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_COMPONENT_NAME "YWx0ZXJhX2FjZTVsaXRlX2NhY2hlX2NvaGVyZW5jeV90cmFuc2xhdG9yXzA="
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_COMPONENT_DISPLAY_NAME "c3lzdGVt"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_COMPONENT_REPORT_HIERARCHY "On"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_COMPONENT_AUTHOR "SW50ZWwgQ29ycG9yYXRpb24="
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator_0" -library "altera_ace5lite_cache_coherency_translator_0" -name IP_COMPONENT_VERSION "MS4w"
+
+
+set_global_assignment -library "altera_ace5lite_cache_coherency_translator_211" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "altera_ace5lite_cache_coherency_translator_211/synth/altera_ace5lite_cache_coherency_translator.sv"]
+set_global_assignment -library "altera_ace5lite_cache_coherency_translator_211" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "altera_ace5lite_cache_coherency_translator_211/synth/mux_data_synchronizer.sv"]
+set_global_assignment -library "altera_ace5lite_cache_coherency_translator_211" -name VERILOG_FILE [file join $::quartus(qip_path) "altera_ace5lite_cache_coherency_translator_211/synth/altera_std_synchronizer_nocut.v"]
+set_global_assignment -library "altera_ace5lite_cache_coherency_translator_0" -name VERILOG_FILE [file join $::quartus(qip_path) "synth/altera_ace5lite_cache_coherency_translator_0.v"]
+
+
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_TOOL_NAME "altera_ace5lite_cache_coherency_translator"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_TOOL_VERSION "2.1.1"
+set_global_assignment -entity "altera_ace5lite_cache_coherency_translator" -library "altera_ace5lite_cache_coherency_translator_211" -name IP_TOOL_ENV "QsysPrimePro"
+
