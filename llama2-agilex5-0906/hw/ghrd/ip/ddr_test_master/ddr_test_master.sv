@@ -1,592 +1,617 @@
 module ddr_test_master #(
-    parameter AXI_ADDR_WIDTH = 64,
-    parameter AXI_DATA_WIDTH = 128,
-    parameter AXI_ID_WIDTH   = 4
-)(
-    // ============================================
-    // AXI4-Lite 控制接口 (CSR)
-    // ============================================
-    input  logic                        csr_clk,
-    input  logic                        csr_rst,
-    
-    // 写地址通道
-    input  logic [31:0]                 csr_awaddr,
-    input  logic [2:0]                  csr_awprot,
+    parameter int unsigned AXI_ADDR_WIDTH = 64,
+    parameter int unsigned AXI_DATA_WIDTH = 128,
+    parameter int unsigned AXI_ID_WIDTH   = 4,
+
+    // AxPROT[2]: instruction/data, [1]: nonsecure/secure,
+    //        [0]: privileged/unprivileged.
+    // 2 = nonsecure, unprivileged, data access.
+    parameter int unsigned AXI_PROT_VALUE = 2
+) (
+    input  logic                        clk,
+    input  logic                        reset,
+
+    // AXI4-Lite CSR subordinate: 4 KiB address space.
+    input  logic [11:0]                  csr_awaddr,
+    input  logic [2:0]                   csr_awprot,
     input  logic                        csr_awvalid,
     output logic                        csr_awready,
-    
-    // 写数据通道
-    input  logic [31:0]                 csr_wdata,
-    input  logic [3:0]                  csr_wstrb,
+
+    input  logic [31:0]                  csr_wdata,
+    input  logic [3:0]                   csr_wstrb,
     input  logic                        csr_wvalid,
     output logic                        csr_wready,
-    
-    // 写响应通道
-    output logic [1:0]                  csr_bresp,
+
+    output logic [1:0]                   csr_bresp,
     output logic                        csr_bvalid,
     input  logic                        csr_bready,
-    
-    // 读地址通道
-    input  logic [31:0]                 csr_araddr,
-    input  logic [2:0]                  csr_arprot,
+
+    input  logic [11:0]                  csr_araddr,
+    input  logic [2:0]                   csr_arprot,
     input  logic                        csr_arvalid,
     output logic                        csr_arready,
-    
-    // 读数据通道
-    output logic [31:0]                 csr_rdata,
-    output logic [1:0]                  csr_rresp,
+
+    output logic [31:0]                  csr_rdata,
+    output logic [1:0]                   csr_rresp,
     output logic                        csr_rvalid,
     input  logic                        csr_rready,
-    
-    // ============================================
-    // AXI4 主接口 (访问 DDR)
-    // ============================================
-    input  logic                        axi_clk,
-    input  logic                        axi_rst,
-    
-    // 写地址通道
-    output logic [AXI_ID_WIDTH-1:0]     axi_awid,
-    output logic [AXI_ADDR_WIDTH-1:0]   axi_awaddr,
-    output logic [7:0]                  axi_awlen,
-    output logic [2:0]                  axi_awsize,
-    output logic [1:0]                  axi_awburst,
+
+    // AXI4 memory manager.
+    output logic [AXI_ID_WIDTH-1:0]      axi_awid,
+    output logic [AXI_ADDR_WIDTH-1:0]    axi_awaddr,
+    output logic [7:0]                   axi_awlen,
+    output logic [2:0]                   axi_awsize,
+    output logic [1:0]                   axi_awburst,
     output logic                        axi_awlock,
-    output logic [3:0]                  axi_awcache,
-    output logic [2:0]                  axi_awprot,
-    output logic [3:0]                  axi_awqos,
+    output logic [3:0]                   axi_awcache,
+    output logic [2:0]                   axi_awprot,
+    output logic [3:0]                   axi_awqos,
     output logic                        axi_awvalid,
     input  logic                        axi_awready,
-    
-    // 写数据通道
-    output logic [AXI_DATA_WIDTH-1:0]   axi_wdata,
-    output logic [AXI_DATA_WIDTH/8-1:0] axi_wstrb,
+
+    output logic [AXI_DATA_WIDTH-1:0]    axi_wdata,
+    output logic [AXI_DATA_WIDTH/8-1:0]  axi_wstrb,
     output logic                        axi_wlast,
     output logic                        axi_wvalid,
     input  logic                        axi_wready,
-    
-    // 写响应通道
-    input  logic [AXI_ID_WIDTH-1:0]     axi_bid,
-    input  logic [1:0]                  axi_bresp,
+
+    input  logic [AXI_ID_WIDTH-1:0]      axi_bid,
+    input  logic [1:0]                   axi_bresp,
     input  logic                        axi_bvalid,
     output logic                        axi_bready,
-    
-    // 读地址通道
-    output logic [AXI_ID_WIDTH-1:0]     axi_arid,
-    output logic [AXI_ADDR_WIDTH-1:0]   axi_araddr,
-    output logic [7:0]                  axi_arlen,
-    output logic [2:0]                  axi_arsize,
-    output logic [1:0]                  axi_arburst,
+
+    output logic [AXI_ID_WIDTH-1:0]      axi_arid,
+    output logic [AXI_ADDR_WIDTH-1:0]    axi_araddr,
+    output logic [7:0]                   axi_arlen,
+    output logic [2:0]                   axi_arsize,
+    output logic [1:0]                   axi_arburst,
     output logic                        axi_arlock,
-    output logic [3:0]                  axi_arcache,
-    output logic [2:0]                  axi_arprot,
-    output logic [3:0]                  axi_arqos,
+    output logic [3:0]                   axi_arcache,
+    output logic [2:0]                   axi_arprot,
+    output logic [3:0]                   axi_arqos,
     output logic                        axi_arvalid,
     input  logic                        axi_arready,
-    
-    // 读数据通道
-    input  logic [AXI_ID_WIDTH-1:0]     axi_rid,
-    input  logic [AXI_DATA_WIDTH-1:0]   axi_rdata,
-    input  logic [1:0]                  axi_rresp,
+
+    input  logic [AXI_ID_WIDTH-1:0]      axi_rid,
+    input  logic [AXI_DATA_WIDTH-1:0]    axi_rdata,
+    input  logic [1:0]                   axi_rresp,
     input  logic                        axi_rlast,
     input  logic                        axi_rvalid,
     output logic                        axi_rready
 );
 
-    // ============================================
-    // 本地参数
-    // ============================================
-    localparam SYNC_STAGES = 3;  // 增加同步级数以提高可靠性
-    
-    // ============================================
-    // 控制寄存器定义 (CSR 时钟域)
-    // ============================================
-    logic [31:0] ctrl_reg;      // 0x00: 控制寄存器
-    logic [31:0] status_reg_csr;// 0x04: 状态寄存器 (CSR域副本)
-    logic [31:0] addr_low_reg;  // 0x08: 起始地址 [31:0]
-    logic [31:0] addr_high_reg; // 0x0C: 起始地址 [63:32]
-    logic [31:0] length_reg;    // 0x10: 传输长度
-    logic [31:0] pattern_reg;   // 0x14: 测试数据模式
-    logic [31:0] error_cnt_csr; // 0x18: 错误计数 (CSR域副本)
-    logic [31:0] cycle_cnt_csr; // 0x1C: 周期计数 (CSR域副本)
-    
-    // ============================================
-    // AXI 时钟域寄存器
-    // ============================================
-    logic [31:0] status_reg_axi;
-    logic [31:0] error_cnt_axi;
-    logic [31:0] cycle_cnt_axi;
-    logic [63:0] addr_reg_axi;
-    logic [31:0] length_reg_axi;
-    logic [31:0] pattern_reg_axi;
-    logic        test_mode_axi;
-    
-    // ============================================
-    // 改进的跨时钟域同步
-    // ============================================
-    logic [SYNC_STAGES-1:0] start_sync;
-    logic start_pulse_axi;
-    logic start_req_csr;
-    logic start_ack_axi;
-    logic [SYNC_STAGES-1:0] start_ack_sync;
-    
-    // CSR域：生成启动请求
-    always_ff @(posedge csr_clk or posedge csr_rst) begin
-        if (csr_rst) begin
-            start_req_csr <= 1'b0;
-        end else begin
-            if (ctrl_reg[0] && !start_req_csr && !start_ack_sync[SYNC_STAGES-1]) begin
-                start_req_csr <= 1'b1;
-            end else if (start_ack_sync[SYNC_STAGES-1]) begin
-                start_req_csr <= 1'b0;
-            end
-        end
-    end
-    
-    // AXI域：同步启动请求
-    always_ff @(posedge axi_clk or posedge axi_rst) begin
-        if (axi_rst) begin
-            start_sync <= '0;
-            start_pulse_axi <= 1'b0;
-            start_ack_axi <= 1'b0;
-        end else begin
-            start_sync <= {start_sync[SYNC_STAGES-2:0], start_req_csr};
-            start_pulse_axi <= start_sync[SYNC_STAGES-1] && !start_sync[SYNC_STAGES-2];
-            
-            if (start_sync[SYNC_STAGES-1]) begin
-                start_ack_axi <= 1'b1;
-            end else begin
-                start_ack_axi <= 1'b0;
-            end
-        end
-    end
-    
-    // CSR域：同步应答
-    always_ff @(posedge csr_clk or posedge csr_rst) begin
-        if (csr_rst) begin
-            start_ack_sync <= '0;
-        end else begin
-            start_ack_sync <= {start_ack_sync[SYNC_STAGES-2:0], start_ack_axi};
-        end
-    end
-    
-    // ============================================
-    // 状态机类型定义
-    // ============================================
+    localparam int unsigned BYTES_PER_BEAT = AXI_DATA_WIDTH / 8;
+    localparam int unsigned BYTE_SHIFT     = $clog2(BYTES_PER_BEAT);
+
+    localparam logic [2:0] AXI_SIZE = BYTE_SHIFT;
+    localparam logic [AXI_ADDR_WIDTH-1:0] ADDR_STEP = BYTES_PER_BEAT;
+
+    localparam logic [1:0] RESP_OKAY   = 2'b00;
+    localparam logic [1:0] RESP_SLVERR = 2'b10;
+
     typedef enum logic [2:0] {
-        IDLE        = 3'b000,
-        WRITE_ADDR  = 3'b001,
-        WRITE_DATA  = 3'b010,
-        WRITE_RESP  = 3'b011,
-        READ_ADDR   = 3'b100,
-        READ_DATA   = 3'b101,
-        DONE        = 3'b110
+        ST_IDLE,
+        ST_WRITE_SEND,
+        ST_WRITE_RESP,
+        ST_READ_ADDR,
+        ST_READ_DATA
     } state_t;
-    
-    state_t state, state_next;
-    
-    // ============================================
-    // CSR 写逻辑
-    // ============================================
-    typedef enum logic [1:0] {
-        CSR_IDLE,
-        CSR_WRITE,
-        CSR_RESP
-    } csr_write_state_t;
-    
-    csr_write_state_t csr_wr_state;
-    logic [31:0] csr_waddr_reg;
-    
-    always_ff @(posedge csr_clk or posedge csr_rst) begin
-        if (csr_rst) begin
-            csr_wr_state <= CSR_IDLE;
-            ctrl_reg <= 32'h0;
-            addr_low_reg <= 32'h0;
-            addr_high_reg <= 32'h0;
-            length_reg <= 32'h0;
-            pattern_reg <= 32'hA5A5A5A5;
-            csr_waddr_reg <= 32'h0;
-            csr_awready <= 1'b0;
-            csr_wready <= 1'b0;
-            csr_bvalid <= 1'b0;
-        end else begin
-            case (csr_wr_state)
-                CSR_IDLE: begin
-                    csr_awready <= 1'b1;
-                    csr_wready <= 1'b1;
-                    csr_bvalid <= 1'b0;
-                    
-                    if (csr_awvalid && csr_awready) begin
-                        csr_waddr_reg <= csr_awaddr;
-                        csr_awready <= 1'b0;
-                        if (csr_wvalid) begin
-                            // 同时收到地址和数据
-                            case (csr_awaddr[7:0])
-                                8'h00: ctrl_reg <= csr_wdata;
-                                8'h08: addr_low_reg <= csr_wdata;
-                                8'h0C: addr_high_reg <= csr_wdata;
-                                8'h10: length_reg <= csr_wdata;
-                                8'h14: pattern_reg <= csr_wdata;
-                                default: ;
-                            endcase
-                            csr_wready <= 1'b0;
-                            csr_wr_state <= CSR_RESP;
-                        end else begin
-                            csr_wr_state <= CSR_WRITE;
-                        end
-                    end
-                end
-                
-                CSR_WRITE: begin
-                    if (csr_wvalid && csr_wready) begin
-                        case (csr_waddr_reg[7:0])
-                            8'h00: ctrl_reg <= csr_wdata;
-                            8'h08: addr_low_reg <= csr_wdata;
-                            8'h0C: addr_high_reg <= csr_wdata;
-                            8'h10: length_reg <= csr_wdata;
-                            8'h14: pattern_reg <= csr_wdata;
-                            default: ;
-                        endcase
-                        csr_wready <= 1'b0;
-                        csr_wr_state <= CSR_RESP;
-                    end
-                end
-                
-                CSR_RESP: begin
-                    csr_bvalid <= 1'b1;
-                    if (csr_bready) begin
-                        csr_wr_state <= CSR_IDLE;
-                    end
-                end
-            endcase
-            
-            // 自动清除 start 位
-            if (ctrl_reg[0] && start_ack_sync[SYNC_STAGES-1]) begin
-                ctrl_reg[0] <= 1'b0;
-            end
+
+    state_t state;
+
+    // Software configuration registers.
+    logic        mode_reg;
+    logic [31:0] addr_low_reg;
+    logic [31:0] addr_high_reg;
+    logic [31:0] length_reg;
+    logic [31:0] pattern_reg;
+
+    // Test result registers.
+    logic        busy;
+    logic        done;
+    logic        err_param;
+    logic        err_resp;
+    logic        err_data;
+    logic        err_protocol;
+    logic [31:0] error_count;
+    logic [31:0] cycle_count;
+    logic [31:0] status_word;
+
+    // Independent AXI-Lite AW and W holding registers.
+    logic        csr_aw_have;
+    logic        csr_w_have;
+    logic [11:0] csr_aw_hold;
+    logic [31:0] csr_wdata_hold;
+    logic [3:0]  csr_wstrb_hold;
+
+    logic        csr_wr_commit;
+    logic        csr_wr_allowed;
+    logic        csr_wr_ok;
+    logic        cmd_start;
+    logic        cmd_clear;
+
+    logic [31:0] csr_read_data;
+    logic [1:0]  csr_read_resp;
+
+    // Configuration validation.
+    logic [63:0] cfg_addr;
+    logic [64:0] cfg_last_addr;
+    logic        cfg_invalid;
+
+    // Active transaction state.
+    logic [AXI_ADDR_WIDTH-1:0] address_q;
+    logic [31:0] beats_left;
+    logic [31:0] pattern_q;
+    logic        aw_pending;
+    logic        w_pending;
+    logic        read_bad_seen;
+
+    logic [AXI_DATA_WIDTH-1:0] expected_data;
+
+    logic aw_fire;
+    logic w_fire;
+    logic b_fire;
+    logic ar_fire;
+    logic r_fire;
+
+    logic b_bad_now;
+    logic r_resp_bad;
+    logic r_data_bad;
+    logic r_protocol_bad;
+    logic r_bad_now;
+    logic transaction_done;
+    logic transaction_bad;
+
+    // Byte-enable merge for 32-bit CSR registers.
+    function automatic logic [31:0] merge32 (
+        input logic [31:0] old_value,
+        input logic [31:0] new_value,
+        input logic [3:0]  byte_enable
+    );
+        merge32 = old_value;
+        for (int i = 0; i < 4; i++) begin
+            if (byte_enable[i])
+                merge32[i*8 +: 8] = new_value[i*8 +: 8];
         end
-    end
-    
-    assign csr_bresp = 2'b00; // OKAY
-    
-    // ============================================
-    // CSR 读逻辑
-    // ============================================
-    typedef enum logic [1:0] {
-        CSR_RD_IDLE,
-        CSR_RD_DATA
-    } csr_read_state_t;
-    
-    csr_read_state_t csr_rd_state;
-    logic [7:0] csr_raddr_reg;
-    
-    always_ff @(posedge csr_clk or posedge csr_rst) begin
-        if (csr_rst) begin
-            csr_rd_state <= CSR_RD_IDLE;
-            csr_arready <= 1'b0;
-            csr_rvalid <= 1'b0;
-            csr_rdata <= 32'h0;
-            csr_raddr_reg <= 8'h0;
-        end else begin
-            case (csr_rd_state)
-                CSR_RD_IDLE: begin
-                    csr_arready <= 1'b1;
-                    csr_rvalid <= 1'b0;
-                    
-                    if (csr_arvalid && csr_arready) begin
-                        csr_raddr_reg <= csr_araddr[7:0];
-                        csr_arready <= 1'b0;
-                        csr_rd_state <= CSR_RD_DATA;
-                    end
-                end
-                
-                CSR_RD_DATA: begin
-                    case (csr_raddr_reg)
-                        8'h00: csr_rdata <= ctrl_reg;
-                        8'h04: csr_rdata <= status_reg_csr;
-                        8'h08: csr_rdata <= addr_low_reg;
-                        8'h0C: csr_rdata <= addr_high_reg;
-                        8'h10: csr_rdata <= length_reg;
-                        8'h14: csr_rdata <= pattern_reg;
-                        8'h18: csr_rdata <= error_cnt_csr;
-                        8'h1C: csr_rdata <= cycle_cnt_csr;
-                        default: csr_rdata <= 32'hDEADBEEF;
-                    endcase
-                    csr_rvalid <= 1'b1;
-                    
-                    if (csr_rready) begin
-                        csr_rd_state <= CSR_RD_IDLE;
-                    end
-                end
-            endcase
-        end
-    end
-    
-    assign csr_rresp = 2'b00; // OKAY
-    
-    // ============================================
-    // 将配置寄存器同步到 AXI 时钟域
-    // ============================================
-    logic [SYNC_STAGES-1:0] config_valid_sync;
-    logic config_req_csr;
-    logic config_ack_axi;
-    
-    always_ff @(posedge csr_clk or posedge csr_rst) begin
-        if (csr_rst) begin
-            config_req_csr <= 1'b0;
-        end else begin
-            if (ctrl_reg[0] && !config_req_csr) begin
-                config_req_csr <= 1'b1;
-            end else if (start_ack_sync[SYNC_STAGES-1]) begin
-                config_req_csr <= 1'b0;
-            end
-        end
-    end
-    
-    always_ff @(posedge axi_clk or posedge axi_rst) begin
-        if (axi_rst) begin
-            config_valid_sync <= '0;
-            addr_reg_axi <= 64'h0;
-            length_reg_axi <= 32'h0;
-            pattern_reg_axi <= 32'hA5A5A5A5;
-            test_mode_axi <= 1'b0;
-        end else begin
-            config_valid_sync <= {config_valid_sync[SYNC_STAGES-2:0], config_req_csr};
-            
-            if (config_valid_sync[SYNC_STAGES-1] && !config_valid_sync[SYNC_STAGES-2]) begin
-                addr_reg_axi <= {addr_high_reg, addr_low_reg};
-                length_reg_axi <= length_reg;
-                pattern_reg_axi <= pattern_reg;
-                test_mode_axi <= ctrl_reg[1];
-            end
-        end
-    end
-    
-    // ============================================
-    // 将状态寄存器同步回 CSR 时钟域
-    // ============================================
-    logic [SYNC_STAGES-1:0] status_valid_sync;
-    
-    always_ff @(posedge csr_clk or posedge csr_rst) begin
-        if (csr_rst) begin
-            status_valid_sync <= '0;
-            status_reg_csr <= 32'h0;
-            error_cnt_csr <= 32'h0;
-            cycle_cnt_csr <= 32'h0;
-        end else begin
-            status_valid_sync <= {status_valid_sync[SYNC_STAGES-2:0], 1'b1};
-            status_reg_csr <= status_reg_axi;
-            error_cnt_csr <= error_cnt_axi;
-            cycle_cnt_csr <= cycle_cnt_axi;
-        end
-    end
-    
-    // ============================================
-    // AXI 主接口状态机 (组合逻辑部分)
-    // ============================================
-    logic [31:0] transfer_cnt;
-    logic [31:0] cycle_counter;
-    logic [31:0] max_transfers;
-    
+    endfunction
+
+    assign busy = (state != ST_IDLE);
+
+    assign status_word = {
+        25'b0,
+        err_protocol,
+        err_data,
+        err_resp,
+        err_param,
+        (err_param | err_resp | err_data | err_protocol),
+        done,
+        busy
+    };
+
+    // ------------------------------------------------------------
+    // CSR write acceptance and command decode.
+    // AW and W may arrive in either order.
+    // ------------------------------------------------------------
+
+    assign csr_awready = !reset && !csr_aw_have && !csr_bvalid;
+    assign csr_wready  = !reset && !csr_w_have  && !csr_bvalid;
+
+    assign csr_wr_commit =
+        csr_aw_have && csr_w_have && !csr_bvalid;
+
     always_comb begin
-        // 默认值
-        state_next = state;
-        max_transfers = (length_reg_axi + (AXI_DATA_WIDTH/8) - 1) / (AXI_DATA_WIDTH/8);
-        
-        case (state)
-            IDLE: begin
-                if (start_pulse_axi) begin
-                    if (test_mode_axi == 1'b0)
-                        state_next = WRITE_ADDR;
-                    else
-                        state_next = READ_ADDR;
-                end
-            end
-            
-            WRITE_ADDR: begin
-                if (axi_awready)
-                    state_next = WRITE_DATA;
-            end
-            
-            WRITE_DATA: begin
-                if (axi_wready)
-                    state_next = WRITE_RESP;
-            end
-            
-            WRITE_RESP: begin
-                if (axi_bvalid) begin
-                    if (transfer_cnt >= max_transfers - 1)
-                        state_next = DONE;
-                    else
-                        state_next = WRITE_ADDR;
-                end
-            end
-            
-            READ_ADDR: begin
-                if (axi_arready)
-                    state_next = READ_DATA;
-            end
-            
-            READ_DATA: begin
-                if (axi_rvalid) begin
-                    if (transfer_cnt >= max_transfers - 1)
-                        state_next = DONE;
-                    else
-                        state_next = READ_ADDR;
-                end
-            end
-            
-            DONE: begin
-                state_next = IDLE;
-            end
-            
-            default: state_next = IDLE;
+        csr_wr_allowed = 1'b0;
+
+        case (csr_aw_hold)
+            12'h000,
+            12'h008,
+            12'h00C,
+            12'h010,
+            12'h014: csr_wr_allowed = !busy;
+
+            default: csr_wr_allowed = 1'b0;
         endcase
     end
-    
-    // ============================================
-    // AXI 主接口状态机 (时序逻辑部分)
-    // ============================================
-    always_ff @(posedge axi_clk or posedge axi_rst) begin
-        if (axi_rst) begin
-            state <= IDLE;
-            transfer_cnt <= 32'h0;
-            cycle_counter <= 32'h0;
-            error_cnt_axi <= 32'h0;
-            status_reg_axi <= 32'h0;
-            cycle_cnt_axi <= 32'h0;
-            
-            // 写通道初始化
-            axi_awid <= '0;
-            axi_awaddr <= '0;
-            axi_awlen <= 8'h0;
-            axi_awsize <= 3'($clog2(AXI_DATA_WIDTH/8));
-            axi_awburst <= 2'b01;
-            axi_awlock <= 1'b0;
-            axi_awcache <= 4'b0010;
-            axi_awprot <= 3'b000;
-            axi_awqos <= 4'h0;
-            axi_awvalid <= 1'b0;
-            
-            axi_wdata <= '0;
-            axi_wstrb <= '1;
-            axi_wlast <= 1'b0;
-            axi_wvalid <= 1'b0;
-            
-            axi_bready <= 1'b0;
-            
-            // 读通道初始化
-            axi_arid <= '0;
-            axi_araddr <= '0;
-            axi_arlen <= 8'h0;
-            axi_arsize <= 3'($clog2(AXI_DATA_WIDTH/8));
-            axi_arburst <= 2'b01;
-            axi_arlock <= 1'b0;
-            axi_arcache <= 4'b0010;
-            axi_arprot <= 3'b000;
-            axi_arqos <= 4'h0;
-            axi_arvalid <= 1'b0;
-            
-            axi_rready <= 1'b0;
-            
+
+    assign csr_wr_ok = csr_wr_commit && csr_wr_allowed;
+
+    assign cmd_start =
+        csr_wr_ok &&
+        (csr_aw_hold == 12'h000) &&
+        csr_wstrb_hold[0] &&
+        csr_wdata_hold[0];
+
+    // START takes priority if both START and CLEAR are written.
+    assign cmd_clear =
+        csr_wr_ok &&
+        (csr_aw_hold == 12'h000) &&
+        csr_wstrb_hold[0] &&
+        csr_wdata_hold[2] &&
+        !csr_wdata_hold[0];
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            csr_aw_have    <= 1'b0;
+            csr_w_have     <= 1'b0;
+            csr_aw_hold    <= '0;
+            csr_wdata_hold <= '0;
+            csr_wstrb_hold <= '0;
+
+            csr_bvalid <= 1'b0;
+            csr_bresp  <= RESP_OKAY;
+
+            mode_reg      <= 1'b0;
+            addr_low_reg  <= '0;
+            addr_high_reg <= '0;
+            length_reg    <= '0;
+            pattern_reg   <= 32'hA5A5A5A5;
         end else begin
-            state <= state_next;
-            cycle_counter <= cycle_counter + 1'b1;
-            
-            case (state)
-                IDLE: begin
-                    status_reg_axi[0] <= 1'b0; // not busy
-                    status_reg_axi[1] <= 1'b0; // not done
-                    
-                    if (start_pulse_axi) begin
-                        status_reg_axi[0] <= 1'b1; // busy
-                        transfer_cnt <= 32'h0;
-                        cycle_counter <= 32'h0;
-                    end
-                end
-                
-                WRITE_ADDR: begin
-                    if (!axi_awvalid || axi_awready) begin
-                        axi_awid <= 4'h1;
-                        axi_awaddr <= addr_reg_axi + (transfer_cnt * (AXI_DATA_WIDTH/8));
-                        axi_awlen <= 8'h0;
-                        axi_awvalid <= 1'b1;
-                    end
-                end
-                
-                WRITE_DATA: begin
-                    if (axi_awready && axi_awvalid) begin
-                        axi_awvalid <= 1'b0;
-                    end
-                    
-                    if (!axi_wvalid || axi_wready) begin
-                        axi_wdata <= {(AXI_DATA_WIDTH/32){pattern_reg_axi}};
-                        axi_wstrb <= '1;
-                        axi_wlast <= 1'b1;
-                        axi_wvalid <= 1'b1;
-                    end
-                end
-                
-                WRITE_RESP: begin
-                    if (axi_wready && axi_wvalid) begin
-                        axi_wvalid <= 1'b0;
-                        axi_wlast <= 1'b0;
-                    end
-                    
-                    axi_bready <= 1'b1;
-                    
-                    if (axi_bvalid && axi_bready) begin
-                        axi_bready <= 1'b0;
-                        transfer_cnt <= transfer_cnt + 1'b1;
-                        
-                        if (axi_bresp != 2'b00) begin
-                            error_cnt_axi <= error_cnt_axi + 1'b1;
-                            status_reg_axi[2] <= 1'b1; // error
+            if (csr_bvalid && csr_bready)
+                csr_bvalid <= 1'b0;
+
+            if (csr_awvalid && csr_awready) begin
+                csr_aw_hold <= csr_awaddr;
+                csr_aw_have <= 1'b1;
+            end
+
+            if (csr_wvalid && csr_wready) begin
+                csr_wdata_hold <= csr_wdata;
+                csr_wstrb_hold <= csr_wstrb;
+                csr_w_have     <= 1'b1;
+            end
+
+            if (csr_wr_commit) begin
+                csr_aw_have <= 1'b0;
+                csr_w_have  <= 1'b0;
+                csr_bvalid  <= 1'b1;
+                csr_bresp  <= csr_wr_allowed ? RESP_OKAY : RESP_SLVERR;
+
+                if (csr_wr_allowed) begin
+                    case (csr_aw_hold)
+                        12'h000: begin
+                            if (csr_wstrb_hold[0])
+                                mode_reg <= csr_wdata_hold[1];
                         end
-                    end
+
+                        12'h008:
+                            addr_low_reg <= merge32(
+                                addr_low_reg,
+                                csr_wdata_hold,
+                                csr_wstrb_hold
+                            );
+
+                        12'h00C:
+                            addr_high_reg <= merge32(
+                                addr_high_reg,
+                                csr_wdata_hold,
+                                csr_wstrb_hold
+                            );
+
+                        12'h010:
+                            length_reg <= merge32(
+                                length_reg,
+                                csr_wdata_hold,
+                                csr_wstrb_hold
+                            );
+
+                        12'h014:
+                            pattern_reg <= merge32(
+                                pattern_reg,
+                                csr_wdata_hold,
+                                csr_wstrb_hold
+                            );
+
+                        default: ;
+                    endcase
                 end
-                
-                READ_ADDR: begin
-                    if (!axi_arvalid || axi_arready) begin
-                        axi_arid <= 4'h1;
-                        axi_araddr <= addr_reg_axi + (transfer_cnt * (AXI_DATA_WIDTH/8));
-                        axi_arlen <= 8'h0;
-                        axi_arvalid <= 1'b1;
-                    end
-                end
-                
-                READ_DATA: begin
-                    if (axi_arready && axi_arvalid) begin
-                        axi_arvalid <= 1'b0;
-                    end
-                    
-                    axi_rready <= 1'b1;
-                    
-                    if (axi_rvalid && axi_rready) begin
-                        axi_rready <= 1'b0;
-                        transfer_cnt <= transfer_cnt + 1'b1;
-                        
-                        // 数据校验
-                        for (int i = 0; i < AXI_DATA_WIDTH/32; i++) begin
-                            if (axi_rdata[i*32 +: 32] != pattern_reg_axi) begin
-                                error_cnt_axi <= error_cnt_axi + 1'b1;
-                                status_reg_axi[2] <= 1'b1;
-                            end
-                        end
-                    end
-                end
-                
-                DONE: begin
-                    status_reg_axi[0] <= 1'b0; // not busy
-                    status_reg_axi[1] <= 1'b1; // done
-                    cycle_cnt_axi <= cycle_counter;
-                    transfer_cnt <= 32'h0;
-                end
-                
-                default: begin
-                    state <= IDLE;
-                end
-            endcase
+            end
         end
     end
+
+    // ------------------------------------------------------------
+    // CSR read channel.
+    // Capture a snapshot when AR handshakes; hold until R handshakes.
+    // ------------------------------------------------------------
+
+    assign csr_arready = !reset && !csr_rvalid;
+
+    always_comb begin
+        csr_read_data = 32'b0;
+        csr_read_resp = RESP_OKAY;
+
+        case (csr_araddr)
+            12'h000: csr_read_data = {30'b0, mode_reg, 1'b0};
+            12'h004: csr_read_data = status_word;
+            12'h008: csr_read_data = addr_low_reg;
+            12'h00C: csr_read_data = addr_high_reg;
+            12'h010: csr_read_data = length_reg;
+            12'h014: csr_read_data = pattern_reg;
+            12'h018: csr_read_data = error_count;
+            12'h01C: csr_read_data = cycle_count;
+
+            default: begin
+                csr_read_data = 32'b0;
+                csr_read_resp = RESP_SLVERR;
+            end
+        endcase
+    end
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            csr_rvalid <= 1'b0;
+            csr_rdata  <= '0;
+            csr_rresp  <= RESP_OKAY;
+        end else begin
+            if (csr_rvalid && csr_rready)
+                csr_rvalid <= 1'b0;
+
+            if (csr_arvalid && csr_arready) begin
+                csr_rvalid <= 1'b1;
+                csr_rdata  <= csr_read_data;
+                csr_rresp  <= csr_read_resp;
+            end
+        end
+    end
+
+    // ------------------------------------------------------------
+    // Reject zero length, unaligned requests and address overflow.
+    // LENGTH is a byte count and must be a whole number of beats.
+    // ------------------------------------------------------------
+
+    assign cfg_addr = {addr_high_reg, addr_low_reg};
+
+    assign cfg_last_addr =
+        {1'b0, cfg_addr} + {33'b0, length_reg} - 65'd1;
+
+    always_comb begin
+        cfg_invalid =
+            (length_reg == 32'b0) ||
+            (cfg_addr[BYTE_SHIFT-1:0] != '0) ||
+            (length_reg[BYTE_SHIFT-1:0] != '0) ||
+            cfg_last_addr[64];
+
+        if (AXI_ADDR_WIDTH == 32) begin
+            cfg_invalid =
+                cfg_invalid ||
+                (cfg_addr[63:32] != 32'b0) ||
+                (cfg_last_addr[63:32] != 32'b0);
+        end
+    end
+
+    // ------------------------------------------------------------
+    // AXI manager outputs.
+    // One single-beat INCR transaction at a time, fixed ID = 0.
+    // ------------------------------------------------------------
+
+    assign expected_data = {(AXI_DATA_WIDTH/32){pattern_q}};
+
+    assign axi_awid    = '0;
+    assign axi_awaddr  = address_q;
+    assign axi_awlen   = 8'd0;
+    assign axi_awsize  = AXI_SIZE;
+    assign axi_awburst = 2'b01;
+    assign axi_awlock  = 1'b0;
+    assign axi_awcache = 4'b0010;
+    assign axi_awprot  = AXI_PROT_VALUE[2:0];
+    assign axi_awqos   = 4'b0000;
+    assign axi_awvalid = (state == ST_WRITE_SEND) && aw_pending;
+
+    assign axi_wdata   = expected_data;
+    assign axi_wstrb   = '1;
+    assign axi_wlast   = 1'b1;
+    assign axi_wvalid  = (state == ST_WRITE_SEND) && w_pending;
+
+    assign axi_bready  = (state == ST_WRITE_RESP);
+
+    assign axi_arid    = '0;
+    assign axi_araddr  = address_q;
+    assign axi_arlen   = 8'd0;
+    assign axi_arsize  = AXI_SIZE;
+    assign axi_arburst = 2'b01;
+    assign axi_arlock  = 1'b0;
+    assign axi_arcache = 4'b0010;
+    assign axi_arprot  = AXI_PROT_VALUE[2:0];
+    assign axi_arqos   = 4'b0000;
+    assign axi_arvalid = (state == ST_READ_ADDR);
+
+    assign axi_rready  = (state == ST_READ_DATA);
+
+    assign aw_fire = axi_awvalid && axi_awready;
+    assign w_fire  = axi_wvalid  && axi_wready;
+    assign b_fire  = axi_bvalid  && axi_bready;
+    assign ar_fire = axi_arvalid && axi_arready;
+    assign r_fire  = axi_rvalid  && axi_rready;
+
+    assign b_bad_now =
+        (axi_bresp != RESP_OKAY) || (axi_bid != '0);
+
+    assign r_resp_bad = (axi_rresp != RESP_OKAY);
+
+    // Read data need not be meaningful on an error response.
+    assign r_data_bad =
+        (axi_rresp == RESP_OKAY) &&
+        (axi_rdata != expected_data);
+
+    assign r_protocol_bad =
+        (axi_rid != '0) || !axi_rlast;
+
+    assign r_bad_now = r_resp_bad || r_data_bad || r_protocol_bad;
+
+    // A malformed read without RLAST is drained until RLAST.
+    // Do not issue the next transaction while that response is open.
+    assign transaction_done =
+        b_fire || (r_fire && axi_rlast);
+
+    assign transaction_bad =
+        b_fire ? b_bad_now : (read_bad_seen || r_bad_now);
+
+    // ------------------------------------------------------------
+    // Test engine.
+    // All command, configuration and result signals use this clock.
+    // ------------------------------------------------------------
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            state         <= ST_IDLE;
+            address_q     <= '0;
+            beats_left    <= '0;
+            pattern_q     <= 32'hA5A5A5A5;
+            aw_pending    <= 1'b0;
+            w_pending     <= 1'b0;
+            read_bad_seen <= 1'b0;
+
+            done         <= 1'b0;
+            err_param    <= 1'b0;
+            err_resp     <= 1'b0;
+            err_data     <= 1'b0;
+            err_protocol <= 1'b0;
+            error_count  <= '0;
+            cycle_count  <= '0;
+        end else begin
+            if (busy && cycle_count != 32'hFFFFFFFF)
+                cycle_count <= cycle_count + 32'd1;
+
+            if (cmd_start) begin
+                done         <= 1'b0;
+                err_param    <= 1'b0;
+                err_resp     <= 1'b0;
+                err_data     <= 1'b0;
+                err_protocol <= 1'b0;
+                error_count  <= '0;
+                cycle_count  <= '0;
+
+                aw_pending    <= 1'b0;
+                w_pending     <= 1'b0;
+                read_bad_seen <= 1'b0;
+                beats_left    <= '0;
+
+                if (cfg_invalid) begin
+                    state     <= ST_IDLE;
+                    done      <= 1'b1;
+                    err_param <= 1'b1;
+                end else begin
+                    address_q  <= cfg_addr[AXI_ADDR_WIDTH-1:0];
+                    beats_left <= length_reg >> BYTE_SHIFT;
+                    pattern_q  <= pattern_reg;
+
+                    // Use mode from the START write itself.
+                    // mode_reg is updated on this same edge.
+                    if (csr_wdata_hold[1]) begin
+                        state <= ST_READ_ADDR;
+                    end else begin
+                        state      <= ST_WRITE_SEND;
+                        aw_pending <= 1'b1;
+                        w_pending  <= 1'b1;
+                    end
+                end
+            end else if (cmd_clear) begin
+                done          <= 1'b0;
+                err_param     <= 1'b0;
+                err_resp      <= 1'b0;
+                err_data      <= 1'b0;
+                err_protocol  <= 1'b0;
+                error_count   <= '0;
+                cycle_count   <= '0;
+                read_bad_seen <= 1'b0;
+            end else begin
+                case (state)
+                    ST_IDLE: begin
+                        // Results remain sticky until START or CLEAR.
+                    end
+
+                    ST_WRITE_SEND: begin
+                        if (aw_fire)
+                            aw_pending <= 1'b0;
+
+                        if (w_fire)
+                            w_pending <= 1'b0;
+
+                        // Each channel can finish independently.
+                        if ((!aw_pending || aw_fire) &&
+                            (!w_pending  || w_fire))
+                            state <= ST_WRITE_RESP;
+                    end
+
+                    ST_WRITE_RESP: begin
+                        if (b_fire) begin
+                            if (axi_bresp != RESP_OKAY)
+                                err_resp <= 1'b1;
+
+                            if (axi_bid != '0)
+                                err_protocol <= 1'b1;
+                        end
+                    end
+
+                    ST_READ_ADDR: begin
+                        if (ar_fire)
+                            state <= ST_READ_DATA;
+                    end
+
+                    ST_READ_DATA: begin
+                        if (r_fire) begin
+                            if (r_resp_bad)
+                                err_resp <= 1'b1;
+
+                            if (r_data_bad)
+                                err_data <= 1'b1;
+
+                            if (r_protocol_bad)
+                                err_protocol <= 1'b1;
+
+                            read_bad_seen <= read_bad_seen || r_bad_now;
+                        end
+                    end
+
+                    default: state <= ST_IDLE;
+                endcase
+
+                // Advance only after a completed response handshake.
+                if (transaction_done) begin
+                    read_bad_seen <= 1'b0;
+
+                    if (transaction_bad &&
+                        error_count != 32'hFFFFFFFF)
+                        error_count <= error_count + 32'd1;
+
+                    if (beats_left == 32'd1) begin
+                        beats_left <= '0;
+                        state      <= ST_IDLE;
+                        done       <= 1'b1;
+                    end else begin
+                        beats_left <= beats_left - 32'd1;
+                        address_q  <= address_q + ADDR_STEP;
+
+                        if (state == ST_WRITE_RESP) begin
+                            state      <= ST_WRITE_SEND;
+                            aw_pending <= 1'b1;
+                            w_pending  <= 1'b1;
+                        end else begin
+                            state <= ST_READ_ADDR;
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    // Simulation-time parameter checks.
+    // synthesis translate_off
+    initial begin
+        if (AXI_ADDR_WIDTH != 32 && AXI_ADDR_WIDTH != 64)
+            $fatal(1, "AXI_ADDR_WIDTH must be 32 or 64");
+
+        if (AXI_DATA_WIDTH != 64  &&
+            AXI_DATA_WIDTH != 128 &&
+            AXI_DATA_WIDTH != 256 &&
+            AXI_DATA_WIDTH != 512)
+            $fatal(1, "Unsupported AXI_DATA_WIDTH");
+
+        if (AXI_ID_WIDTH < 1 || AXI_ID_WIDTH > 16)
+            $fatal(1, "AXI_ID_WIDTH must be 1..16");
+
+        if (AXI_PROT_VALUE > 7)
+            $fatal(1, "AXI_PROT_VALUE must be 0..7");
+    end
+    // synthesis translate_on
 
 endmodule

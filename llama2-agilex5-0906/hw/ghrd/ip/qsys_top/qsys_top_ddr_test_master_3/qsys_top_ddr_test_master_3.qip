@@ -1,0 +1,38 @@
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_TOOL_NAME "QsysPrimePro"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_TOOL_VERSION "25.1.1"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_TOOL_ENV "QsysPrimePro"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_TOOL_VENDOR_NAME "Your Name"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_TOP_LEVEL_COMPONENT_NAME "ddr_test_master"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name PRE_COMPILED_MODULE "ON"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name OCS_IP_FILE [file join $::quartus(qip_path) "../qsys_top_ddr_test_master_3.ip"]
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name OCS_IP_TYPE "ddr_test_master"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name OCS_IP_VERSION "1.0"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name OCS_IP_HASH "bnbqofa"
+set_global_assignment -library "qsys_top_ddr_test_master_3" -name SOPCINFO_FILE [file join $::quartus(qip_path) "qsys_top_ddr_test_master_3.sopcinfo"]
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name SLD_INFO "QSYS_NAME qsys_top_ddr_test_master_3 HAS_SOPCINFO 1 GENERATION_ID 0"
+set_global_assignment -library "qsys_top_ddr_test_master_3" -name MISC_FILE [file join $::quartus(qip_path) "qsys_top_ddr_test_master_3.cmp"]
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_TARGETED_DEVICE_FAMILY "Agilex 5"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_GENERATED_DEVICE_FAMILY "{Agilex 5}"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_QSYS_MODE "STANDALONE"
+set_global_assignment -name SYNTHESIS_ONLY_QIP ON
+set_global_assignment -library "qsys_top_ddr_test_master_3" -name MISC_FILE [file join $::quartus(qip_path) "../qsys_top_ddr_test_master_3.ip"]
+
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_NAME "ZGRyX3Rlc3RfbWFzdGVy"
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_DISPLAY_NAME "RERSIFRlc3QgTWFzdGVy"
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_AUTHOR "WW91ciBOYW1l"
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_VERSION "MS4w"
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_DESCRIPTION "QVhJNCBERFIgVGVzdCBNYXN0ZXIgd2l0aCBBWEk0LUxpdGUgQ1NSIEludGVyZmFjZQ=="
+set_global_assignment -entity "ddr_test_master" -library "ddr_test_master_10" -name IP_COMPONENT_GROUP "Q3VzdG9tIElQ"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_COMPONENT_NAME "cXN5c190b3BfZGRyX3Rlc3RfbWFzdGVyXzM="
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_COMPONENT_DISPLAY_NAME "c3lzdGVt"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_COMPONENT_REPORT_HIERARCHY "On"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_COMPONENT_AUTHOR "WW91ciBOYW1l"
+set_global_assignment -entity "qsys_top_ddr_test_master_3" -library "qsys_top_ddr_test_master_3" -name IP_COMPONENT_VERSION "MS4w"
+
+
+set_global_assignment -library "ddr_test_master_10" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "ddr_test_master_10/synth/ddr_test_master.sv"]
+set_global_assignment -library "qsys_top_ddr_test_master_3" -name VERILOG_FILE [file join $::quartus(qip_path) "synth/qsys_top_ddr_test_master_3.v"]
+

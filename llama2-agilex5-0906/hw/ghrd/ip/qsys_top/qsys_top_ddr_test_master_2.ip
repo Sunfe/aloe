@@ -1,0 +1,201 @@
+<?xml version="1.0" ?>
+<!--Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.-->
+<ipxact:component xmlns:altera="http://www.altera.com/XMLSchema/IPXact2014/extensions" xmlns:ipxact="http://www.accellera.org/XMLSchema/IPXACT/1685-2014">
+  <ipxact:vendor>Your Name</ipxact:vendor>
+  <ipxact:library>qsys_top_ddr_test_master_2</ipxact:library>
+  <ipxact:name>ddr_test_master_2</ipxact:name>
+  <ipxact:version>1.0</ipxact:version>
+  <ipxact:busInterfaces></ipxact:busInterfaces>
+  <ipxact:model>
+    <ipxact:views>
+      <ipxact:view>
+        <ipxact:name>QUARTUS_SYNTH</ipxact:name>
+        <ipxact:envIdentifier>:quartus.altera.com:</ipxact:envIdentifier>
+        <ipxact:componentInstantiationRef>QUARTUS_SYNTH</ipxact:componentInstantiationRef>
+      </ipxact:view>
+    </ipxact:views>
+    <ipxact:instantiations>
+      <ipxact:componentInstantiation>
+        <ipxact:name>QUARTUS_SYNTH</ipxact:name>
+        <ipxact:moduleName>ddr_test_master</ipxact:moduleName>
+        <ipxact:fileSetRef>
+          <ipxact:localName>QUARTUS_SYNTH</ipxact:localName>
+        </ipxact:fileSetRef>
+      </ipxact:componentInstantiation>
+    </ipxact:instantiations>
+    <ipxact:ports></ipxact:ports>
+  </ipxact:model>
+  <ipxact:vendorExtensions>
+    <altera:entity_info>
+      <ipxact:vendor>Your Name</ipxact:vendor>
+      <ipxact:library>qsys_top_ddr_test_master_2</ipxact:library>
+      <ipxact:name>ddr_test_master</ipxact:name>
+      <ipxact:version>1.0</ipxact:version>
+    </altera:entity_info>
+    <altera:altera_module_parameters>
+      <ipxact:parameters>
+        <ipxact:parameter parameterId="AXI_ADDR_WIDTH" type="int">
+          <ipxact:name>AXI_ADDR_WIDTH</ipxact:name>
+          <ipxact:displayName>AXI Address Width</ipxact:displayName>
+          <ipxact:value>64</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AXI_DATA_WIDTH" type="int">
+          <ipxact:name>AXI_DATA_WIDTH</ipxact:name>
+          <ipxact:displayName>AXI Data Width</ipxact:displayName>
+          <ipxact:value>128</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AXI_ID_WIDTH" type="int">
+          <ipxact:name>AXI_ID_WIDTH</ipxact:name>
+          <ipxact:displayName>AXI ID Width</ipxact:displayName>
+          <ipxact:value>4</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_DEVICE_FAMILY" type="string">
+          <ipxact:name>AUTO_DEVICE_FAMILY</ipxact:name>
+          <ipxact:displayName>Auto DEVICE_FAMILY</ipxact:displayName>
+          <ipxact:value>Agilex 5</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_DEVICE" type="string">
+          <ipxact:name>AUTO_DEVICE</ipxact:name>
+          <ipxact:displayName>Auto DEVICE</ipxact:displayName>
+          <ipxact:value>A5ED013BB32AE4SCS</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_DEVICE_SPEEDGRADE" type="string">
+          <ipxact:name>AUTO_DEVICE_SPEEDGRADE</ipxact:name>
+          <ipxact:displayName>Auto DEVICE_SPEEDGRADE</ipxact:displayName>
+          <ipxact:value>4</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_BOARD" type="string">
+          <ipxact:name>AUTO_BOARD</ipxact:name>
+          <ipxact:displayName>Auto BOARD</ipxact:displayName>
+          <ipxact:value>default</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_CSR_CLK_CLOCK_RATE" type="longint">
+          <ipxact:name>AUTO_CSR_CLK_CLOCK_RATE</ipxact:name>
+          <ipxact:displayName>Auto CLOCK_RATE</ipxact:displayName>
+          <ipxact:value>-1</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_CSR_CLK_CLOCK_DOMAIN" type="longint">
+          <ipxact:name>AUTO_CSR_CLK_CLOCK_DOMAIN</ipxact:name>
+          <ipxact:displayName>Auto CLOCK_DOMAIN</ipxact:displayName>
+          <ipxact:value>-1</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_CSR_CLK_RESET_DOMAIN" type="longint">
+          <ipxact:name>AUTO_CSR_CLK_RESET_DOMAIN</ipxact:name>
+          <ipxact:displayName>Auto RESET_DOMAIN</ipxact:displayName>
+          <ipxact:value>-1</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_CSR_SLAVE_CPU_INFO_ID" type="string">
+          <ipxact:name>AUTO_CSR_SLAVE_CPU_INFO_ID</ipxact:name>
+          <ipxact:displayName>Auto CPU_INFO_ID</ipxact:displayName>
+          <ipxact:value></ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_AXI_CLK_CLOCK_RATE" type="longint">
+          <ipxact:name>AUTO_AXI_CLK_CLOCK_RATE</ipxact:name>
+          <ipxact:displayName>Auto CLOCK_RATE</ipxact:displayName>
+          <ipxact:value>-1</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_AXI_CLK_CLOCK_DOMAIN" type="longint">
+          <ipxact:name>AUTO_AXI_CLK_CLOCK_DOMAIN</ipxact:name>
+          <ipxact:displayName>Auto CLOCK_DOMAIN</ipxact:displayName>
+          <ipxact:value>-1</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_AXI_CLK_RESET_DOMAIN" type="longint">
+          <ipxact:name>AUTO_AXI_CLK_RESET_DOMAIN</ipxact:name>
+          <ipxact:displayName>Auto RESET_DOMAIN</ipxact:displayName>
+          <ipxact:value>-1</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_AXI_MASTER_ADDRESS_MAP" type="string">
+          <ipxact:name>AUTO_AXI_MASTER_ADDRESS_MAP</ipxact:name>
+          <ipxact:displayName>Auto ADDRESS_MAP</ipxact:displayName>
+          <ipxact:value></ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="AUTO_AXI_MASTER_ADDRESS_WIDTH" type="string">
+          <ipxact:name>AUTO_AXI_MASTER_ADDRESS_WIDTH</ipxact:name>
+          <ipxact:displayName>Auto ADDRESS_WIDTH</ipxact:displayName>
+          <ipxact:value>-1</ipxact:value>
+        </ipxact:parameter>
+      </ipxact:parameters>
+    </altera:altera_module_parameters>
+    <altera:altera_system_parameters>
+      <ipxact:parameters>
+        <ipxact:parameter parameterId="board" type="string">
+          <ipxact:name>board</ipxact:name>
+          <ipxact:displayName>Board</ipxact:displayName>
+          <ipxact:value>default</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="device" type="string">
+          <ipxact:name>device</ipxact:name>
+          <ipxact:displayName>Device</ipxact:displayName>
+          <ipxact:value>A5ED013BB32AE4SCS</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="deviceFamily" type="string">
+          <ipxact:name>deviceFamily</ipxact:name>
+          <ipxact:displayName>Device family</ipxact:displayName>
+          <ipxact:value>Agilex 5</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="deviceSpeedGrade" type="string">
+          <ipxact:name>deviceSpeedGrade</ipxact:name>
+          <ipxact:displayName>Device Speed Grade</ipxact:displayName>
+          <ipxact:value>4</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="generationId" type="int">
+          <ipxact:name>generationId</ipxact:name>
+          <ipxact:displayName>Generation Id</ipxact:displayName>
+          <ipxact:value>0</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="bonusData" type="string">
+          <ipxact:name>bonusData</ipxact:name>
+          <ipxact:displayName>bonusData</ipxact:displayName>
+          <ipxact:value>bonusData 
+{
+}
+</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="hideFromIPCatalog" type="bit">
+          <ipxact:name>hideFromIPCatalog</ipxact:name>
+          <ipxact:displayName>Hide from IP Catalog</ipxact:displayName>
+          <ipxact:value>false</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="lockedInterfaceDefinition" type="string">
+          <ipxact:name>lockedInterfaceDefinition</ipxact:name>
+          <ipxact:displayName>lockedInterfaceDefinition</ipxact:displayName>
+          <ipxact:value>&lt;boundaryDefinition&gt;
+    &lt;interfaces/&gt;
+&lt;/boundaryDefinition&gt;</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="systemInfos" type="string">
+          <ipxact:name>systemInfos</ipxact:name>
+          <ipxact:displayName>systemInfos</ipxact:displayName>
+          <ipxact:value>&lt;systemInfosDefinition&gt;
+    &lt;connPtSystemInfos/&gt;
+&lt;/systemInfosDefinition&gt;</ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="dflBitArray" type="string">
+          <ipxact:name>dflBitArray</ipxact:name>
+          <ipxact:displayName>dflBitArray</ipxact:displayName>
+          <ipxact:value></ipxact:value>
+        </ipxact:parameter>
+        <ipxact:parameter parameterId="cpuInfo" type="string">
+          <ipxact:name>cpuInfo</ipxact:name>
+          <ipxact:displayName>cpuInfo</ipxact:displayName>
+          <ipxact:value></ipxact:value>
+        </ipxact:parameter>
+      </ipxact:parameters>
+    </altera:altera_system_parameters>
+    <altera:altera_interface_boundary></altera:altera_interface_boundary>
+    <altera:altera_has_warnings>true</altera:altera_has_warnings>
+    <altera:altera_has_errors>true</altera:altera_has_errors>
+  </ipxact:vendorExtensions>
+</ipxact:component>

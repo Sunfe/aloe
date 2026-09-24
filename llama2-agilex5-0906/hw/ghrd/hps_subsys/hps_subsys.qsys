@@ -151,7 +151,12 @@ https://fpgasoftware.intel.com/eula.-->
             &lt;key&gt;f2sdram_adapter_axi4_sub&lt;/key&gt;
             &lt;value&gt;
                 &lt;connectionPointName&gt;f2sdram_adapter_axi4_sub&lt;/connectionPointName&gt;
-                &lt;suppliedSystemInfos/&gt;
+                &lt;suppliedSystemInfos&gt;
+                    &lt;entry&gt;
+                        &lt;key&gt;CPU_INFO_ID&lt;/key&gt;
+                        &lt;value&gt;&lt;/value&gt;
+                    &lt;/entry&gt;
+                &lt;/suppliedSystemInfos&gt;
                 &lt;consumedSystemInfos&gt;
                     &lt;entry&gt;
                         &lt;key&gt;ADDRESS_MAP&lt;/key&gt;

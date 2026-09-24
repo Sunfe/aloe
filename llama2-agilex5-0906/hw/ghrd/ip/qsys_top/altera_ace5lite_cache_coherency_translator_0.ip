@@ -2909,7 +2909,7 @@ https://fpgasoftware.intel.com/eula.-->
         <ipxact:parameter parameterId="device" type="string">
           <ipxact:name>device</ipxact:name>
           <ipxact:displayName>Device</ipxact:displayName>
-          <ipxact:value>A5ED065BB32AE6SR0</ipxact:value>
+          <ipxact:value>A5ED013BB32AE4SCS</ipxact:value>
         </ipxact:parameter>
         <ipxact:parameter parameterId="deviceFamily" type="string">
           <ipxact:name>deviceFamily</ipxact:name>
@@ -2938,6 +2938,9 @@ https://fpgasoftware.intel.com/eula.-->
          value = "Agilex 5";
          type = "String";
       }
+   }
+   element altera_ace5lite_cache_coherency_translator_0
+   {
    }
    element altera_ace5lite_cache_coherency_translator_inst
    {

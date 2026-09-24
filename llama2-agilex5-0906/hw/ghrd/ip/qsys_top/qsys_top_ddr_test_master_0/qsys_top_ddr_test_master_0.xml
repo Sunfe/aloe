@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2026.09.11.22:32:26"
+ outputDirectory="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/qsys_top/qsys_top_ddr_test_master_0/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Agilex 5"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="A5ED013BB32AE4SCS"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="4"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_BOARD"
+     type="String"
+     defaultValue="default"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CSR_CLK_CLOCK_RATE"
+     type="Long"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CSR_CLK_CLOCK_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CSR_CLK_RESET_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CSR_SLAVE_CPU_INFO_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_AXI_CLK_CLOCK_RATE"
+     type="Long"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_AXI_CLK_CLOCK_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_AXI_CLK_RESET_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_AXI_MASTER_ADDRESS_MAP"
+     type="AddressMap"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_AXI_MASTER_ADDRESS_WIDTH"
+     type="AddressWidthType"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="csr_clk" kind="clock" start="0">
+   <property name="clockRate" value="0" />
+   <property name="externallyDriven" value="false" />
+   <property name="ptfSchematicName" value="" />
+   <port name="csr_clk" direction="input" role="clk" width="1" />
+  </interface>
+  <interface name="csr_rst" kind="reset" start="0">
+   <property name="associatedClock" value="csr_clk" />
+   <property name="synchronousEdges" value="DEASSERT" />
+   <port name="csr_rst" direction="input" role="reset" width="1" />
+  </interface>
+  <interface name="csr_slave" kind="axi4lite" start="0">
+   <property name="associatedClock" value="csr_clk" />
+   <property name="associatedReset" value="csr_rst" />
+   <property name="trustzoneAware" value="true" />
+   <property name="wakeupSignals" value="false" />
+   <property name="uniqueIdSupport" value="false" />
+   <property name="poison" value="false" />
+   <property name="traceSignals" value="false" />
+   <property name="isTranslator" value="false" />
+   <property name="maximumOutstandingReads" value="1" />
+   <property name="maximumOutstandingWrites" value="1" />
+   <property name="maximumOutstandingTransactions" value="1" />
+   <property name="dataCheck" value="false" />
+   <property name="addressCheck" value="false" />
+   <property name="securityAttribute" value="false" />
+   <property name="userData" value="false" />
+   <property name="readAcceptanceCapability" value="1" />
+   <property name="writeAcceptanceCapability" value="1" />
+   <property name="combinedAcceptanceCapability" value="1" />
+   <property name="readDataReorderingDepth" value="1" />
+   <property name="bridgesToMaster" value="" />
+   <property name="dfhFeatureGuid" value="0" />
+   <property name="dfhGroupId" value="0" />
+   <property name="dfhParameterId" value="" />
+   <property name="dfhParameterName" value="" />
+   <property name="dfhParameterVersion" value="" />
+   <property name="dfhParameterData" value="" />
+   <property name="dfhParameterDataLength" value="" />
+   <property name="dfhFeatureMajorVersion" value="0" />
+   <property name="dfhFeatureMinorVersion" value="0" />
+   <property name="dfhFeatureId" value="35" />
+   <property name="dfhFeatureType" value="3" />
+   <port name="csr_awaddr" direction="input" role="awaddr" width="32" />
+   <port name="csr_awprot" direction="input" role="awprot" width="3" />
+   <port name="csr_awvalid" direction="input" role="awvalid" width="1" />
+   <port name="csr_awready" direction="output" role="awready" width="1" />
+   <port name="csr_wdata" direction="input" role="wdata" width="32" />
+   <port name="csr_wstrb" direction="input" role="wstrb" width="4" />
+   <port name="csr_wvalid" direction="input" role="wvalid" width="1" />
+   <port name="csr_wready" direction="output" role="wready" width="1" />
+   <port name="csr_bresp" direction="output" role="bresp" width="2" />
+   <port name="csr_bvalid" direction="output" role="bvalid" width="1" />
+   <port name="csr_bready" direction="input" role="bready" width="1" />
+   <port name="csr_araddr" direction="input" role="araddr" width="32" />
+   <port name="csr_arprot" direction="input" role="arprot" width="3" />
+   <port name="csr_arvalid" direction="input" role="arvalid" width="1" />
+   <port name="csr_arready" direction="output" role="arready" width="1" />
+   <port name="csr_rdata" direction="output" role="rdata" width="32" />
+   <port name="csr_rresp" direction="output" role="rresp" width="2" />
+   <port name="csr_rvalid" direction="output" role="rvalid" width="1" />
+   <port name="csr_rready" direction="input" role="rready" width="1" />
+  </interface>
+  <interface name="axi_clk" kind="clock" start="0">
+   <property name="clockRate" value="0" />
+   <property name="externallyDriven" value="false" />
+   <property name="ptfSchematicName" value="" />
+   <port name="axi_clk" direction="input" role="clk" width="1" />
+  </interface>
+  <interface name="axi_rst" kind="reset" start="0">
+   <property name="associatedClock" value="axi_clk" />
+   <property name="synchronousEdges" value="DEASSERT" />
+   <port name="axi_rst" direction="input" role="reset" width="1" />
+  </interface>
+  <interface name="axi_master" kind="axi4" start="1">
+   <property name="associatedClock" value="axi_clk" />
+   <property name="associatedReset" value="axi_rst" />
+   <property name="trustzoneAware" value="true" />
+   <property name="wakeupSignals" value="false" />
+   <property name="uniqueIdSupport" value="false" />
+   <property name="poison" value="false" />
+   <property name="traceSignals" value="false" />
+   <property name="isTranslator" value="false" />
+   <property name="maximumOutstandingReads" value="1" />
+   <property name="maximumOutstandingWrites" value="1" />
+   <property name="maximumOutstandingTransactions" value="1" />
+   <property name="dataCheck" value="false" />
+   <property name="addressCheck" value="false" />
+   <property name="securityAttribute" value="false" />
+   <property name="userData" value="false" />
+   <property name="readIssuingCapability" value="8" />
+   <property name="writeIssuingCapability" value="8" />
+   <property name="combinedIssuingCapability" value="16" />
+   <property name="enableConcurrentSubordinateAccess" value="0" />
+   <property name="noRepeatedIdsBetweenSubordinates" value="0" />
+   <property name="issuesINCRBursts" value="true" />
+   <property name="issuesWRAPBursts" value="true" />
+   <property name="issuesFIXEDBursts" value="true" />
+   <port name="axi_awid" direction="output" role="awid" width="8" />
+   <port name="axi_awaddr" direction="output" role="awaddr" width="64" />
+   <port name="axi_awlen" direction="output" role="awlen" width="8" />
+   <port name="axi_awsize" direction="output" role="awsize" width="3" />
+   <port name="axi_awburst" direction="output" role="awburst" width="2" />
+   <port name="axi_awlock" direction="output" role="awlock" width="1" />
+   <port name="axi_awcache" direction="output" role="awcache" width="4" />
+   <port name="axi_awprot" direction="output" role="awprot" width="3" />
+   <port name="axi_awqos" direction="output" role="awqos" width="4" />
+   <port name="axi_awvalid" direction="output" role="awvalid" width="1" />
+   <port name="axi_awready" direction="input" role="awready" width="1" />
+   <port name="axi_wdata" direction="output" role="wdata" width="128" />
+   <port name="axi_wstrb" direction="output" role="wstrb" width="16" />
+   <port name="axi_wlast" direction="output" role="wlast" width="1" />
+   <port name="axi_wvalid" direction="output" role="wvalid" width="1" />
+   <port name="axi_wready" direction="input" role="wready" width="1" />
+   <port name="axi_bid" direction="input" role="bid" width="8" />
+   <port name="axi_bresp" direction="input" role="bresp" width="2" />
+   <port name="axi_bvalid" direction="input" role="bvalid" width="1" />
+   <port name="axi_bready" direction="output" role="bready" width="1" />
+   <port name="axi_arid" direction="output" role="arid" width="8" />
+   <port name="axi_araddr" direction="output" role="araddr" width="64" />
+   <port name="axi_arlen" direction="output" role="arlen" width="8" />
+   <port name="axi_arsize" direction="output" role="arsize" width="3" />
+   <port name="axi_arburst" direction="output" role="arburst" width="2" />
+   <port name="axi_arlock" direction="output" role="arlock" width="1" />
+   <port name="axi_arcache" direction="output" role="arcache" width="4" />
+   <port name="axi_arprot" direction="output" role="arprot" width="3" />
+   <port name="axi_arqos" direction="output" role="arqos" width="4" />
+   <port name="axi_arvalid" direction="output" role="arvalid" width="1" />
+   <port name="axi_arready" direction="input" role="arready" width="1" />
+   <port name="axi_rid" direction="input" role="rid" width="8" />
+   <port name="axi_rdata" direction="input" role="rdata" width="128" />
+   <port name="axi_rresp" direction="input" role="rresp" width="2" />
+   <port name="axi_rlast" direction="input" role="rlast" width="1" />
+   <port name="axi_rvalid" direction="input" role="rvalid" width="1" />
+   <port name="axi_rready" direction="output" role="rready" width="1" />
+  </interface>
+ </perimeter>
+ <entity
+   kind="qsys_top_ddr_test_master_0"
+   version="1.0"
+   name="qsys_top_ddr_test_master_0">
+  <parameter name="AUTO_AXI_MASTER_ADDRESS_WIDTH" value="-1" />
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_AXI_CLK_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Agilex 5" />
+  <parameter name="AUTO_BOARD" value="default" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_CSR_SLAVE_CPU_INFO_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="4" />
+  <parameter name="AUTO_DEVICE" value="A5ED013BB32AE4SCS" />
+  <parameter name="AUTO_CSR_CLK_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_AXI_MASTER_ADDRESS_MAP" value="" />
+  <parameter name="AUTO_CSR_CLK_RESET_DOMAIN" value="-1" />
+  <parameter name="AUTO_AXI_CLK_RESET_DOMAIN" value="-1" />
+  <parameter name="AUTO_CSR_CLK_CLOCK_DOMAIN" value="-1" />
+  <parameter name="AUTO_AXI_CLK_CLOCK_DOMAIN" value="-1" />
+  <generatedFiles>
+   <file
+       path="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/qsys_top/qsys_top_ddr_test_master_0/synth/qsys_top_ddr_test_master_0.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/qsys_top/qsys_top_ddr_test_master_0/synth/qsys_top_ddr_test_master_0.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/qsys_top/qsys_top_ddr_test_master_0.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/ddr_test_master/ddr_test_master_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="qsys_top_ddr_test_master_0">"Generating: qsys_top_ddr_test_master_0"</message>
+   <message level="Info" culprit="qsys_top_ddr_test_master_0">"Generating: ddr_test_master"</message>
+  </messages>
+ </entity>
+ <entity kind="ddr_test_master" version="1.0" name="ddr_test_master">
+  <parameter name="AXI_ID_WIDTH" value="8" />
+  <parameter name="AXI_STRB_WIDTH" value="16" />
+  <parameter name="AXI_DATA_WIDTH" value="128" />
+  <parameter name="AXI_ADDR_WIDTH" value="64" />
+  <generatedFiles>
+   <file
+       path="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/qsys_top/qsys_top_ddr_test_master_0/ddr_test_master_10/synth/ddr_test_master.sv"
+       attributes="TOP_LEVEL_FILE" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/qsys_top/qsys_top_ddr_test_master_0/ddr_test_master_10/synth/ddr_test_master.sv"
+       attributes="TOP_LEVEL_FILE" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="/home/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip/ddr_test_master/ddr_test_master_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="qsys_top_ddr_test_master_0" as="ddr_test_master_0" />
+  <messages>
+   <message level="Info" culprit="qsys_top_ddr_test_master_0">"Generating: ddr_test_master"</message>
+  </messages>
+ </entity>
+</deploy>

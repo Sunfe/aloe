@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+ <debug showDebugMenu="0" />
+ <window width="1744" height="1052" x="-8" y="-8" />
+ <systemtable
+   filter="ddr_test_master_6.axi_master"
+   showAvalonDomains="1"
+   showClockDomains="0"
+   showResetDomains="0" />
+ <library
+   expandedCategories="Library/Intel FPGA Interconnect,Library/DSP/Primitive DSP,Library/DSP/Filters,Library/DSP,Library/DSP/Error Detection and Correction,Library/Basic Functions,Library/Generic Component,Library/Memory Test,Project,Library/DSP/Signal Generation,Library,Library/Bridges and Adaptors,Existing IP Variants" />
+ <generation path="" />
+</preferences>
