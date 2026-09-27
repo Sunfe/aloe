@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+ <debug showDebugMenu="0" />
+ <window width="1728" height="1036" x="0" y="0" />
+ <systemtable
+   filter="ddr_test_master_6.axi_master"
+   showAvalonDomains="1"
+   showClockDomains="0"
+   showResetDomains="0" />
+ <library
+   expandedCategories="Library/Memory Test,Existing IP Variants,Existing IP Variants/C:/data/wksp/de25std/aloe,Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906/hw,Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd,Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906,Existing IP Variants/C:,Library/Custom,Existing IP Variants/C:/data/wksp/de25std,Existing IP Variants/C:/data,Project,Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip,Library,Existing IP Variants/C:/data/wksp" />
+ <generation path="" />
+</preferences>
