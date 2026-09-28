@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferences>
  <debug showDebugMenu="0" />
- <window width="1726" height="1034" x="1" y="1" />
+ <window width="1744" height="1052" x="-8" y="-8" />
  <systemtable
    filter="ddr_test_master_6.axi_master"
    showAvalonDomains="1"
    showClockDomains="0"
    showResetDomains="0" />
  <library
-   expandedCategories="Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd/ip,Existing IP Variants/C:/data/wksp/de25std/aloe,Existing IP Variants/C:/data/wksp,Project,Existing IP Variants,Existing IP Variants/C:/data/wksp/de25std,Existing IP Variants/C:,Library,Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906,Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906/hw/ghrd,Existing IP Variants/C:/data,Existing IP Variants/C:/data/wksp/de25std/aloe/llama2-agilex5-0906/hw" />
+   expandedCategories="Library/Custom,Existing IP Variants,Library,Project" />
  <generation path="" />
 </preferences>
