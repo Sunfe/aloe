@@ -1,0 +1,17 @@
+terasic@localhost:/mnt$ sudo ./gemv_host_test
+GEMV CSR base : 0x0000000020020000
+W address     : 0x00000000B8000000
+X address     : 0x00000000B8001000
+Y address     : 0x00000000B8002000
+VERSION      : 0x474D5631
+Starting 4x4 FP32 GEMV...
+STATUS       : 0x00000002
+CYCLES       : 0x00000321
+DEBUG        : 0x000000F0
+Output y:
+  y[0] = 0x41F00000, expected 0x41F00000 PASS
+  y[1] = 0x428C0000, expected 0x428C0000 PASS
+  y[2] = 0x42DC0000, expected 0x42DC0000 PASS
+  y[3] = 0x43160000, expected 0x43160000 PASS
+[PASS] 4x4 FP32 GEMV result is correct.
+terasic@localhost:/mnt$

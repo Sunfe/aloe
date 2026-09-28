@@ -1,0 +1,55 @@
+HPS-FPGA 共享 DDR 双向交换测试
+DDR Test Master CSR：0x20021000
+HPS 内存工具：/mnt/shared_ddr_rw_tool
+注意：将覆盖三个测试区域，请勿同时运行 GEMV 或其他 DDR 测试。
+
+==================================================
+测试范围：0xB8000000–0xB8000FFF，共 4096 字节
+
+[TEST] HPS -> FPGA，模式=0xA5A5A5A5
+FILL PASS: address=0xb8000000 bytes=0x1000 pattern=0xa5a5a5a5
+CHECK PASS: address=0xb8000000 bytes=0x1000 pattern=0xa5a5a5a5
+FPGA：STATUS=0x00000002 ERROR_COUNT=0 CYCLE_COUNT=9040
+[PASS] HPS 写入，FPGA 读取并校验
+
+[TEST] FPGA -> HPS，模式=0x5A5A5A5A
+FILL PASS: address=0xb8000000 bytes=0x1000 pattern=0xa5a5a5a5
+CHECK PASS: address=0xb8000000 bytes=0x1000 pattern=0xa5a5a5a5
+FPGA：STATUS=0x00000002 ERROR_COUNT=0 CYCLE_COUNT=7431
+CHECK PASS: address=0xb8000000 bytes=0x1000 pattern=0x5a5a5a5a
+[PASS] FPGA 写入，HPS 读取并校验
+
+==================================================
+测试范围：0xBA000000–0xBA00FFFF，共 65536 字节
+
+[TEST] HPS -> FPGA，模式=0x12345678
+FILL PASS: address=0xba000000 bytes=0x10000 pattern=0x12345678
+CHECK PASS: address=0xba000000 bytes=0x10000 pattern=0x12345678
+FPGA：STATUS=0x00000002 ERROR_COUNT=0 CYCLE_COUNT=137240
+[PASS] HPS 写入，FPGA 读取并校验
+
+[TEST] FPGA -> HPS，模式=0x87654321
+FILL PASS: address=0xba000000 bytes=0x10000 pattern=0x789abcde
+CHECK PASS: address=0xba000000 bytes=0x10000 pattern=0x789abcde
+FPGA：STATUS=0x00000002 ERROR_COUNT=0 CYCLE_COUNT=118831
+CHECK PASS: address=0xba000000 bytes=0x10000 pattern=0x87654321
+[PASS] FPGA 写入，HPS 读取并校验
+
+==================================================
+测试范围：0xBFF00000–0xBFFFFFFF，共 1048576 字节
+
+[TEST] HPS -> FPGA，模式=0x55AA55AA
+FILL PASS: address=0xbff00000 bytes=0x100000 pattern=0x55aa55aa
+CHECK PASS: address=0xbff00000 bytes=0x100000 pattern=0x55aa55aa
+FPGA：STATUS=0x00000002 ERROR_COUNT=0 CYCLE_COUNT=2189544
+[PASS] HPS 写入，FPGA 读取并校验
+
+[TEST] FPGA -> HPS，模式=0xAA55AA55
+FILL PASS: address=0xbff00000 bytes=0x100000 pattern=0x55aa55aa
+CHECK PASS: address=0xbff00000 bytes=0x100000 pattern=0x55aa55aa
+FPGA：STATUS=0x00000002 ERROR_COUNT=0 CYCLE_COUNT=1902693
+CHECK PASS: address=0xbff00000 bytes=0x100000 pattern=0xaa55aa55
+[PASS] FPGA 写入，HPS 读取并校验
+
+[ALL PASS] 3 个位置 × 2 个方向，共 6 项交换测试通过。
+注意：测试区域内容已改变；再次测试 GEMV 时需重新写入 W/x。

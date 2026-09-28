@@ -1,3 +1,49 @@
+/*
+ * ============================================================================
+ * 文件：shared_ddr_rw_tool.c
+ *
+ * 功能：
+ *   通过 /dev/mem 访问 HPS-FPGA 共享 DDR。
+ *
+ * 用法：
+ *   shared_ddr_rw_tool fill  <phys_addr> <bytes> <pattern>
+ *   shared_ddr_rw_tool check <phys_addr> <bytes> <pattern>
+ *
+ * fill：
+ *   将指定物理地址范围写成统一的 32 位模式。
+ *
+ * check：
+ *   读取指定物理地址范围，并检查每个 32 位字是否等于指定模式。
+ *
+ * 示例：
+ *   sudo ./shared_ddr_rw_tool fill \
+ *       0xBA000000 0x10000 0xA5A5A5A5
+ *
+ *   sudo ./shared_ddr_rw_tool check \
+ *       0xBA000000 0x10000 0xA5A5A5A5
+ *
+ * 访问对象：
+ *   HPS-FPGA 共享 DDR：
+ *   0xB8000000 <= address < 0xC0000000
+ *
+ * 本工具的性质：
+ *   这是一个底层共享 DDR 读写工具，不负责启动 FPGA。
+ *   它既可以被 test_ddr_hps_fpga_exchange.sh 调用，
+ *   也可以被人工用于检查共享 DDR。
+ *
+ * 不负责的功能：
+ *   1. 不访问 DDR Test Master CSR；
+ *   2. 不启动或停止 FPGA 状态机；
+ *   3. 不测试 FP32 运算；
+ *   4. 不执行 GEMV；
+ *   5. 不判断当前 DDR 是否正在被其他硬件模块使用。
+ *
+ * 注意：
+ *   物理地址来自命令行，程序不会自动区分 DDR 地址和 CSR 地址。
+ *   传入错误地址可能破坏硬件状态或系统运行。
+ * ============================================================================
+ */
+
 #define _GNU_SOURCE
 
 
