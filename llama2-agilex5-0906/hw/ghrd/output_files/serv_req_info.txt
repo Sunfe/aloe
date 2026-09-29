@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <internal_error>
 	<sub_system>ERR</sub_system>
-	<callstack>*** Fatal Error: 	0x79d4597b9dd9: ccl_err + 0x23dd9 (_Z14err_terminatorv + 0x1bc)
-	0x79d4532b036a: stdc++ + 0xb036a (_ZN10__cxxabiv111__terminateEPFvvE + 0xa)
-	0x79d4532b03d5: stdc++ + 0xb03d5
-	0x79d4532b0628: stdc++ + 0xb0628
-	0x79d45149d84d: ddm_report + 0x1684d (_Z9ddm_throwI17DDM_RUNTIME_ERROREvRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE + 0x26d)
-	0x79d45149af3e: ddm_report + 0x13f3e (_ZNK10DDM_REPORT21DDM_ASSERTION_HANDLER15assertion_errorENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE + 0xde)
-	0x79d4514999e2: ddm_report + 0x129e2 (_ZN10DDM_REPORT17ASSERTION_HANDLER5errorENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE + 0x72)
-	0x79d45149adf4: ddm_report + 0x13df4 (_ZN10DDM_REPORT6detail14assert_at_lineEPKcS2_iS2_z + 0x1b4)
-	0x79d44cddebb0: ddm + 0x1debb0 (_Z17ddm_set_lassessorP14DDM_T_ASSESSORRKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE + 0x60)
-	0x79d45212fdc7: dni_dms + 0xeedc7 (_ZN11DMS_MANAGERC1Ev + 0x21f)
-	0x79d45212ff48: dni_dms + 0xeef48 (_ZN11DMS_MANAGER3getEv + 0x7a)
-	0x79d45213263b: dni_dms + 0xf163b (_GLOBAL__sub_I_dms_manager.cpp + 0x58)
-	0x79d45b50a71f: ld-linux-x86-64 + 0x571f
-	0x79d45b50a824: ld-linux-x86-64 + 0x5824
-	0x79d45b5245a0: ld-linux-x86-64 + 0x1f5a0
+	<callstack>	0x7ff879cb18a0: dni_orch + 0x118a0 (?is_developer_debug@ORCH_UTIL@@YA_NXZ + 0x3590)
+	0x7ff885f79c84: ucrtbase + 0x49c84 (bsearch_s + 0x254)
+	0x7ff885f798a6: ucrtbase + 0x498a6 (_execute_onexit_table + 0x86)
+	0x7ff885f7985c: ucrtbase + 0x4985c (_execute_onexit_table + 0x3c)
+	0x7ff879caf5a0: dni_orch + 0xf5a0 (?is_developer_debug@ORCH_UTIL@@YA_NXZ + 0x1290)
+	0x7ff879cae68d: dni_orch + 0xe68d (?is_developer_debug@ORCH_UTIL@@YA_NXZ + 0x37d)
+	0x7ff879cae96d: dni_orch + 0xe96d (?is_developer_debug@ORCH_UTIL@@YA_NXZ + 0x65d)
+	0x7ff888d9ead9: ntdll + 0x11ead9 (RtlIsCriticalSectionLocked + 0x5169)
+	0x7ff888c90c32: ntdll + 0x10c32 (RtlRaiseException + 0x1532)
+	0x7ff888d0830f: ntdll + 0x8830f (LdrGetProcedureAddressForCaller + 0x106f)
+	0x7ff888d065fd: ntdll + 0x865fd (LdrUnloadDll + 0x50d)
+	0x7ff888d067a1: ntdll + 0x867a1 (LdrUnloadDll + 0x6b1)
+	0x7ff888d067a1: ntdll + 0x867a1 (LdrUnloadDll + 0x6b1)
+	0x7ff888d067a1: ntdll + 0x867a1 (LdrUnloadDll + 0x6b1)
+	0x7ff888d067a1: ntdll + 0x867a1 (LdrUnloadDll + 0x6b1)
+	0x7ff888d067a1: ntdll + 0x867a1 (LdrUnloadDll + 0x6b1)
+	0x7ff888d067a1: ntdll + 0x867a1 (LdrUnloadDll + 0x6b1)
+	0x7ff888d06443: ntdll + 0x86443 (LdrUnloadDll + 0x353)
+	0x7ff888d062df: ntdll + 0x862df (LdrUnloadDll + 0x1ef)
+	0x7ff8862a1358: KERNELBASE + 0x21358 (FreeLibrary + 0x18)
+	0x7ff869281fc8: mega_qsysipc_jni_stub + 0x1fc8 (Java_com_altera_qsys_ipc_QsysIPCNativeInterface_nativeShutDownJNIModule + 0x6c8)
+	0x7ff869281908: mega_qsysipc_jni_stub + 0x1908 (Java_com_altera_qsys_ipc_QsysIPCNativeInterface_nativeShutDownJNIModule + 0x8)
+	0x1eb1461d620:
+	0x1eb7571a187:
+	       0x69:
+	0x1eaffffffff:
+	0x1eb146194fd:
+	0x61aa9cc2f:
+	0x1eb1461d2f5:
+	0x766e0ff3af:
+	0x1eb7571a187:
+	0x766e0ff417:
+	0x1eb7571d11f:
 </callstack>
-	<error>Program termination requested</error>
-	<date>Sat Sep 12 19:45:07 2026
+	<error>*** Fatal Error: Access Violation at 00007FF879CB18A1</error>
+	<date>Tue Sep 29 22:37:04 2026
 </date>
 	<version>Version 25.1.1 Build 125 07/31/2025 SC Pro Edition</version>
 </internal_error>

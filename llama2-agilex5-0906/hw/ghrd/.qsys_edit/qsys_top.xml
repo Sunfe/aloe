@@ -912,8 +912,8 @@
 														<placeholder>dock.single.Interface\ Resolver\ \-\ Beta</placeholder>
 													</placeholders>
 												</leaf>
-												<node nodeId="1372710005721" orientation="HORIZONTAL" divider="0.2829064919594997">
-													<leaf id="0" nodeId="1375985003630">
+												<node nodeId="1372710005721" orientation="HORIZONTAL" divider="0.14949374627754616">
+													<leaf id="2" nodeId="1375985003630">
 														<placeholders>
 															<placeholder>dock.single.IP\ Catalog</placeholder>
 															<placeholder>dock.single.Hierarchy</placeholder>
@@ -973,7 +973,7 @@
 																		</entry>
 																	</placeholder-map>
 																</leaf>
-																<leaf id="2" nodeId="1372710005745">
+																<leaf id="0" nodeId="1372710005745">
 																	<placeholders>
 																		<placeholder>dock.single.Task\ Messages</placeholder>
 																		<placeholder>dock.single.Validation\ Messages</placeholder>
@@ -1102,7 +1102,7 @@
 											<format>dock.PlaceholderList</format>
 											<entry>
 												<key shared="false">
-													<placeholder>dock.single.Filter</placeholder>
+													<placeholder>dock.single.Generation\ Messages</placeholder>
 												</key>
 												<item key="convert" type="b">true</item>
 												<item key="convert-keys" type="a">
@@ -1112,16 +1112,11 @@
 												</item>
 												<item key="dock.index" type="i">0</item>
 												<item key="dock.id" type="i">0</item>
-												<item key="dock.placeholder" type="s">dock.single.Filter</item>
+												<item key="dock.placeholder" type="s">dock.single.Generation\ Messages</item>
 											</entry>
 											<entry>
 												<key shared="false">
-													<placeholder>dock.single.Hierarchy</placeholder>
-												</key>
-											</entry>
-											<entry>
-												<key shared="false">
-													<placeholder>dock.single.IP\ Catalog</placeholder>
+													<placeholder>dock.single.System\ Messages</placeholder>
 												</key>
 												<item key="convert" type="b">true</item>
 												<item key="convert-keys" type="a">
@@ -1131,36 +1126,26 @@
 												</item>
 												<item key="dock.index" type="i">1</item>
 												<item key="dock.id" type="i">1</item>
-												<item key="dock.placeholder" type="s">dock.single.IP\ Catalog</item>
-											</entry>
-											<entry>
-												<key shared="false">
-													<placeholder>dock.single.Reset\ Domains</placeholder>
-												</key>
-											</entry>
-											<entry>
-												<key shared="false">
-													<placeholder>dock.single.Clock\ Domains</placeholder>
-												</key>
+												<item key="dock.placeholder" type="s">dock.single.System\ Messages</item>
 											</entry>
 										</placeholders>
 									</layout>
 									<children ignore="false">
 										<child>
-											<layout factory="predefined" placeholder="dock.single.Filter">
-												<replacement id="dockablesingle Filter"/>
+											<layout factory="predefined" placeholder="dock.single.Generation\ Messages">
+												<replacement id="dockablesingle Generation Messages"/>
 												<delegate id="delegate_ccontrol backup factory id">
-													<id>Filter</id>
+													<id>Generation Messages</id>
 													<area/>
 												</delegate>
 											</layout>
 											<children ignore="false"/>
 										</child>
 										<child>
-											<layout factory="predefined" placeholder="dock.single.IP\ Catalog">
-												<replacement id="dockablesingle IP Catalog"/>
+											<layout factory="predefined" placeholder="dock.single.System\ Messages">
+												<replacement id="dockablesingle System Messages"/>
 												<delegate id="delegate_ccontrol backup factory id">
-													<id>IP Catalog</id>
+													<id>System Messages</id>
 													<area/>
 												</delegate>
 											</layout>
@@ -1333,7 +1318,7 @@
 											<format>dock.PlaceholderList</format>
 											<entry>
 												<key shared="false">
-													<placeholder>dock.single.Generation\ Messages</placeholder>
+													<placeholder>dock.single.Filter</placeholder>
 												</key>
 												<item key="convert" type="b">true</item>
 												<item key="convert-keys" type="a">
@@ -1343,11 +1328,16 @@
 												</item>
 												<item key="dock.index" type="i">0</item>
 												<item key="dock.id" type="i">0</item>
-												<item key="dock.placeholder" type="s">dock.single.Generation\ Messages</item>
+												<item key="dock.placeholder" type="s">dock.single.Filter</item>
 											</entry>
 											<entry>
 												<key shared="false">
-													<placeholder>dock.single.System\ Messages</placeholder>
+													<placeholder>dock.single.Hierarchy</placeholder>
+												</key>
+											</entry>
+											<entry>
+												<key shared="false">
+													<placeholder>dock.single.IP\ Catalog</placeholder>
 												</key>
 												<item key="convert" type="b">true</item>
 												<item key="convert-keys" type="a">
@@ -1357,26 +1347,36 @@
 												</item>
 												<item key="dock.index" type="i">1</item>
 												<item key="dock.id" type="i">1</item>
-												<item key="dock.placeholder" type="s">dock.single.System\ Messages</item>
+												<item key="dock.placeholder" type="s">dock.single.IP\ Catalog</item>
+											</entry>
+											<entry>
+												<key shared="false">
+													<placeholder>dock.single.Reset\ Domains</placeholder>
+												</key>
+											</entry>
+											<entry>
+												<key shared="false">
+													<placeholder>dock.single.Clock\ Domains</placeholder>
+												</key>
 											</entry>
 										</placeholders>
 									</layout>
 									<children ignore="false">
 										<child>
-											<layout factory="predefined" placeholder="dock.single.Generation\ Messages">
-												<replacement id="dockablesingle Generation Messages"/>
+											<layout factory="predefined" placeholder="dock.single.Filter">
+												<replacement id="dockablesingle Filter"/>
 												<delegate id="delegate_ccontrol backup factory id">
-													<id>Generation Messages</id>
+													<id>Filter</id>
 													<area/>
 												</delegate>
 											</layout>
 											<children ignore="false"/>
 										</child>
 										<child>
-											<layout factory="predefined" placeholder="dock.single.System\ Messages">
-												<replacement id="dockablesingle System Messages"/>
+											<layout factory="predefined" placeholder="dock.single.IP\ Catalog">
+												<replacement id="dockablesingle IP Catalog"/>
 												<delegate id="delegate_ccontrol backup factory id">
-													<id>System Messages</id>
+													<id>IP Catalog</id>
 													<area/>
 												</delegate>
 											</layout>

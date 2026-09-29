@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferences>
  <debug showDebugMenu="0" />
- <window width="1744" height="1052" x="-8" y="-8" />
+ <window width="1726" height="1034" x="1" y="1" />
  <systemtable
    filter="ddr_test_master_6.axi_master"
    showAvalonDomains="1"
    showClockDomains="0"
    showResetDomains="0" />
- <library
-   expandedCategories="Library/Custom,Existing IP Variants,Library,Project" />
+ <library expandedCategories="Project,Library,Existing IP Variants" />
  <generation path="" />
 </preferences>

@@ -13,3 +13,13 @@ cd hw/scripts && ./sim.sh tb_pe_array && ./sim.sh tb_w_reader && ./sim.sh tb_mat
 2. 加载 overlay linux/dts/de25_llama.dtso
 3. cd sw && make CROSS=aarch64-linux-gnu-  →  拷 run_accel / accel_selftest / *.bin 到板子
 4. tests/test_matvec_unit.sh  →  tests/test_e2e.sh
+
+## To Do List
+[PASS] 固定 4×4 GEMV
+[PASS] DDR 双向交换
+[PASS] 独立 FP32 运算测试
+[PASS] 可变尺寸 GEMV 基础测试：15 项
+[TODO] 可变尺寸 GEMV 扩展尺寸测试
+[TODO] 非法参数及错误后恢复测试
+[TODO] 真实模型矩阵验证
+[TODO] 接入 run.c

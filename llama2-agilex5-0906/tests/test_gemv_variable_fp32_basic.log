@@ -1,0 +1,65 @@
+Variable GEMV CSR: 0x0000000020023000
+W data address   : 0x00000000b8000040
+X data address   : 0x00000000bff00000
+Y data address   : 0x00000000bff10000
+Timeout          : 60000 ms per normal command
+WARNING: shared DDR test buffers will be overwritten.
+Run all board tests serially; the lock is cooperative only.
+Variable GEMV VERSION = 0x47564d31
+Hardware limits: MAX_ROWS=32768, MAX_COLS=8192
+
+[RUN] classic_4x4  payload=4x4 seed=0x00000001
+      y[0] = 30, bits=0x41f00000 PASS
+      y[1] = 70, bits=0x428c0000 PASS
+      y[2] = 110, bits=0x42dc0000 PASS
+      y[3] = 150, bits=0x43160000 PASS
+[PASS] classic_4x4 STATUS=0x00000002 CYCLES=815 host_wait=0.189 ms, outputs=4
+
+[RUN] identity_4x4  payload=4x4 seed=0x00000002
+[PASS] identity_4x4 STATUS=0x00000002 CYCLES=784 host_wait=0.179 ms, outputs=4
+
+[RUN] zero_W_4x8  payload=4x8 seed=0x00000003
+[PASS] zero_W_4x8 STATUS=0x00000002 CYCLES=1521 host_wait=0.176 ms, outputs=4
+
+[RUN] zero_X_8x4  payload=8x4 seed=0x00000004
+[PASS] zero_X_8x4 STATUS=0x00000002 CYCLES=1524 host_wait=0.176 ms, outputs=8
+
+[RUN] cancel_4x8  payload=4x8 seed=0x00000005
+[PASS] cancel_4x8 STATUS=0x00000002 CYCLES=1515 host_wait=0.174 ms, outputs=4
+
+[RUN] random_4x8  payload=4x8 seed=0x00000006
+[PASS] random_4x8 STATUS=0x00000002 CYCLES=1547 host_wait=0.175 ms, outputs=4
+
+[RUN] random_8x4  payload=8x4 seed=0x00000007
+[PASS] random_8x4 STATUS=0x00000002 CYCLES=1529 host_wait=0.174 ms, outputs=8
+
+[RUN] random_8x8  payload=8x8 seed=0x00000008
+[PASS] random_8x8 STATUS=0x00000002 CYCLES=2981 host_wait=0.175 ms, outputs=8
+
+[RUN] random_12x20  payload=12x20 seed=0x00000009
+[PASS] random_12x20 STATUS=0x00000002 CYCLES=10941 host_wait=0.174 ms, outputs=12
+
+[RUN] random_16x16  payload=16x16 seed=0x0000000a
+[PASS] random_16x16 STATUS=0x00000002 CYCLES=11769 host_wait=0.188 ms, outputs=16
+
+[RUN] random_32x64_A  payload=32x64 seed=0x0000000b
+[PASS] random_32x64_A STATUS=0x00000002 CYCLES=92973 host_wait=1.016 ms, outputs=32
+
+[RUN] random_64x256  payload=64x256 seed=0x0000000c
+[PASS] random_64x256 STATUS=0x00000002 CYCLES=736608 host_wait=7.503 ms, outputs=64
+
+[RUN] random_32x64_B  payload=32x64 seed=0x0000000d
+[PASS] random_32x64_B STATUS=0x00000002 CYCLES=92646 host_wait=1.009 ms, outputs=32
+
+[RUN] random_32x64_A2  payload=32x64 seed=0x0000000b
+[PASS] random_32x64_A2 STATUS=0x00000002 CYCLES=93041 host_wait=1.059 ms, outputs=32
+
+[RUN] classic_again  payload=4x4 seed=0x00000001
+      y[0] = 30, bits=0x41f00000 PASS
+      y[1] = 70, bits=0x428c0000 PASS
+      y[2] = 110, bits=0x42dc0000 PASS
+      y[3] = 150, bits=0x43160000 PASS
+[PASS] classic_again STATUS=0x00000002 CYCLES=796 host_wait=0.183 ms, outputs=4
+
+[ALL PASS] 15 tests passed.
+No RTL reset or automatic START retry was used.

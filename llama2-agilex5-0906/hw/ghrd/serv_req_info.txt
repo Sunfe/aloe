@@ -21,22 +21,22 @@
 	0x7ff888d06443: ntdll + 0x86443 (LdrUnloadDll + 0x353)
 	0x7ff888d062df: ntdll + 0x862df (LdrUnloadDll + 0x1ef)
 	0x7ff8862a1358: KERNELBASE + 0x21358 (FreeLibrary + 0x18)
-	0x7ff853e11fc8: mega_qsysipc_jni_stub + 0x1fc8 (Java_com_altera_qsys_ipc_QsysIPCNativeInterface_nativeShutDownJNIModule + 0x6c8)
-	0x7ff853e11908: mega_qsysipc_jni_stub + 0x1908 (Java_com_altera_qsys_ipc_QsysIPCNativeInterface_nativeShutDownJNIModule + 0x8)
-	0x29cae3dd620:
-	0x29d0f71a587:
-	0x29d125bfd27:
-	0x29cffffffff:
-	0xfd465ff467:
-	0xfd465ff417:
-	0x29cae3dd2f5:
-	0xfd465ff3af:
-	0x29d0f71a587:
-	0xfd465ff417:
-	0x29d0f71d51f:
+	0x7ff853ac1fc8: mega_qsysipc_jni_stub + 0x1fc8 (Java_com_altera_qsys_ipc_QsysIPCNativeInterface_nativeShutDownJNIModule + 0x6c8)
+	0x7ff853ac1908: mega_qsysipc_jni_stub + 0x1908 (Java_com_altera_qsys_ipc_QsysIPCNativeInterface_nativeShutDownJNIModule + 0x8)
+	0x21425cfd620:
+	0x2148771a6cf:
+	0x214891ca457:
+	0x213ffffffff:
+	0xf9d60ff127:
+	0xf9d60ff0d7:
+	0x21425cfd2f5:
+	0xf9d60ff06f:
+	0x21487717fdf:
+	0xf9d60ff0d7:
+	0x2148771d507:
 </callstack>
 	<error>*** Fatal Error: Access Violation at 00007FF879CB18A1</error>
-	<date>Mon Sep 28 21:28:20 2026
+	<date>Tue Sep 29 21:36:22 2026
 </date>
 	<version>Version 25.1.1 Build 125 07/31/2025 SC Pro Edition</version>
 </internal_error>

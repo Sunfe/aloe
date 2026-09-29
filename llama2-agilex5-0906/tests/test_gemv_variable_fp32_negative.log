@@ -1,0 +1,111 @@
+Variable GEMV CSR: 0x0000000020023000
+W data address   : 0x00000000b8000040
+X data address   : 0x00000000bff00000
+Y data address   : 0x00000000bff10000
+Timeout          : 60000 ms per normal command
+WARNING: shared DDR test buffers will be overwritten.
+Run all board tests serially; the lock is cooperative only.
+Variable GEMV VERSION = 0x47564d31
+Hardware limits: MAX_ROWS=32768, MAX_COLS=8192
+
+[RUN] classic_4x4  payload=4x4 seed=0x00000001
+      y[0] = 30, bits=0x41f00000 PASS
+      y[1] = 70, bits=0x428c0000 PASS
+      y[2] = 110, bits=0x42dc0000 PASS
+      y[3] = 150, bits=0x43160000 PASS
+[PASS] classic_4x4 STATUS=0x00000002 CYCLES=780 host_wait=0.195 ms, outputs=4
+
+[RUN] identity_4x4  payload=4x4 seed=0x00000002
+[PASS] identity_4x4 STATUS=0x00000002 CYCLES=804 host_wait=0.201 ms, outputs=4
+
+[RUN] zero_W_4x8  payload=4x8 seed=0x00000003
+[PASS] zero_W_4x8 STATUS=0x00000002 CYCLES=1567 host_wait=0.177 ms, outputs=4
+
+[RUN] zero_X_8x4  payload=8x4 seed=0x00000004
+[PASS] zero_X_8x4 STATUS=0x00000002 CYCLES=1554 host_wait=0.174 ms, outputs=8
+
+[RUN] cancel_4x8  payload=4x8 seed=0x00000005
+[PASS] cancel_4x8 STATUS=0x00000002 CYCLES=1530 host_wait=0.175 ms, outputs=4
+
+[RUN] random_4x8  payload=4x8 seed=0x00000006
+[PASS] random_4x8 STATUS=0x00000002 CYCLES=1524 host_wait=0.174 ms, outputs=4
+
+[RUN] random_8x4  payload=8x4 seed=0x00000007
+[PASS] random_8x4 STATUS=0x00000002 CYCLES=1565 host_wait=0.176 ms, outputs=8
+
+[RUN] random_8x8  payload=8x8 seed=0x00000008
+[PASS] random_8x8 STATUS=0x00000002 CYCLES=2965 host_wait=0.175 ms, outputs=8
+
+[RUN] random_12x20  payload=12x20 seed=0x00000009
+[PASS] random_12x20 STATUS=0x00000002 CYCLES=11054 host_wait=0.176 ms, outputs=12
+
+[RUN] random_16x16  payload=16x16 seed=0x0000000a
+[PASS] random_16x16 STATUS=0x00000002 CYCLES=11726 host_wait=0.175 ms, outputs=16
+
+[RUN] random_32x64_A  payload=32x64 seed=0x0000000b
+[PASS] random_32x64_A STATUS=0x00000002 CYCLES=93007 host_wait=1.003 ms, outputs=32
+
+[RUN] random_64x256  payload=64x256 seed=0x0000000c
+[PASS] random_64x256 STATUS=0x00000002 CYCLES=738294 host_wait=7.422 ms, outputs=64
+
+[RUN] random_32x64_B  payload=32x64 seed=0x0000000d
+[PASS] random_32x64_B STATUS=0x00000002 CYCLES=93139 host_wait=0.990 ms, outputs=32
+
+[RUN] random_32x64_A2  payload=32x64 seed=0x0000000b
+[PASS] random_32x64_A2 STATUS=0x00000002 CYCLES=93933 host_wait=1.051 ms, outputs=32
+
+[RUN] classic_again  payload=4x4 seed=0x00000001
+      y[0] = 30, bits=0x41f00000 PASS
+      y[1] = 70, bits=0x428c0000 PASS
+      y[2] = 110, bits=0x42dc0000 PASS
+      y[3] = 150, bits=0x43160000 PASS
+[PASS] classic_again STATUS=0x00000002 CYCLES=784 host_wait=0.171 ms, outputs=4
+
+[INFO] Starting explicitly requested negative tests.
+[INFO] No out-of-DDR physical addresses are injected.
+
+[RUN] reject_ROWS_3  payload=4x4 seed=0x00000001
+      invalid request: ROWS=3 COLS=4 W=0x00000000b8000040 X=0x00000000bff00000 Y=0x00000000bff10000
+[PASS] reject_ROWS_3 STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_COLS_3  payload=4x4 seed=0x00000001
+      invalid request: ROWS=4 COLS=3 W=0x00000000b8000040 X=0x00000000bff00000 Y=0x00000000bff10000
+[PASS] reject_COLS_3 STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_W_align  payload=4x4 seed=0x00000001
+      invalid request: ROWS=4 COLS=4 W=0x00000000b8000044 X=0x00000000bff00000 Y=0x00000000bff10000
+[PASS] reject_W_align STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_X_align  payload=4x4 seed=0x00000001
+      invalid request: ROWS=4 COLS=4 W=0x00000000b8000040 X=0x00000000bff00004 Y=0x00000000bff10000
+[PASS] reject_X_align STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_Y_align  payload=4x4 seed=0x00000001
+      invalid request: ROWS=4 COLS=4 W=0x00000000b8000040 X=0x00000000bff00000 Y=0x00000000bff10004
+[PASS] reject_Y_align STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_Y_W  payload=4x4 seed=0x00000001
+      invalid request: ROWS=4 COLS=4 W=0x00000000b8000040 X=0x00000000bff00000 Y=0x00000000b8000040
+[PASS] reject_Y_W STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_Y_X  payload=4x4 seed=0x00000001
+      invalid request: ROWS=4 COLS=4 W=0x00000000b8000040 X=0x00000000bff00000 Y=0x00000000bff00000
+[PASS] reject_Y_X STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_ROWS_0  payload=4x4 seed=0x00000001
+      invalid request: ROWS=0 COLS=4 W=0x00000000b8000040 X=0x00000000bff00000 Y=0x00000000bff10000
+[PASS] reject_ROWS_0 STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] reject_COLS_0  payload=4x4 seed=0x00000001
+      invalid request: ROWS=4 COLS=0 W=0x00000000b8000040 X=0x00000000bff00000 Y=0x00000000bff10000
+[PASS] reject_COLS_0 STATUS=0x0000000e CYCLES=1 input/output/guards unchanged
+
+[RUN] recovery_after_param_errors  payload=4x4 seed=0x00000001
+      y[0] = 30, bits=0x41f00000 PASS
+      y[1] = 70, bits=0x428c0000 PASS
+      y[2] = 110, bits=0x42dc0000 PASS
+      y[3] = 150, bits=0x43160000 PASS
+[PASS] recovery_after_param_errors STATUS=0x00000002 CYCLES=803 host_wait=0.168 ms, outputs=4
+
+[ALL PASS] 25 tests passed.
+No RTL reset or automatic START retry was used.
