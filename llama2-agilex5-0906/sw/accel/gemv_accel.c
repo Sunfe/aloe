@@ -432,7 +432,7 @@ int gemv_accel_run(float *y, const float *x, const float *w,
         memcpy(&y[i], &u, sizeof(u));
     }
 
-    fprintf(stderr, "GEMV Wq: rows=%" PRIu32 " cols=%" PRIu32
+    fprintf(stderr, "GEMV FP32: rows=%" PRIu32 " cols=%" PRIu32
                     " cycles=%" PRIu32 "\n",
             rows, cols, reg_read(0, R_CYCLES));
     return 0;

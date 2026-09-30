@@ -235,6 +235,84 @@ void matmul(float* xout, float* x, float* w, int n, int d) {
     }
 }
 
+static void matmul_fpga_checked(
+    const char *name,
+    float *out,
+    float *x,
+    float *w,
+    int cols,
+    int rows,
+    int token,
+    int pos,
+    unsigned long long layer)
+{
+    unsigned mismatches = 0;
+
+    /*
+     * g_q_reference contains dim floats.
+     * This integration calls this helper only for dim x dim Q/K/V.
+     */
+    if (!g_q_reference || rows <= 0 || cols <= 0 || rows != cols) {
+        fprintf(stderr,
+                "%s: unsupported shape or uninitialized reference "
+                "buffer; rows=%d cols=%d\n",
+                name, rows, cols);
+        exit(EXIT_FAILURE);
+    }
+
+    /* Original CPU implementation, same weights and input. */
+    matmul(g_q_reference, x, w, cols, rows);
+
+    /* The FPGA output is the vector subsequently used by forward(). */
+    if (gemv_accel_run(out, x, w,
+                       (uint32_t)rows,
+                       (uint32_t)cols) != 0) {
+        fprintf(stderr,
+                "%s FPGA call failed: pos=%d token=%d layer=%llu\n",
+                name, pos, token, layer);
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < rows; ++i) {
+        uint32_t fpga_bits;
+        uint32_t cpu_bits;
+
+        memcpy(&fpga_bits, &out[i], sizeof(fpga_bits));
+        memcpy(&cpu_bits, &g_q_reference[i], sizeof(cpu_bits));
+
+        if (!isfinite(out[i]) ||
+            !isfinite(g_q_reference[i]) ||
+            fpga_bits != cpu_bits) {
+
+            if (mismatches < 8) {
+                fprintf(stderr,
+                        "%s mismatch: pos=%d token=%d "
+                        "layer=%llu index=%d "
+                        "FPGA=0x%08" PRIx32 " (%g) "
+                        "CPU=0x%08" PRIx32 " (%g)\n",
+                        name, pos, token, layer, i,
+                        fpga_bits, (double)out[i],
+                        cpu_bits, (double)g_q_reference[i]);
+            }
+
+            ++mismatches;
+        }
+    }
+
+    if (mismatches != 0) {
+        fprintf(stderr,
+                "%s verification failed: pos=%d token=%d "
+                "layer=%llu mismatches=%u\n",
+                name, pos, token, layer, mismatches);
+        exit(EXIT_FAILURE);
+    }
+
+    fprintf(stderr,
+            "%s verify: pos=%d token=%d layer=%llu "
+            "%d/%d bit-exact\n",
+            name, pos, token, layer, rows, rows);
+}
+
 float* forward(Transformer* transformer, int token, int pos) {
 
     // a few convenience variables
@@ -264,61 +342,36 @@ float* forward(Transformer* transformer, int token, int pos) {
         s->v = s->value_cache + loff + pos * kv_dim;
 
         // qkv matmuls for this position
-        // Q projection: verify FPGA Wq for every layer.
-        {
-            const size_t wq_offset =
-                (size_t)l * (size_t)dim * (size_t)dim;
-            float *wq = w->wq + wq_offset;
-            unsigned mismatches = 0;
-            // CPU reference uses this layer's actual input and weights.
-            matmul(g_q_reference, s->xb, wq, dim, dim);
-            // FPGA result is written to the Q vector used by forward().
-            if (gemv_accel_run(s->q, s->xb, wq,
-                               (uint32_t)dim,
-                               (uint32_t)dim) != 0) {
-                fprintf(stderr,
-                        "FPGA Wq failed: pos=%d token=%d layer=%llu\n",
-                        pos, token, l);
-                exit(EXIT_FAILURE);
-            }
-            // Compare before RoPE modifies s->q.
-            for (int i = 0; i < dim; ++i) {
-                uint32_t fpga_bits;
-                uint32_t cpu_bits;
-                memcpy(&fpga_bits, &s->q[i], sizeof(fpga_bits));
-                memcpy(&cpu_bits, &g_q_reference[i], sizeof(cpu_bits));
-                // Matching NaN/Inf bit patterns must not count as success.
-                if (!isfinite(s->q[i]) ||
-                    !isfinite(g_q_reference[i]) ||
-                    fpga_bits != cpu_bits) {
-                    if (mismatches < 8) {
-                        fprintf(stderr,
-                                "Wq mismatch: pos=%d token=%d "
-                                "layer=%llu index=%d "
-                                "FPGA=0x%08" PRIx32 " (%g) "
-                                "CPU=0x%08" PRIx32 " (%g)\n",
-                                pos, token, l, i,
-                                fpga_bits, (double)s->q[i],
-                                cpu_bits, (double)g_q_reference[i]);
-                    }
-                    ++mismatches;
-                }
-            }
-            if (mismatches != 0) {
-                fprintf(stderr,
-                        "Wq verification failed: pos=%d token=%d "
-                        "layer=%llu mismatches=%u\n",
-                        pos, token, l, mismatches);
-                exit(EXIT_FAILURE);
-            }
-            fprintf(stderr,
-                    "Wq verify: pos=%d token=%d layer=%llu "
-                    "%d/%d bit-exact\n",
-                    pos, token, l, dim, dim);
-        }
+        // Q/K/V projections for the current layer.
+        const size_t q_offset =
+            (size_t)l * (size_t)dim * (size_t)dim;
 
-        matmul(s->k, s->xb, w->wk + l*dim*kv_dim, dim, kv_dim);
-        matmul(s->v, s->xb, w->wv + l*dim*kv_dim, dim, kv_dim);
+        const size_t kv_offset =
+            (size_t)l * (size_t)dim * (size_t)kv_dim;
+
+        matmul_fpga_checked(
+            "Wq",
+            s->q,
+            s->xb,
+            w->wq + q_offset,
+            dim, dim,
+            token, pos, l);
+
+        matmul_fpga_checked(
+            "Wk",
+            s->k,
+            s->xb,
+            w->wk + kv_offset,
+            dim, kv_dim,
+            token, pos, l);
+
+        matmul_fpga_checked(
+            "Wv",
+            s->v,
+            s->xb,
+            w->wv + kv_offset,
+            dim, kv_dim,
+            token, pos, l);
 
         // RoPE relative positional encoding: complex-valued rotate q and k in each head
         for (int i = 0; i < dim; i+=2) {
@@ -1003,6 +1056,37 @@ int main(int argc, char *argv[]) {
     // build the Transformer via the model .bin file
     Transformer transformer;
     build_transformer(&transformer, checkpoint_path);
+
+    fprintf(stderr,
+        "Model config: dim=%d layers=%d heads=%d kv_heads=%d\n",
+        transformer.config.dim,
+        transformer.config.n_layers,
+        transformer.config.n_heads,
+        transformer.config.n_kv_heads);
+
+    /*
+     * The current host library accepts only dim x dim matrices.
+     * For Q/K/V, this requires kv_dim == dim.
+     */
+    if (transformer.config.n_heads <= 0 ||
+        transformer.config.n_kv_heads <= 0 ||
+        transformer.config.dim % transformer.config.n_heads != 0 ||
+        transformer.config.n_kv_heads != transformer.config.n_heads) {
+
+        fprintf(stderr,
+                "This Q/K/V integration requires valid head dimensions "
+                "and n_kv_heads == n_heads.\n"
+                "Rectangular K/V support requires updating the host "
+                "library first.\n");
+
+        free_transformer(&transformer);
+        return EXIT_FAILURE;
+        }
+
+    fprintf(stderr,
+            "Q/K/V shapes: each %d x %d; enabling all layers\n",
+            transformer.config.dim,
+            transformer.config.dim);
 
     g_q_reference = malloc((size_t)transformer.config.dim *
                        sizeof(*g_q_reference));

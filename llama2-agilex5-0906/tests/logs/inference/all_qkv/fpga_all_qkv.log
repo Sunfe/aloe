@@ -1,0 +1,580 @@
+Model config: dim=288 layers=6 heads=6 kv_heads=6
+Q/K/V shapes: each 288 x 288; enabling all layers
+GEMV ready: CSR=0x20023000, dim=288, square Wq verification
+GEMV FP32: rows=288 cols=288 cycles=3687193
+Wq verify: pos=0 token=1 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686504
+Wk verify: pos=0 token=1 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685935
+Wv verify: pos=0 token=1 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686327
+Wq verify: pos=0 token=1 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686240
+Wk verify: pos=0 token=1 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686289
+Wv verify: pos=0 token=1 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686604
+Wq verify: pos=0 token=1 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685609
+Wk verify: pos=0 token=1 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685514
+Wv verify: pos=0 token=1 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686058
+Wq verify: pos=0 token=1 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685774
+Wk verify: pos=0 token=1 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685776
+Wv verify: pos=0 token=1 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686220
+Wq verify: pos=0 token=1 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686016
+Wk verify: pos=0 token=1 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685645
+Wv verify: pos=0 token=1 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685680
+Wq verify: pos=0 token=1 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685781
+Wk verify: pos=0 token=1 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685753
+Wv verify: pos=0 token=1 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685567
+Wq verify: pos=1 token=9038 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686312
+Wk verify: pos=1 token=9038 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686021
+Wv verify: pos=1 token=9038 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686436
+Wq verify: pos=1 token=9038 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685963
+Wk verify: pos=1 token=9038 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685870
+Wv verify: pos=1 token=9038 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686054
+Wq verify: pos=1 token=9038 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686096
+Wk verify: pos=1 token=9038 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685753
+Wv verify: pos=1 token=9038 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686169
+Wq verify: pos=1 token=9038 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686119
+Wk verify: pos=1 token=9038 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685642
+Wv verify: pos=1 token=9038 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685665
+Wq verify: pos=1 token=9038 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685632
+Wk verify: pos=1 token=9038 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685547
+Wv verify: pos=1 token=9038 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685961
+Wq verify: pos=1 token=9038 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685628
+Wk verify: pos=1 token=9038 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685737
+Wv verify: pos=1 token=9038 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685955
+Wq verify: pos=2 token=2501 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685964
+Wk verify: pos=2 token=2501 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686095
+Wv verify: pos=2 token=2501 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686642
+Wq verify: pos=2 token=2501 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685999
+Wk verify: pos=2 token=2501 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3704271
+Wv verify: pos=2 token=2501 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686132
+Wq verify: pos=2 token=2501 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686363
+Wk verify: pos=2 token=2501 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685741
+Wv verify: pos=2 token=2501 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685823
+Wq verify: pos=2 token=2501 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3689717
+Wk verify: pos=2 token=2501 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685601
+Wv verify: pos=2 token=2501 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686042
+Wq verify: pos=2 token=2501 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685736
+Wk verify: pos=2 token=2501 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685550
+Wv verify: pos=2 token=2501 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686172
+Wq verify: pos=2 token=2501 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685719
+Wk verify: pos=2 token=2501 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685742
+Wv verify: pos=2 token=2501 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685963
+Wq verify: pos=3 token=263 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685694
+Wk verify: pos=3 token=263 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685902
+Wv verify: pos=3 token=263 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686246
+Wq verify: pos=3 token=263 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685818
+Wk verify: pos=3 token=263 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685619
+Wv verify: pos=3 token=263 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686176
+Wq verify: pos=3 token=263 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685686
+Wk verify: pos=3 token=263 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686067
+Wv verify: pos=3 token=263 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686023
+Wq verify: pos=3 token=263 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685816
+Wk verify: pos=3 token=263 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685847
+Wv verify: pos=3 token=263 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685709
+Wq verify: pos=3 token=263 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685667
+Wk verify: pos=3 token=263 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685789
+Wv verify: pos=3 token=263 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685812
+Wq verify: pos=3 token=263 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685465
+Wk verify: pos=3 token=263 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685736
+Wv verify: pos=3 token=263 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686279
+Wq verify: pos=4 token=931 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685779
+Wk verify: pos=4 token=931 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686069
+Wv verify: pos=4 token=931 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686138
+Wq verify: pos=4 token=931 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685810
+Wk verify: pos=4 token=931 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686049
+Wv verify: pos=4 token=931 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3687594
+Wq verify: pos=4 token=931 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685842
+Wk verify: pos=4 token=931 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685455
+Wv verify: pos=4 token=931 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686647
+Wq verify: pos=4 token=931 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685669
+Wk verify: pos=4 token=931 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685871
+Wv verify: pos=4 token=931 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686185
+Wq verify: pos=4 token=931 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686073
+Wk verify: pos=4 token=931 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685663
+Wv verify: pos=4 token=931 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686017
+Wq verify: pos=4 token=931 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685727
+Wk verify: pos=4 token=931 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685846
+Wv verify: pos=4 token=931 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685499
+Wq verify: pos=5 token=29892 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685959
+Wk verify: pos=5 token=29892 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685469
+Wv verify: pos=5 token=29892 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686149
+Wq verify: pos=5 token=29892 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686992
+Wk verify: pos=5 token=29892 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685702
+Wv verify: pos=5 token=29892 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686501
+Wq verify: pos=5 token=29892 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685601
+Wk verify: pos=5 token=29892 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685830
+Wv verify: pos=5 token=29892 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686267
+Wq verify: pos=5 token=29892 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685456
+Wk verify: pos=5 token=29892 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685883
+Wv verify: pos=5 token=29892 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686080
+Wq verify: pos=5 token=29892 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685955
+Wk verify: pos=5 token=29892 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685842
+Wv verify: pos=5 token=29892 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686209
+Wq verify: pos=5 token=29892 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685711
+Wk verify: pos=5 token=29892 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685722
+Wv verify: pos=5 token=29892 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685524
+Wq verify: pos=6 token=727 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686185
+Wk verify: pos=6 token=727 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685684
+Wv verify: pos=6 token=727 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686783
+Wq verify: pos=6 token=727 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685831
+Wk verify: pos=6 token=727 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685850
+Wv verify: pos=6 token=727 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686096
+Wq verify: pos=6 token=727 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685665
+Wk verify: pos=6 token=727 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685881
+Wv verify: pos=6 token=727 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685998
+Wq verify: pos=6 token=727 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685791
+Wk verify: pos=6 token=727 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685731
+Wv verify: pos=6 token=727 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686174
+Wq verify: pos=6 token=727 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685743
+Wk verify: pos=6 token=727 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685386
+Wv verify: pos=6 token=727 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686227
+Wq verify: pos=6 token=727 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685784
+Wk verify: pos=6 token=727 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686066
+Wv verify: pos=6 token=727 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685965
+Wq verify: pos=7 token=471 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685671
+Wk verify: pos=7 token=471 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685445
+Wv verify: pos=7 token=471 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685889
+Wq verify: pos=7 token=471 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685851
+Wk verify: pos=7 token=471 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685826
+Wv verify: pos=7 token=471 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686110
+Wq verify: pos=7 token=471 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685776
+Wk verify: pos=7 token=471 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3688766
+Wv verify: pos=7 token=471 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686619
+Wq verify: pos=7 token=471 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685647
+Wk verify: pos=7 token=471 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685959
+Wv verify: pos=7 token=471 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685772
+Wq verify: pos=7 token=471 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685720
+Wk verify: pos=7 token=471 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685445
+Wv verify: pos=7 token=471 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685885
+Wq verify: pos=7 token=471 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685661
+Wk verify: pos=7 token=471 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685742
+Wv verify: pos=7 token=471 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685695
+Wq verify: pos=8 token=263 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685611
+Wk verify: pos=8 token=263 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685846
+Wv verify: pos=8 token=263 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685786
+Wq verify: pos=8 token=263 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685943
+Wk verify: pos=8 token=263 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685939
+Wv verify: pos=8 token=263 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686118
+Wq verify: pos=8 token=263 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685759
+Wk verify: pos=8 token=263 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685848
+Wv verify: pos=8 token=263 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686053
+Wq verify: pos=8 token=263 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686052
+Wk verify: pos=8 token=263 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685789
+Wv verify: pos=8 token=263 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686030
+Wq verify: pos=8 token=263 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685983
+Wk verify: pos=8 token=263 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685608
+Wv verify: pos=8 token=263 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685829
+Wq verify: pos=8 token=263 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685658
+Wk verify: pos=8 token=263 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685788
+Wv verify: pos=8 token=263 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685796
+Wq verify: pos=9 token=2217 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685427
+Wk verify: pos=9 token=2217 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685840
+Wv verify: pos=9 token=2217 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685896
+Wq verify: pos=9 token=2217 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685839
+Wk verify: pos=9 token=2217 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685582
+Wv verify: pos=9 token=2217 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685947
+Wq verify: pos=9 token=2217 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685716
+Wk verify: pos=9 token=2217 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685556
+Wv verify: pos=9 token=2217 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686199
+Wq verify: pos=9 token=2217 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685607
+Wk verify: pos=9 token=2217 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685757
+Wv verify: pos=9 token=2217 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685961
+Wq verify: pos=9 token=2217 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685689
+Wk verify: pos=9 token=2217 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685537
+Wv verify: pos=9 token=2217 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685986
+Wq verify: pos=9 token=2217 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685869
+Wk verify: pos=9 token=2217 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685532
+Wv verify: pos=9 token=2217 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685770
+Wq verify: pos=10 token=7826 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685597
+Wk verify: pos=10 token=7826 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685780
+Wv verify: pos=10 token=7826 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685703
+Wq verify: pos=10 token=7826 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685839
+Wk verify: pos=10 token=7826 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685764
+Wv verify: pos=10 token=7826 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686384
+Wq verify: pos=10 token=7826 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685815
+Wk verify: pos=10 token=7826 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685975
+Wv verify: pos=10 token=7826 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686350
+Wq verify: pos=10 token=7826 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685504
+Wk verify: pos=10 token=7826 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685849
+Wv verify: pos=10 token=7826 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685954
+Wq verify: pos=10 token=7826 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685715
+Wk verify: pos=10 token=7826 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685872
+Wv verify: pos=10 token=7826 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685960
+Wq verify: pos=10 token=7826 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685687
+Wk verify: pos=10 token=7826 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685461
+Wv verify: pos=10 token=7826 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685909
+Wq verify: pos=11 token=4257 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685886
+Wk verify: pos=11 token=4257 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685782
+Wv verify: pos=11 token=4257 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686373
+Wq verify: pos=11 token=4257 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685921
+Wk verify: pos=11 token=4257 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685723
+Wv verify: pos=11 token=4257 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686176
+Wq verify: pos=11 token=4257 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685706
+Wk verify: pos=11 token=4257 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685666
+Wv verify: pos=11 token=4257 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685952
+Wq verify: pos=11 token=4257 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685457
+Wk verify: pos=11 token=4257 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3703007
+Wv verify: pos=11 token=4257 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685925
+Wq verify: pos=11 token=4257 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685829
+Wk verify: pos=11 token=4257 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685624
+Wv verify: pos=11 token=4257 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686196
+Wq verify: pos=11 token=4257 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685631
+Wk verify: pos=11 token=4257 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685853
+Wv verify: pos=11 token=4257 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685563
+Wq verify: pos=12 token=365 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685540
+Wk verify: pos=12 token=365 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685821
+Wv verify: pos=12 token=365 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686002
+Wq verify: pos=12 token=365 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685872
+Wk verify: pos=12 token=365 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686342
+Wv verify: pos=12 token=365 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686058
+Wq verify: pos=12 token=365 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685635
+Wk verify: pos=12 token=365 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685731
+Wv verify: pos=12 token=365 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685965
+Wq verify: pos=12 token=365 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685731
+Wk verify: pos=12 token=365 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685558
+Wv verify: pos=12 token=365 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3688976
+Wq verify: pos=12 token=365 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685674
+Wk verify: pos=12 token=365 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685691
+Wv verify: pos=12 token=365 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685835
+Wq verify: pos=12 token=365 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685744
+Wk verify: pos=12 token=365 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685707
+Wv verify: pos=12 token=365 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686397
+Wq verify: pos=13 token=2354 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686009
+Wk verify: pos=13 token=2354 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685883
+Wv verify: pos=13 token=2354 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685957
+Wq verify: pos=13 token=2354 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685532
+Wk verify: pos=13 token=2354 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686062
+Wv verify: pos=13 token=2354 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685812
+Wq verify: pos=13 token=2354 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685599
+Wk verify: pos=13 token=2354 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685761
+Wv verify: pos=13 token=2354 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685897
+Wq verify: pos=13 token=2354 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685715
+Wk verify: pos=13 token=2354 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685604
+Wv verify: pos=13 token=2354 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686278
+Wq verify: pos=13 token=2354 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685778
+Wk verify: pos=13 token=2354 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685868
+Wv verify: pos=13 token=2354 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686335
+Wq verify: pos=13 token=2354 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685916
+Wk verify: pos=13 token=2354 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685535
+Wv verify: pos=13 token=2354 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686077
+Wq verify: pos=14 token=29889 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685684
+Wk verify: pos=14 token=29889 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685565
+Wv verify: pos=14 token=29889 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686290
+Wq verify: pos=14 token=29889 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685682
+Wk verify: pos=14 token=29889 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685925
+Wv verify: pos=14 token=29889 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686015
+Wq verify: pos=14 token=29889 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686078
+Wk verify: pos=14 token=29889 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685681
+Wv verify: pos=14 token=29889 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686108
+Wq verify: pos=14 token=29889 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686005
+Wk verify: pos=14 token=29889 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685576
+Wv verify: pos=14 token=29889 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686194
+Wq verify: pos=14 token=29889 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686287
+Wk verify: pos=14 token=29889 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685958
+Wv verify: pos=14 token=29889 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686074
+Wq verify: pos=14 token=29889 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685830
+Wk verify: pos=14 token=29889 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685717
+Wv verify: pos=14 token=29889 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686059
+Wq verify: pos=15 token=2296 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685539
+Wk verify: pos=15 token=2296 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686150
+Wv verify: pos=15 token=2296 layer=0 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686268
+Wq verify: pos=15 token=2296 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685811
+Wk verify: pos=15 token=2296 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685631
+Wv verify: pos=15 token=2296 layer=1 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685808
+Wq verify: pos=15 token=2296 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685765
+Wk verify: pos=15 token=2296 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685667
+Wv verify: pos=15 token=2296 layer=2 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3686015
+Wq verify: pos=15 token=2296 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685795
+Wk verify: pos=15 token=2296 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685758
+Wv verify: pos=15 token=2296 layer=3 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3690603
+Wq verify: pos=15 token=2296 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685520
+Wk verify: pos=15 token=2296 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3688394
+Wv verify: pos=15 token=2296 layer=4 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685896
+Wq verify: pos=15 token=2296 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685494
+Wk verify: pos=15 token=2296 layer=5 288/288 bit-exact
+GEMV FP32: rows=288 cols=288 cycles=3685497
+Wv verify: pos=15 token=2296 layer=5 288/288 bit-exact
+achieved tok/s: 0.511404
