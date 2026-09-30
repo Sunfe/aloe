@@ -318,7 +318,7 @@ int gemv_accel_open(uint32_t dim)
     g.w_words = (size_t)dim * dim;
     g.ready = 1;
     fprintf(stderr, "GEMV ready: CSR=0x%08" PRIx64
-                    ", dim=%" PRIu32 ", first-layer Wq only\n",
+                    ", dim=%" PRIu32 ", square Wq verification\n",
             VAR_CSR, dim);
     return 0;
 

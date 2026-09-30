@@ -264,43 +264,57 @@ float* forward(Transformer* transformer, int token, int pos) {
         s->v = s->value_cache + loff + pos * kv_dim;
 
         // qkv matmuls for this position
-        if (l == 0) {
-            float *wq = w->wq; /* first layer */
+        // Q projection: verify FPGA Wq for every layer.
+        {
+            const size_t wq_offset =
+                (size_t)l * (size_t)dim * (size_t)dim;
+            float *wq = w->wq + wq_offset;
             unsigned mismatches = 0;
-
-            /* Preserve the original CPU matmul as the per-token reference. */
+            // CPU reference uses this layer's actual input and weights.
             matmul(g_q_reference, s->xb, wq, dim, dim);
-
+            // FPGA result is written to the Q vector used by forward().
             if (gemv_accel_run(s->q, s->xb, wq,
-                               (uint32_t)dim, (uint32_t)dim) != 0) {
-                fprintf(stderr, "First-layer FPGA Wq failed; stopping.\n");
+                               (uint32_t)dim,
+                               (uint32_t)dim) != 0) {
+                fprintf(stderr,
+                        "FPGA Wq failed: pos=%d token=%d layer=%llu\n",
+                        pos, token, l);
                 exit(EXIT_FAILURE);
-             }
-
-            /* Compare before the existing RoPE code changes q. */
+            }
+            // Compare before RoPE modifies s->q.
             for (int i = 0; i < dim; ++i) {
-                uint32_t fpga_bits, cpu_bits;
+                uint32_t fpga_bits;
+                uint32_t cpu_bits;
                 memcpy(&fpga_bits, &s->q[i], sizeof(fpga_bits));
                 memcpy(&cpu_bits, &g_q_reference[i], sizeof(cpu_bits));
-
-                if (fpga_bits != cpu_bits) {
-                    if (mismatches < 8)
+                // Matching NaN/Inf bit patterns must not count as success.
+                if (!isfinite(s->q[i]) ||
+                    !isfinite(g_q_reference[i]) ||
+                    fpga_bits != cpu_bits) {
+                    if (mismatches < 8) {
                         fprintf(stderr,
-                                "Wq[%d] FPGA=0x%08" PRIx32
-                                " CPU=0x%08" PRIx32 "\n",
-                                i, fpga_bits, cpu_bits);
+                                "Wq mismatch: pos=%d token=%d "
+                                "layer=%llu index=%d "
+                                "FPGA=0x%08" PRIx32 " (%g) "
+                                "CPU=0x%08" PRIx32 " (%g)\n",
+                                pos, token, l, i,
+                                fpga_bits, (double)s->q[i],
+                                cpu_bits, (double)g_q_reference[i]);
+                    }
                     ++mismatches;
                 }
             }
-
             if (mismatches != 0) {
-                fprintf(stderr, "First-layer Wq: %u bit mismatches; stopping.\n",
-                        mismatches);
+                fprintf(stderr,
+                        "Wq verification failed: pos=%d token=%d "
+                        "layer=%llu mismatches=%u\n",
+                        pos, token, l, mismatches);
                 exit(EXIT_FAILURE);
             }
-            fprintf(stderr, "First-layer Wq: %d/%d bit-exact\n", dim, dim);
-        } else {
-            matmul(s->q, s->xb, w->wq + l*dim*dim, dim, dim);
+            fprintf(stderr,
+                    "Wq verify: pos=%d token=%d layer=%llu "
+                    "%d/%d bit-exact\n",
+                    pos, token, l, dim, dim);
         }
 
         matmul(s->k, s->xb, w->wk + l*dim*kv_dim, dim, kv_dim);

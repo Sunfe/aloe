@@ -1,0 +1,34 @@
+GEMV ready: CSR=0x20023000, dim=288, first-layer Wq only
+GEMV Wq: rows=288 cols=288 cycles=3685885
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685951
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685944
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685740
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685846
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685687
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685883
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685803
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685845
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685548
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686065
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685663
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685882
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685954
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686457
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685857
+First-layer Wq: 288/288 bit-exact
+achieved tok/s: 3.568030

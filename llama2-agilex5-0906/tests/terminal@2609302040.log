@@ -64,3 +64,32 @@ GEMV Wq: rows=288 cols=288 cycles=3685857
 First-layer Wq: 288/288 bit-exact
 achieved tok/s: 3.568030
 terasic@localhost:/mnt$
+terasic@localhost:/mnt$
+terasic@localhost:/mnt$ (
+    set -eu
+    cd /mnt
+
+    ./run_cpu_ref stories15M.bin \
+        -t 0 -s 1 -n 16 -i "Once upon a time" \
+        > cpu_all_wq.txt \
+        2> cpu_all_wq.log
+
+    sudo ./run_fpga stories15M.bin \
+        -t 0 -s 1 -n 16 -i "Once upon a time" \
+        > fpga_all_wq.txt \
+        2> fpga_all_wq.log
+
+    diff -u cpu_all_wq.txt fpga_all_wq.txt
+
+    count=$(grep -Ec \
+        '^Wq verify: pos=[0-9]+ token=[0-9]+ layer=[0-5] 288/288 bit-exact$' \
+        fpga_all_wq.log || true)
+
+    if [ "$count" -ne 96 ]; then
+        printf '[FAIL] 预期 96 次 Wq 比较通过，实际为 %s；请检查日志。\n' \
+            "$count" >&2
+        exit 1
+)n' printf '[PASS] 16 个推理位置 × 6 层 Wq，共 96 次逐位比较通过，输出文本一致。
+
+[PASS] 16 个推理位置 × 6 层 Wq，共 96 次逐位比较通过，输出文本一致。
+

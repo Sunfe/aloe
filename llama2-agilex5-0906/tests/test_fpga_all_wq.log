@@ -1,0 +1,194 @@
+GEMV ready: CSR=0x20023000, dim=288, square Wq verification
+GEMV Wq: rows=288 cols=288 cycles=3720077
+Wq verify: pos=0 token=1 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686571
+Wq verify: pos=0 token=1 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686073
+Wq verify: pos=0 token=1 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686815
+Wq verify: pos=0 token=1 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685795
+Wq verify: pos=0 token=1 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686050
+Wq verify: pos=0 token=1 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685726
+Wq verify: pos=1 token=9038 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686032
+Wq verify: pos=1 token=9038 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686311
+Wq verify: pos=1 token=9038 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685842
+Wq verify: pos=1 token=9038 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685829
+Wq verify: pos=1 token=9038 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686205
+Wq verify: pos=1 token=9038 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685848
+Wq verify: pos=2 token=2501 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685936
+Wq verify: pos=2 token=2501 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685935
+Wq verify: pos=2 token=2501 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685969
+Wq verify: pos=2 token=2501 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685818
+Wq verify: pos=2 token=2501 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685752
+Wq verify: pos=2 token=2501 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686939
+Wq verify: pos=3 token=263 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686282
+Wq verify: pos=3 token=263 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3687879
+Wq verify: pos=3 token=263 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686110
+Wq verify: pos=3 token=263 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685560
+Wq verify: pos=3 token=263 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685841
+Wq verify: pos=3 token=263 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685795
+Wq verify: pos=4 token=931 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685853
+Wq verify: pos=4 token=931 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686977
+Wq verify: pos=4 token=931 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3690917
+Wq verify: pos=4 token=931 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3689940
+Wq verify: pos=4 token=931 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686212
+Wq verify: pos=4 token=931 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686329
+Wq verify: pos=5 token=29892 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685927
+Wq verify: pos=5 token=29892 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686101
+Wq verify: pos=5 token=29892 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686126
+Wq verify: pos=5 token=29892 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685947
+Wq verify: pos=5 token=29892 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685885
+Wq verify: pos=5 token=29892 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685844
+Wq verify: pos=6 token=727 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685966
+Wq verify: pos=6 token=727 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686130
+Wq verify: pos=6 token=727 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686030
+Wq verify: pos=6 token=727 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685710
+Wq verify: pos=6 token=727 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685995
+Wq verify: pos=6 token=727 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685712
+Wq verify: pos=7 token=471 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685749
+Wq verify: pos=7 token=471 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685910
+Wq verify: pos=7 token=471 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686091
+Wq verify: pos=7 token=471 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685793
+Wq verify: pos=7 token=471 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685677
+Wq verify: pos=7 token=471 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685966
+Wq verify: pos=8 token=263 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686026
+Wq verify: pos=8 token=263 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686336
+Wq verify: pos=8 token=263 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686066
+Wq verify: pos=8 token=263 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686024
+Wq verify: pos=8 token=263 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685745
+Wq verify: pos=8 token=263 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685731
+Wq verify: pos=9 token=2217 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685758
+Wq verify: pos=9 token=2217 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685772
+Wq verify: pos=9 token=2217 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686037
+Wq verify: pos=9 token=2217 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685794
+Wq verify: pos=9 token=2217 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686063
+Wq verify: pos=9 token=2217 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686132
+Wq verify: pos=10 token=7826 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686127
+Wq verify: pos=10 token=7826 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685899
+Wq verify: pos=10 token=7826 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686609
+Wq verify: pos=10 token=7826 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3689483
+Wq verify: pos=10 token=7826 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685953
+Wq verify: pos=10 token=7826 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685753
+Wq verify: pos=11 token=4257 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686415
+Wq verify: pos=11 token=4257 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685674
+Wq verify: pos=11 token=4257 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685789
+Wq verify: pos=11 token=4257 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686078
+Wq verify: pos=11 token=4257 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685919
+Wq verify: pos=11 token=4257 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685951
+Wq verify: pos=12 token=365 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686036
+Wq verify: pos=12 token=365 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686026
+Wq verify: pos=12 token=365 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686344
+Wq verify: pos=12 token=365 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685965
+Wq verify: pos=12 token=365 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685787
+Wq verify: pos=12 token=365 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685681
+Wq verify: pos=13 token=2354 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685822
+Wq verify: pos=13 token=2354 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686100
+Wq verify: pos=13 token=2354 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685815
+Wq verify: pos=13 token=2354 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685572
+Wq verify: pos=13 token=2354 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685678
+Wq verify: pos=13 token=2354 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685728
+Wq verify: pos=14 token=29889 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685707
+Wq verify: pos=14 token=29889 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685879
+Wq verify: pos=14 token=29889 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685968
+Wq verify: pos=14 token=29889 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685745
+Wq verify: pos=14 token=29889 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686280
+Wq verify: pos=14 token=29889 layer=5 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685595
+Wq verify: pos=15 token=2296 layer=0 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686093
+Wq verify: pos=15 token=2296 layer=1 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686786
+Wq verify: pos=15 token=2296 layer=2 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685793
+Wq verify: pos=15 token=2296 layer=3 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685834
+Wq verify: pos=15 token=2296 layer=4 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685749
+Wq verify: pos=15 token=2296 layer=5 288/288 bit-exact
+achieved tok/s: 1.508751
