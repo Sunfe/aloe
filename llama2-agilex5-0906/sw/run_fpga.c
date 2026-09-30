@@ -16,6 +16,8 @@
 
 #include <inttypes.h>
 #include <stdint.h>
+#include <errno.h>
+
 #include "accel/gemv_accel.h"
 
 static float *g_q_reference;
@@ -235,6 +237,58 @@ void matmul(float* xout, float* x, float* w, int n, int d) {
     }
 }
 
+typedef struct {
+    uint64_t calls;
+
+    uint64_t reference_ns;
+    uint64_t accel_ns;
+    uint64_t compare_ns;
+    uint64_t log_ns;
+    uint64_t total_ns;
+
+    uint64_t cycles_sum;
+    uint32_t cycles_max;
+} QkvProfile;
+
+static QkvProfile g_qkv_profile[3];
+static const char *g_qkv_names[3] = { "Wq", "Wk", "Wv" };
+
+/* Sums of the software timing fields; .cycles is not used here. */
+static GemvAccelTiming g_driver_profile;
+
+static uint64_t g_forward_calls;
+static uint64_t g_forward_ns;
+
+static int qkv_index(const char *name)
+{
+    for (int i = 0; i < 3; ++i) {
+        if (strcmp(name, g_qkv_names[i]) == 0)
+            return i;
+    }
+
+    fprintf(stderr, "Unknown QKV operation: %s\n", name);
+    exit(EXIT_FAILURE);
+}
+
+static void add_driver_timing(const GemvAccelTiming *t)
+{
+#define ADD_TIME(field) g_driver_profile.field += t->field
+
+    ADD_TIME(preflight_ns);
+    ADD_TIME(prepare_ns);
+    ADD_TIME(w_copy_ns);
+    ADD_TIME(x_copy_ns);
+    ADD_TIME(precheck_ns);
+    ADD_TIME(config_ns);
+    ADD_TIME(wait_ns);
+    ADD_TIME(completion_ns);
+    ADD_TIME(postcheck_ns);
+    ADD_TIME(y_copy_ns);
+    ADD_TIME(total_ns);
+
+#undef ADD_TIME
+}
+
 static void matmul_fpga_checked(
     const char *name,
     float *out,
@@ -246,24 +300,30 @@ static void matmul_fpga_checked(
     int pos,
     unsigned long long layer)
 {
+    uint64_t begin = gemv_accel_now_ns();
+    int op = qkv_index(name);
+
+    uint64_t t0, t1, t2, t3, t4;
     unsigned mismatches = 0;
 
-    /*
-     * g_q_reference contains dim floats.
-     * This integration calls this helper only for dim x dim Q/K/V.
-     */
-    if (!g_q_reference || rows <= 0 || cols <= 0 || rows != cols) {
+    GemvAccelTiming timing;
+
+    if (!g_q_reference ||
+        rows <= 0 || cols <= 0 || rows != cols) {
         fprintf(stderr,
-                "%s: unsupported shape or uninitialized reference "
-                "buffer; rows=%d cols=%d\n",
+                "%s: invalid shape/reference buffer, rows=%d cols=%d\n",
                 name, rows, cols);
         exit(EXIT_FAILURE);
     }
 
-    /* Original CPU implementation, same weights and input. */
+    /* 1. CPU reference calculation. */
+    t0 = gemv_accel_now_ns();
+
     matmul(g_q_reference, x, w, cols, rows);
 
-    /* The FPGA output is the vector subsequently used by forward(). */
+    t1 = gemv_accel_now_ns();
+
+    /* 2. Complete accelerator API call. */
     if (gemv_accel_run(out, x, w,
                        (uint32_t)rows,
                        (uint32_t)cols) != 0) {
@@ -273,6 +333,14 @@ static void matmul_fpga_checked(
         exit(EXIT_FAILURE);
     }
 
+    if (gemv_accel_get_last_timing(&timing) != 0) {
+        fprintf(stderr, "Missing timing data for %s\n", name);
+        exit(EXIT_FAILURE);
+    }
+
+    t2 = gemv_accel_now_ns();
+
+    /* 3. Compare before RoPE modifies the output. */
     for (int i = 0; i < rows; ++i) {
         uint32_t fpga_bits;
         uint32_t cpu_bits;
@@ -299,6 +367,8 @@ static void matmul_fpga_checked(
         }
     }
 
+    t3 = gemv_accel_now_ns();
+
     if (mismatches != 0) {
         fprintf(stderr,
                 "%s verification failed: pos=%d token=%d "
@@ -307,13 +377,193 @@ static void matmul_fpga_checked(
         exit(EXIT_FAILURE);
     }
 
+    /* 4. Retain the existing verification log format. */
     fprintf(stderr,
             "%s verify: pos=%d token=%d layer=%llu "
             "%d/%d bit-exact\n",
             name, pos, token, layer, rows, rows);
+
+    t4 = gemv_accel_now_ns();
+
+    QkvProfile *p = &g_qkv_profile[op];
+
+    ++p->calls;
+    p->reference_ns += t1 - t0;
+    p->accel_ns += t2 - t1;
+    p->compare_ns += t3 - t2;
+    p->log_ns += t4 - t3;
+    p->cycles_sum += timing.cycles;
+
+    if (timing.cycles > p->cycles_max)
+        p->cycles_max = timing.cycles;
+
+    add_driver_timing(&timing);
+
+    p->total_ns += gemv_accel_now_ns() - begin;
 }
 
-float* forward(Transformer* transformer, int token, int pos) {
+static double timing_ms(uint64_t ns)
+{
+    return (double)ns / 1000000.0;
+}
+
+static void print_driver_stage(const char *name, uint64_t ns)
+{
+    double mean_ms =
+        g_forward_calls ? timing_ms(ns) / (double)g_forward_calls : 0.0;
+
+    double percent =
+        g_forward_ns ? 100.0 * (double)ns / (double)g_forward_ns : 0.0;
+
+    fprintf(stderr,
+            "[TIMING] %-22s total_ms=%10.3f "
+            "per_forward_ms=%9.3f forward_pct=%6.2f\n",
+            name, timing_ms(ns), mean_ms, percent);
+}
+
+static void print_qkv_timing_report(void)
+{
+    uint64_t total_calls = 0;
+    uint64_t helper_ns = 0;
+    uint64_t reference_ns = 0;
+    uint64_t accel_ns = 0;
+    uint64_t compare_ns = 0;
+    uint64_t log_ns = 0;
+    uint64_t cycles_sum = 0;
+
+    fprintf(stderr,
+            "\n[TIMING] forward_calls=%" PRIu64
+            " forward_total_ms=%.3f forward_mean_ms=%.3f\n",
+            g_forward_calls,
+            timing_ms(g_forward_ns),
+            g_forward_calls ?
+                timing_ms(g_forward_ns) / (double)g_forward_calls : 0.0);
+
+    for (int i = 0; i < 3; ++i) {
+        const QkvProfile *p = &g_qkv_profile[i];
+
+        total_calls += p->calls;
+        helper_ns += p->total_ns;
+        reference_ns += p->reference_ns;
+        accel_ns += p->accel_ns;
+        compare_ns += p->compare_ns;
+        log_ns += p->log_ns;
+        cycles_sum += p->cycles_sum;
+
+        fprintf(stderr,
+                "[TIMING] %s calls=%" PRIu64
+                " cpu_ref_ms=%.3f accel_api_ms=%.3f "
+                "compare_ms=%.3f log_ms=%.3f "
+                "cycles_mean=%.1f cycles_max=%" PRIu32 "\n",
+                g_qkv_names[i], p->calls,
+                timing_ms(p->reference_ns),
+                timing_ms(p->accel_ns),
+                timing_ms(p->compare_ns),
+                timing_ms(p->log_ns),
+                p->calls ?
+                    (double)p->cycles_sum / (double)p->calls : 0.0,
+                p->cycles_max);
+    }
+
+    fprintf(stderr, "[TIMING] qkv_calls=%" PRIu64 "\n", total_calls);
+
+    /*
+     * Top-level accounting:
+     * helper total + remaining forward = full forward time.
+     */
+    uint64_t remaining_ns =
+        g_forward_ns >= helper_ns ? g_forward_ns - helper_ns : 0;
+
+    uint64_t named_helper_ns =
+        reference_ns + accel_ns + compare_ns + log_ns;
+
+    uint64_t helper_other_ns =
+        helper_ns >= named_helper_ns ? helper_ns - named_helper_ns : 0;
+
+    print_driver_stage("qkv_cpu_reference", reference_ns);
+    print_driver_stage("qkv_accel_api", accel_ns);
+    print_driver_stage("qkv_result_compare", compare_ns);
+    print_driver_stage("qkv_verify_log", log_ns);
+    print_driver_stage("qkv_helper_other", helper_other_ns);
+    print_driver_stage("remaining_forward", remaining_ns);
+
+    fprintf(stderr,
+            "[TIMING] The following stages are INSIDE qkv_accel_api;\n"
+            "[TIMING] do not add them to qkv_accel_api again.\n");
+
+    print_driver_stage("accel_preflight", g_driver_profile.preflight_ns);
+    print_driver_stage("buffer_prepare", g_driver_profile.prepare_ns);
+    print_driver_stage("W_copy_to_DDR", g_driver_profile.w_copy_ns);
+    print_driver_stage("X_copy_to_DDR", g_driver_profile.x_copy_ns);
+    print_driver_stage("input_precheck", g_driver_profile.precheck_ns);
+    print_driver_stage("CSR_configuration", g_driver_profile.config_ns);
+    print_driver_stage("START_to_DONE", g_driver_profile.wait_ns);
+    print_driver_stage("completion_check", g_driver_profile.completion_ns);
+    print_driver_stage("input_postcheck", g_driver_profile.postcheck_ns);
+    print_driver_stage("Y_copy_to_CPU", g_driver_profile.y_copy_ns);
+
+    uint64_t driver_named_ns =
+        g_driver_profile.preflight_ns +
+        g_driver_profile.prepare_ns +
+        g_driver_profile.w_copy_ns +
+        g_driver_profile.x_copy_ns +
+        g_driver_profile.precheck_ns +
+        g_driver_profile.config_ns +
+        g_driver_profile.wait_ns +
+        g_driver_profile.completion_ns +
+        g_driver_profile.postcheck_ns +
+        g_driver_profile.y_copy_ns;
+
+    uint64_t api_other_ns =
+        accel_ns >= driver_named_ns ? accel_ns - driver_named_ns : 0;
+
+    print_driver_stage("accel_api_other", api_other_ns);
+
+    fprintf(stderr,
+            "[TIMING] FPGA cycles_sum=%" PRIu64 "\n",
+            cycles_sum);
+
+    /*
+     * Optional conversion only when the actual GEMV clock is known.
+     * This does not configure or change the hardware clock.
+     */
+    const char *clock_text = getenv("GEMV_CLOCK_HZ");
+
+    if (clock_text && *clock_text) {
+        char *end = NULL;
+        unsigned long long hz;
+
+        errno = 0;
+        hz = strtoull(clock_text, &end, 10);
+
+        if (errno != 0 ||
+            clock_text[0] < '0' || clock_text[0] > '9' ||
+            !end || *end != '\0' || hz == 0) {
+            fprintf(stderr,
+                    "[TIMING] Invalid GEMV_CLOCK_HZ; "
+                    "hardware time was not calculated.\n");
+        } else {
+            double busy_ms =
+                (double)cycles_sum * 1000.0 / (double)hz;
+
+            fprintf(stderr,
+                    "[TIMING] FPGA clock_hz=%llu "
+                    "busy_total_ms=%.3f busy_mean_call_ms=%.3f\n",
+                    hz, busy_ms,
+                    total_calls ? busy_ms / (double)total_calls : 0.0);
+
+            fprintf(stderr,
+                    "[TIMING] Hardware busy time is contained within "
+                    "START_to_DONE, not an additional cost.\n");
+        }
+    } else {
+        fprintf(stderr,
+                "[TIMING] GEMV_CLOCK_HZ unset: "
+                "FPGA time remains in cycles.\n");
+    }
+}
+
+static float* forward_impl(Transformer* transformer, int token, int pos) {
 
     // a few convenience variables
     Config* p = &transformer->config;
@@ -471,6 +721,20 @@ float* forward(Transformer* transformer, int token, int pos) {
     // classifier into logits
     matmul(s->logits, x, w->wcls, p->dim, p->vocab_size);
     return s->logits;
+}
+
+float* forward(Transformer* transformer, int token, int pos)
+{
+    uint64_t begin = gemv_accel_now_ns();
+
+    float *logits = forward_impl(transformer, token, pos);
+
+    uint64_t end = gemv_accel_now_ns();
+
+    ++g_forward_calls;
+    g_forward_ns += end - begin;
+
+    return logits;
 }
 
 // ----------------------------------------------------------------------------
@@ -1119,6 +1383,9 @@ int main(int argc, char *argv[]) {
         error_usage();
     }
 
+    // Print accumulated timings once, after inference.
+    print_qkv_timing_report();
+    
     // memory and file handles cleanup
     free_sampler(&sampler);
     free_tokenizer(&tokenizer);
