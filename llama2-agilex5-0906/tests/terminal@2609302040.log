@@ -1,0 +1,66 @@
+terasic@localhost:/mnt$ (
+    set -eu
+    cd /mnt
+
+    ./run_cpu_ref stories15M.bin \
+        -t 0 -s 1 -n 16 -i "Once upon a time" \
+        > cpu_wq_verify.txt \
+        2> cpu_wq_verify.log
+
+    sudo ./run_fpga stories15M.bin \
+        -t 0 -s 1 -n 16 -i "Once upon a time" \
+        > fpga_wq_verify.txt \
+        2> fpga_wq_verify.log
+
+    diff -u cpu_wq_verify.txt fpga_wq_verify.txt
+
+    count=$(grep -cF \
+        'First-layer Wq: 288/288 bit-exact' \
+        fpga_wq_verify.log || true)
+
+    if [ "$count" -eq 0 ]; then
+        printf '[FAIL] 没有找到 FPGA Wq 比较通过记录。\n' >&2
+        exit 1
+)       "$count"S] 两个程序正常退出，生成文本一致，%s 次 Wq 逐位比较通过。\n' \
+
+
+[PASS] 两个程序正常退出，生成文本一致，16 次 Wq 逐位比较通过。
+terasic@localhost:/mnt$
+terasic@localhost:/mnt$ cat fpga_wq_verify.txt
+cat fpga_wq_verify.log
+Once upon a time, there was a little girl named Lily. She loved
+GEMV ready: CSR=0x20023000, dim=288, first-layer Wq only
+GEMV Wq: rows=288 cols=288 cycles=3685885
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685951
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685944
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685740
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685846
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685687
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685883
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685803
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685845
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685548
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686065
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685663
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685882
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685954
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3686457
+First-layer Wq: 288/288 bit-exact
+GEMV Wq: rows=288 cols=288 cycles=3685857
+First-layer Wq: 288/288 bit-exact
+achieved tok/s: 3.568030
+terasic@localhost:/mnt$
