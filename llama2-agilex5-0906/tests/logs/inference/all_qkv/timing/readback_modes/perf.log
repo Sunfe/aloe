@@ -1,0 +1,176 @@
+Model config: dim=288 layers=6 heads=6 kv_heads=6
+Q/K/V shapes: each 288 x 288; enabling all layers
+GEMV ready: CSR=0x20023000, dim=288, mode=perf, full_input_readback=off
+GEMV checks: guards=on, output_poison=on, CSR_readback=on, completion=on; W_copy=every_call
+Wq verify: pos=0 token=1 layer=0 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=0 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=0 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=1 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=1 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=1 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=2 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=2 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=2 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=3 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=3 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=3 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=4 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=4 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=4 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=5 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=5 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=5 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=0 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=0 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=0 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=1 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=1 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=1 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=2 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=2 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=2 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=3 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=3 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=3 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=4 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=4 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=4 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=5 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=5 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=5 288/288 bit-exact
+Wq verify: pos=2 token=2501 layer=0 288/288 bit-exact
+Wk verify: pos=2 token=2501 layer=0 288/288 bit-exact
+Wv verify: pos=2 token=2501 layer=0 288/288 bit-exact
+Wq verify: pos=2 token=2501 layer=1 288/288 bit-exact
+Wk verify: pos=2 token=2501 layer=1 288/288 bit-exact
+Wv verify: pos=2 token=2501 layer=1 288/288 bit-exact
+Wq verify: pos=2 token=2501 layer=2 288/288 bit-exact
+Wk verify: pos=2 token=2501 layer=2 288/288 bit-exact
+Wv verify: pos=2 token=2501 layer=2 288/288 bit-exact
+Wq verify: pos=2 token=2501 layer=3 288/288 bit-exact
+Wk verify: pos=2 token=2501 layer=3 288/288 bit-exact
+Wv verify: pos=2 token=2501 layer=3 288/288 bit-exact
+Wq verify: pos=2 token=2501 layer=4 288/288 bit-exact
+Wk verify: pos=2 token=2501 layer=4 288/288 bit-exact
+Wv verify: pos=2 token=2501 layer=4 288/288 bit-exact
+Wq verify: pos=2 token=2501 layer=5 288/288 bit-exact
+Wk verify: pos=2 token=2501 layer=5 288/288 bit-exact
+Wv verify: pos=2 token=2501 layer=5 288/288 bit-exact
+Wq verify: pos=3 token=263 layer=0 288/288 bit-exact
+Wk verify: pos=3 token=263 layer=0 288/288 bit-exact
+Wv verify: pos=3 token=263 layer=0 288/288 bit-exact
+Wq verify: pos=3 token=263 layer=1 288/288 bit-exact
+Wk verify: pos=3 token=263 layer=1 288/288 bit-exact
+Wv verify: pos=3 token=263 layer=1 288/288 bit-exact
+Wq verify: pos=3 token=263 layer=2 288/288 bit-exact
+Wk verify: pos=3 token=263 layer=2 288/288 bit-exact
+Wv verify: pos=3 token=263 layer=2 288/288 bit-exact
+Wq verify: pos=3 token=263 layer=3 288/288 bit-exact
+Wk verify: pos=3 token=263 layer=3 288/288 bit-exact
+Wv verify: pos=3 token=263 layer=3 288/288 bit-exact
+Wq verify: pos=3 token=263 layer=4 288/288 bit-exact
+Wk verify: pos=3 token=263 layer=4 288/288 bit-exact
+Wv verify: pos=3 token=263 layer=4 288/288 bit-exact
+Wq verify: pos=3 token=263 layer=5 288/288 bit-exact
+Wk verify: pos=3 token=263 layer=5 288/288 bit-exact
+Wv verify: pos=3 token=263 layer=5 288/288 bit-exact
+Wq verify: pos=4 token=931 layer=0 288/288 bit-exact
+Wk verify: pos=4 token=931 layer=0 288/288 bit-exact
+Wv verify: pos=4 token=931 layer=0 288/288 bit-exact
+Wq verify: pos=4 token=931 layer=1 288/288 bit-exact
+Wk verify: pos=4 token=931 layer=1 288/288 bit-exact
+Wv verify: pos=4 token=931 layer=1 288/288 bit-exact
+Wq verify: pos=4 token=931 layer=2 288/288 bit-exact
+Wk verify: pos=4 token=931 layer=2 288/288 bit-exact
+Wv verify: pos=4 token=931 layer=2 288/288 bit-exact
+Wq verify: pos=4 token=931 layer=3 288/288 bit-exact
+Wk verify: pos=4 token=931 layer=3 288/288 bit-exact
+Wv verify: pos=4 token=931 layer=3 288/288 bit-exact
+Wq verify: pos=4 token=931 layer=4 288/288 bit-exact
+Wk verify: pos=4 token=931 layer=4 288/288 bit-exact
+Wv verify: pos=4 token=931 layer=4 288/288 bit-exact
+Wq verify: pos=4 token=931 layer=5 288/288 bit-exact
+Wk verify: pos=4 token=931 layer=5 288/288 bit-exact
+Wv verify: pos=4 token=931 layer=5 288/288 bit-exact
+Wq verify: pos=5 token=29892 layer=0 288/288 bit-exact
+Wk verify: pos=5 token=29892 layer=0 288/288 bit-exact
+Wv verify: pos=5 token=29892 layer=0 288/288 bit-exact
+Wq verify: pos=5 token=29892 layer=1 288/288 bit-exact
+Wk verify: pos=5 token=29892 layer=1 288/288 bit-exact
+Wv verify: pos=5 token=29892 layer=1 288/288 bit-exact
+Wq verify: pos=5 token=29892 layer=2 288/288 bit-exact
+Wk verify: pos=5 token=29892 layer=2 288/288 bit-exact
+Wv verify: pos=5 token=29892 layer=2 288/288 bit-exact
+Wq verify: pos=5 token=29892 layer=3 288/288 bit-exact
+Wk verify: pos=5 token=29892 layer=3 288/288 bit-exact
+Wv verify: pos=5 token=29892 layer=3 288/288 bit-exact
+Wq verify: pos=5 token=29892 layer=4 288/288 bit-exact
+Wk verify: pos=5 token=29892 layer=4 288/288 bit-exact
+Wv verify: pos=5 token=29892 layer=4 288/288 bit-exact
+Wq verify: pos=5 token=29892 layer=5 288/288 bit-exact
+Wk verify: pos=5 token=29892 layer=5 288/288 bit-exact
+Wv verify: pos=5 token=29892 layer=5 288/288 bit-exact
+Wq verify: pos=6 token=727 layer=0 288/288 bit-exact
+Wk verify: pos=6 token=727 layer=0 288/288 bit-exact
+Wv verify: pos=6 token=727 layer=0 288/288 bit-exact
+Wq verify: pos=6 token=727 layer=1 288/288 bit-exact
+Wk verify: pos=6 token=727 layer=1 288/288 bit-exact
+Wv verify: pos=6 token=727 layer=1 288/288 bit-exact
+Wq verify: pos=6 token=727 layer=2 288/288 bit-exact
+Wk verify: pos=6 token=727 layer=2 288/288 bit-exact
+Wv verify: pos=6 token=727 layer=2 288/288 bit-exact
+Wq verify: pos=6 token=727 layer=3 288/288 bit-exact
+Wk verify: pos=6 token=727 layer=3 288/288 bit-exact
+Wv verify: pos=6 token=727 layer=3 288/288 bit-exact
+Wq verify: pos=6 token=727 layer=4 288/288 bit-exact
+Wk verify: pos=6 token=727 layer=4 288/288 bit-exact
+Wv verify: pos=6 token=727 layer=4 288/288 bit-exact
+Wq verify: pos=6 token=727 layer=5 288/288 bit-exact
+Wk verify: pos=6 token=727 layer=5 288/288 bit-exact
+Wv verify: pos=6 token=727 layer=5 288/288 bit-exact
+Wq verify: pos=7 token=471 layer=0 288/288 bit-exact
+Wk verify: pos=7 token=471 layer=0 288/288 bit-exact
+Wv verify: pos=7 token=471 layer=0 288/288 bit-exact
+Wq verify: pos=7 token=471 layer=1 288/288 bit-exact
+Wk verify: pos=7 token=471 layer=1 288/288 bit-exact
+Wv verify: pos=7 token=471 layer=1 288/288 bit-exact
+Wq verify: pos=7 token=471 layer=2 288/288 bit-exact
+Wk verify: pos=7 token=471 layer=2 288/288 bit-exact
+Wv verify: pos=7 token=471 layer=2 288/288 bit-exact
+Wq verify: pos=7 token=471 layer=3 288/288 bit-exact
+Wk verify: pos=7 token=471 layer=3 288/288 bit-exact
+Wv verify: pos=7 token=471 layer=3 288/288 bit-exact
+Wq verify: pos=7 token=471 layer=4 288/288 bit-exact
+Wk verify: pos=7 token=471 layer=4 288/288 bit-exact
+Wv verify: pos=7 token=471 layer=4 288/288 bit-exact
+Wq verify: pos=7 token=471 layer=5 288/288 bit-exact
+Wk verify: pos=7 token=471 layer=5 288/288 bit-exact
+Wv verify: pos=7 token=471 layer=5 288/288 bit-exact
+achieved tok/s: 0.977517
+
+[TIMING] forward_calls=8 forward_total_ms=8210.419 forward_mean_ms=1026.302
+[TIMING] Wq calls=48 cpu_ref_ms=48.404 accel_api_ms=2239.956 compare_ms=0.358 log_ms=8.139 cycles_mean=3690556.5 cycles_max=3691671
+[TIMING] Wk calls=48 cpu_ref_ms=48.959 accel_api_ms=2240.183 compare_ms=0.338 log_ms=6.024 cycles_mean=3690450.2 cycles_max=3691253
+[TIMING] Wv calls=48 cpu_ref_ms=48.336 accel_api_ms=2239.913 compare_ms=0.328 log_ms=5.316 cycles_mean=3690312.2 cycles_max=3691153
+[TIMING] qkv_calls=144
+[TIMING] qkv_cpu_reference      total_ms=   145.698 per_forward_ms=   18.212 forward_pct=  1.77
+[TIMING] qkv_accel_api          total_ms=  6720.052 per_forward_ms=  840.007 forward_pct= 81.85
+[TIMING] qkv_result_compare     total_ms=     1.024 per_forward_ms=    0.128 forward_pct=  0.01
+[TIMING] qkv_verify_log         total_ms=    19.478 per_forward_ms=    2.435 forward_pct=  0.24
+[TIMING] qkv_helper_other       total_ms=     0.419 per_forward_ms=    0.052 forward_pct=  0.01
+[TIMING] remaining_forward      total_ms=  1323.748 per_forward_ms=  165.469 forward_pct= 16.12
+[TIMING] The following stages are INSIDE qkv_accel_api;
+[TIMING] do not add them to qkv_accel_api again.
+[TIMING] accel_preflight        total_ms=     0.425 per_forward_ms=    0.053 forward_pct=  0.01
+[TIMING] buffer_prepare         total_ms=     6.335 per_forward_ms=    0.792 forward_pct=  0.08
+[TIMING] W_copy_to_DDR          total_ms=  1341.943 per_forward_ms=  167.743 forward_pct= 16.34
+[TIMING] X_copy_to_DDR          total_ms=     4.730 per_forward_ms=    0.591 forward_pct=  0.06
+[TIMING] input_precheck         total_ms=    17.717 per_forward_ms=    2.215 forward_pct=  0.22
+[TIMING] CSR_configuration      total_ms=     1.818 per_forward_ms=    0.227 forward_pct=  0.02
+[TIMING] START_to_DONE          total_ms=  5326.637 per_forward_ms=  665.830 forward_pct= 64.88
+[TIMING] completion_check       total_ms=     0.253 per_forward_ms=    0.032 forward_pct=  0.00
+[TIMING] input_postcheck        total_ms=     4.613 per_forward_ms=    0.577 forward_pct=  0.06
+[TIMING] Y_copy_to_CPU          total_ms=    15.309 per_forward_ms=    1.914 forward_pct=  0.19
+[TIMING] accel_api_other        total_ms=     0.272 per_forward_ms=    0.034 forward_pct=  0.00
+[TIMING] FPGA cycles_sum=531423308
+[TIMING] GEMV_CLOCK_HZ unset: FPGA time remains in cycles.

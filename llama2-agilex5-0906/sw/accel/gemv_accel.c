@@ -86,12 +86,21 @@ typedef struct {
     uint32_t dim;
     size_t w_words;
 
+    /*
+     * Set by gemv_accel_open().
+     * 1: verify W/x before and after execution.
+     * 0: skip those two full readback comparisons.
+     */
+    int full_input_readback;
+
     int ready;
     int failed;
     int in_flight;
     int timing_valid;
 
     GemvAccelTiming last;
+
+
 } Accel;
 
 static Accel g = {
@@ -354,10 +363,26 @@ int gemv_accel_open(uint32_t dim)
 {
     uint64_t w_bytes;
     uint64_t vector_bytes;
-
+    const char *mode_text;
     if (g.ready || g.mem_fd >= 0 || g.lock_fd >= 0)
         return -1;
-
+    /*
+     * Select once, before mapping or accessing hardware.
+     * Unset means verify. Empty/unknown values are errors.
+     */
+    mode_text = getenv("GEMV_MODE");
+    if (mode_text == NULL)
+        mode_text = "verify";
+    if (strcmp(mode_text, "verify") == 0) {
+        g.full_input_readback = 1;
+    } else if (strcmp(mode_text, "perf") == 0) {
+        g.full_input_readback = 0;
+    } else {
+        fprintf(stderr,
+                "Invalid GEMV_MODE='%s'; expected verify or perf.\n",
+                mode_text);
+        return -1;
+    }
     if (geteuid() != 0) {
         fprintf(stderr, "Run the FPGA program with sudo.\n");
         return -1;
@@ -446,8 +471,13 @@ int gemv_accel_open(uint32_t dim)
     fprintf(stderr,
             "GEMV ready: CSR=0x%08" PRIx64
             ", dim=%" PRIu32
-            ", Q/K/V verification with timing\n",
-            VAR_CSR, dim);
+            ", mode=%s, full_input_readback=%s\n",
+            VAR_CSR, dim,
+            g.full_input_readback ? "verify" : "perf",
+            g.full_input_readback ? "on" : "off");
+    fprintf(stderr,
+            "GEMV checks: guards=on, output_poison=on, "
+            "CSR_readback=on, completion=on; W_copy=every_call\n");
 
     return 0;
 
@@ -524,15 +554,20 @@ int gemv_accel_run(
     barrier();
     mark_time(&checkpoint, &g.last.x_copy_ns);
 
-    /* Verify input writes and output initialization. */
-    for (size_t i = 0; i < g.w_words; ++i) {
-        if (dw[i] != fp_bits(w[i]))
-            return run_error("W write/readback mismatch");
-    }
+    /*
+     * Optional full input readback.
+     * Output poison and guard checks remain enabled in both modes.
+     */
+    if (g.full_input_readback) {
+        for (size_t i = 0; i < g.w_words; ++i) {
+            if (dw[i] != fp_bits(w[i]))
+                return run_error("W write/readback mismatch");
+        }
 
-    for (uint32_t i = 0; i < cols; ++i) {
-        if (dx[i] != fp_bits(x[i]))
-            return run_error("x write/readback mismatch");
+        for (uint32_t i = 0; i < cols; ++i) {
+            if (dx[i] != fp_bits(x[i]))
+                return run_error("x write/readback mismatch");
+        }
     }
 
     for (uint32_t i = 0; i < rows; ++i) {
@@ -611,7 +646,10 @@ int gemv_accel_run(
 
     mark_time(&checkpoint, &g.last.completion_ns);
 
-    /* Confirm no input or guard corruption. */
+    /*
+     * Guard checks remain enabled in both modes.
+     * Full input integrity readback is optional.
+     */
     barrier();
 
     if (!guards_ok(4, g.w_words) ||
@@ -619,14 +657,16 @@ int gemv_accel_run(
         !guards_ok(6, rows))
         return run_error("Guard mismatch after completion");
 
-    for (size_t i = 0; i < g.w_words; ++i) {
-        if (dw[i] != fp_bits(w[i]))
-            return run_error("W changed during GEMV");
-    }
+    if (g.full_input_readback) {
+        for (size_t i = 0; i < g.w_words; ++i) {
+            if (dw[i] != fp_bits(w[i]))
+                return run_error("W changed during GEMV");
+        }
 
-    for (uint32_t i = 0; i < cols; ++i) {
-        if (dx[i] != fp_bits(x[i]))
-            return run_error("x changed during GEMV");
+        for (uint32_t i = 0; i < cols; ++i) {
+            if (dx[i] != fp_bits(x[i]))
+                return run_error("x changed during GEMV");
+        }
     }
 
     barrier();
