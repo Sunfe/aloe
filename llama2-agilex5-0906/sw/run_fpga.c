@@ -1363,6 +1363,59 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
+    /*
+     * Register all Q/K/V matrices once.
+     * The current integration requires n_kv_heads == n_heads,
+     * so every Q/K/V matrix is dim x dim.
+     */
+    if (transformer.config.n_layers <= 0 ||
+        (size_t)transformer.config.n_layers >
+            SIZE_MAX / 3u) {
+        fprintf(stderr, "Invalid Q/K/V weight table size\n");
+        gemv_accel_close();
+        exit(EXIT_FAILURE);
+    }
+
+    size_t weight_count =
+        (size_t)transformer.config.n_layers * 3u;
+
+    size_t matrix_words =
+        (size_t)transformer.config.dim *
+        (size_t)transformer.config.dim;
+
+    const float **weight_table =
+        malloc(weight_count * sizeof(*weight_table));
+
+    if (!weight_table) {
+        fprintf(stderr, "Cannot allocate Q/K/V weight table\n");
+        gemv_accel_close();
+        exit(EXIT_FAILURE);
+    }
+
+    for (size_t l = 0;
+         l < (size_t)transformer.config.n_layers;
+         ++l) {
+        size_t offset = l * matrix_words;
+
+        weight_table[3 * l + 0] =
+            transformer.weights.wq + offset;
+        weight_table[3 * l + 1] =
+            transformer.weights.wk + offset;
+        weight_table[3 * l + 2] =
+            transformer.weights.wv + offset;
+    }
+
+    if (gemv_accel_prepare_weights(
+            weight_table,
+            weight_count) != 0) {
+        free(weight_table);
+        fprintf(stderr, "Cannot prepare Q/K/V weights\n");
+        gemv_accel_close();
+        exit(EXIT_FAILURE);
+    }
+
+    free(weight_table);
+
     if (steps == 0 || steps > transformer.config.seq_len) steps = transformer.config.seq_len; // override to ~max length
 
     // build the Tokenizer via the tokenizer .bin file

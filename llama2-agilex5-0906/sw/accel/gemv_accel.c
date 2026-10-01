@@ -52,6 +52,7 @@ _Static_assert(sizeof(off_t) >= 8, "64-bit off_t is required");
 #define Y_POISON UINT32_C(0x7FC00000)
 #define TIMEOUT_NS UINT64_C(60000000000)
 #define LOCK_PATH "/run/de25_shared_ddr.lock"
+#define RESIDENT_MAP_SLOT 7
 
 enum {
     R_CTRL = 0x00,
@@ -77,11 +78,20 @@ typedef struct {
 } Mapping;
 
 typedef struct {
+    const float *source;
+    volatile uint32_t *guard_base;
+    uint64_t phys;
+} ResidentWeight;
+
+typedef struct {
     int mem_fd;
     int lock_fd;
 
-    /* variable CSR, fixed CSR, DDR CSR, FP32 CSR, W, x, y */
-    Mapping maps[7];
+    /*
+     * variable CSR, fixed CSR, DDR CSR, FP32 CSR,
+     * staging W, x, y, resident weight pool
+     */
+    Mapping maps[8];
 
     uint32_t dim;
     size_t w_words;
@@ -92,6 +102,12 @@ typedef struct {
      * 0: skip those two full readback comparisons.
      */
     int full_input_readback;
+
+    int resident_weights;
+    int weights_prepared;
+
+    ResidentWeight *weights;
+    size_t weight_count;
 
     int ready;
     int failed;
@@ -257,27 +273,41 @@ static uint32_t guard_value(unsigned slot, unsigned index, int after)
            (after ? UINT32_C(0xFFFF0000) : 0);
 }
 
-static void set_guards(unsigned slot, size_t words)
+static void set_guards_at(
+    volatile uint32_t *p,
+    unsigned slot,
+    size_t words)
 {
-    volatile uint32_t *p = g.maps[slot].p;
-
     for (unsigned i = 0; i < GUARD_WORDS; ++i) {
         p[i] = guard_value(slot, i, 0);
-        p[GUARD_WORDS + words + i] = guard_value(slot, i, 1);
+        p[GUARD_WORDS + words + i] =
+            guard_value(slot, i, 1);
     }
 }
 
-static int guards_ok(unsigned slot, size_t words)
+static int guards_ok_at(
+    volatile uint32_t *p,
+    unsigned slot,
+    size_t words)
 {
-    volatile uint32_t *p = g.maps[slot].p;
-
     for (unsigned i = 0; i < GUARD_WORDS; ++i) {
         if (p[i] != guard_value(slot, i, 0) ||
-            p[GUARD_WORDS + words + i] != guard_value(slot, i, 1))
+            p[GUARD_WORDS + words + i] !=
+                guard_value(slot, i, 1))
             return 0;
     }
 
     return 1;
+}
+
+static void set_guards(unsigned slot, size_t words)
+{
+    set_guards_at(g.maps[slot].p, slot, words);
+}
+
+static int guards_ok(unsigned slot, size_t words)
+{
+    return guards_ok_at(g.maps[slot].p, slot, words);
 }
 
 static int all_idle(void)
@@ -341,7 +371,7 @@ void gemv_accel_close(void)
                 "Closing the process does not cancel "
                 "an unfinished FPGA AXI transaction.\n");
 
-    for (unsigned i = 0; i < 7; ++i) {
+    for (unsigned i = 0; i < 8; ++i) {
         if (g.maps[i].length != 0)
             munmap(g.maps[i].base, g.maps[i].length);
     }
@@ -353,6 +383,8 @@ void gemv_accel_close(void)
         close(g.lock_fd);
 
     /* The lock file is deliberately not unlinked. */
+    free(g.weights);
+
     g = (Accel) {
         .mem_fd = -1,
         .lock_fd = -1
@@ -364,6 +396,23 @@ int gemv_accel_open(uint32_t dim)
     uint64_t w_bytes;
     uint64_t vector_bytes;
     const char *mode_text;
+    const char *weights_text = getenv("GEMV_WEIGHTS");
+
+    if (weights_text == NULL)
+        weights_text = "copy";
+
+    if (strcmp(weights_text, "copy") == 0) {
+        g.resident_weights = 0;
+    } else if (strcmp(weights_text, "resident") == 0) {
+        g.resident_weights = 1;
+    } else {
+        fprintf(stderr,
+                "Invalid GEMV_WEIGHTS='%s'; "
+                "expected copy or resident.\n",
+                weights_text);
+        return -1;
+    }
+
     if (g.ready || g.mem_fd >= 0 || g.lock_fd >= 0)
         return -1;
     /*
@@ -469,6 +518,11 @@ int gemv_accel_open(uint32_t dim)
     g.ready = 1;
 
     fprintf(stderr,
+            "GEMV mode: input_readback=%s weights=%s\n",
+            g.full_input_readback ? "verify" : "perf",
+            g.resident_weights ? "resident" : "copy");
+
+    fprintf(stderr,
             "GEMV ready: CSR=0x%08" PRIx64
             ", dim=%" PRIu32
             ", mode=%s, full_input_readback=%s\n",
@@ -477,13 +531,160 @@ int gemv_accel_open(uint32_t dim)
             g.full_input_readback ? "on" : "off");
     fprintf(stderr,
             "GEMV checks: guards=on, output_poison=on, "
-            "CSR_readback=on, completion=on; W_copy=every_call\n");
+            "CSR_readback=on, completion=on; W_copy=%s\n",
+            g.resident_weights ? "initial_load_only" : "every_call");
 
     return 0;
 
 error:
     gemv_accel_close();
     return -1;
+}
+
+\
+int gemv_accel_prepare_weights(
+    const float *const *weights,
+    size_t count)
+{
+    uint64_t begin = gemv_accel_now_ns();
+
+    if (!g.ready || g.failed || g.in_flight ||
+        g.weights_prepared || !weights || count == 0)
+        return run_error("Invalid weight preparation request");
+
+    for (size_t i = 0; i < count; ++i) {
+        if (!weights[i])
+            return run_error("NULL weight source");
+
+        for (size_t j = 0; j < i; ++j) {
+            if (weights[i] == weights[j])
+                return run_error("Duplicate weight source");
+        }
+    }
+
+    if (!g.resident_weights) {
+        g.weights_prepared = 1;
+
+        fprintf(stderr,
+                "[WEIGHTS] mode=copy matrices=%zu "
+                "W_copy=every_call\n",
+                count);
+        return 0;
+    }
+
+    if (!all_idle())
+        return run_error(
+            "A board component is BUSY during weight loading");
+
+    uint64_t w_bytes =
+        (uint64_t)g.w_words * sizeof(uint32_t);
+
+    uint64_t stride =
+        w_bytes + 2 * (uint64_t)GUARD_BYTES;
+
+    uint64_t pool_begin =
+        W_PHYS + w_bytes + GUARD_BYTES;
+
+    uint64_t pool_limit =
+        X_PHYS - GUARD_BYTES;
+
+    if (pool_begin >= pool_limit ||
+        count > (pool_limit - pool_begin) / stride)
+        return run_error(
+            "Resident weights do not fit before x buffer");
+
+    if (count > SIZE_MAX / sizeof(*g.weights) ||
+        stride > SIZE_MAX / count)
+        return run_error(
+            "Resident weight allocation overflow");
+
+    uint64_t pool_bytes64 = stride * (uint64_t)count;
+
+    if (pool_bytes64 > SIZE_MAX)
+        return run_error("Resident weight map is too large");
+
+    size_t pool_bytes = (size_t)pool_bytes64;
+    size_t stride_words = (size_t)(stride / sizeof(uint32_t));
+
+    g.weights = calloc(count, sizeof(*g.weights));
+    if (!g.weights)
+        return run_error(
+            "Cannot allocate resident weight table");
+
+    if (map_physical(
+            RESIDENT_MAP_SLOT,
+            pool_begin,
+            pool_bytes) != 0)
+        return run_error(
+            "Cannot map resident weight pool");
+
+    for (size_t i = 0; i < count; ++i) {
+        ResidentWeight *entry = &g.weights[i];
+
+        entry->source = weights[i];
+        entry->guard_base =
+            g.maps[RESIDENT_MAP_SLOT].p +
+            i * stride_words;
+
+        entry->phys =
+            pool_begin +
+            (uint64_t)i * stride +
+            GUARD_BYTES;
+
+        volatile uint32_t *dw =
+            entry->guard_base + GUARD_WORDS;
+
+        set_guards_at(
+            entry->guard_base,
+            RESIDENT_MAP_SLOT,
+            g.w_words);
+
+        for (size_t j = 0; j < g.w_words; ++j)
+            dw[j] = fp_bits(entry->source[j]);
+
+        barrier();
+
+        /*
+         * Initial upload verification is always enabled.
+         * It is outside the forward timing interval.
+         */
+        for (size_t j = 0; j < g.w_words; ++j) {
+            if (dw[j] != fp_bits(entry->source[j])) {
+                fprintf(stderr,
+                        "[WEIGHTS] matrix=%zu word=%zu\n",
+                        i, j);
+                return run_error(
+                    "Resident weight upload/readback mismatch");
+            }
+        }
+
+        if (!guards_ok_at(
+                entry->guard_base,
+                RESIDENT_MAP_SLOT,
+                g.w_words))
+            return run_error(
+                "Resident weight guard mismatch");
+
+        barrier();
+    }
+
+    g.weight_count = count;
+    g.weights_prepared = 1;
+
+    uint64_t elapsed =
+        gemv_accel_now_ns() - begin;
+
+    fprintf(stderr,
+            "[WEIGHTS] mode=resident matrices=%zu "
+            "payload_bytes=%" PRIu64
+            " pool_bytes=%zu load_ms=%.3f "
+            "initial_readback=PASS\n",
+            count,
+            (uint64_t)count * w_bytes,
+            pool_bytes,
+            (double)elapsed / 1000000.0);
+
+    return 0;
 }
 
 int gemv_accel_get_last_timing(GemvAccelTiming *out)
@@ -509,6 +710,9 @@ int gemv_accel_run(
     volatile uint32_t *dw;
     volatile uint32_t *dx;
     volatile uint32_t *dy;
+    volatile uint32_t *w_guard;
+
+    uint64_t w_phys = W_PHYS;
 
     uint32_t status;
 
@@ -523,14 +727,43 @@ int gemv_accel_run(
     if (!all_idle())
         return run_error("A board component is BUSY");
 
-    dw = data(4);
+    if (g.resident_weights) {
+        const ResidentWeight *entry = NULL;
+
+        if (!g.weights_prepared || !g.weights)
+            return run_error(
+                "Resident weights were not prepared");
+
+        for (size_t i = 0; i < g.weight_count; ++i) {
+            if (g.weights[i].source == w) {
+                entry = &g.weights[i];
+                break;
+            }
+        }
+
+        if (!entry)
+            return run_error(
+                "Unregistered resident weight pointer");
+
+        w_guard = entry->guard_base;
+        w_phys = entry->phys;
+    } else {
+        w_guard = g.maps[4].p;
+    }
+
+    dw = w_guard + GUARD_WORDS;
     dx = data(5);
     dy = data(6);
 
     mark_time(&checkpoint, &g.last.preflight_ns);
 
-    /* Guards and output poison. */
-    set_guards(4, g.w_words);
+    /*
+     * Resident W guards are initialized once during loading.
+     * Do not rewrite them for every call.
+     */
+    if (!g.resident_weights)
+        set_guards(4, g.w_words);
+
     set_guards(5, cols);
     set_guards(6, rows);
 
@@ -540,9 +773,11 @@ int gemv_accel_run(
     barrier();
     mark_time(&checkpoint, &g.last.prepare_ns);
 
-    /* W -> shared DDR. */
-    for (size_t i = 0; i < g.w_words; ++i)
-        dw[i] = fp_bits(w[i]);
+    /* W -> shared DDR, only in copy mode. */
+    if (!g.resident_weights) {
+        for (size_t i = 0; i < g.w_words; ++i)
+            dw[i] = fp_bits(w[i]);
+    }
 
     barrier();
     mark_time(&checkpoint, &g.last.w_copy_ns);
@@ -575,7 +810,9 @@ int gemv_accel_run(
             return run_error("Output poison readback mismatch");
     }
 
-    if (!guards_ok(4, g.w_words) ||
+    if (!guards_ok_at(w_guard,
+                      g.resident_weights ? RESIDENT_MAP_SLOT : 4u,
+                      g.w_words) ||
         !guards_ok(5, cols) ||
         !guards_ok(6, rows))
         return run_error("Guard mismatch before START");
@@ -584,7 +821,7 @@ int gemv_accel_run(
     mark_time(&checkpoint, &g.last.precheck_ns);
 
     /* Configure CSR and clear old completion. */
-    if (address_checked(R_W_LO, W_PHYS) ||
+    if (address_checked(R_W_LO, w_phys) ||
         address_checked(R_X_LO, X_PHYS) ||
         address_checked(R_Y_LO, Y_PHYS) ||
         write_checked(R_ROWS, rows) ||
@@ -652,7 +889,9 @@ int gemv_accel_run(
      */
     barrier();
 
-    if (!guards_ok(4, g.w_words) ||
+    if (!guards_ok_at(w_guard,
+                      g.resident_weights ? RESIDENT_MAP_SLOT : 4u,
+                      g.w_words) ||
         !guards_ok(5, cols) ||
         !guards_ok(6, rows))
         return run_error("Guard mismatch after completion");

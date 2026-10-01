@@ -2,6 +2,7 @@
 #define GEMV_ACCEL_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 /*
  * Timings for the most recent successful accelerator call.
@@ -25,6 +26,20 @@ typedef struct {
 
 /* Current host integration supports dim x dim matrices. */
 int gemv_accel_open(uint32_t dim);
+
+/*
+ * Prepare all Q/K/V matrices before the first GEMV call.
+ *
+ * GEMV_WEIGHTS=copy:
+ *     W is copied to shared DDR for every GEMV call.
+ *
+ * GEMV_WEIGHTS=resident:
+ *     The registered matrices are copied once to shared DDR.
+ */
+int gemv_accel_prepare_weights(
+    const float *const *weights,
+    size_t count
+);
 
 int gemv_accel_run(
     float *y,
