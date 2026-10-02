@@ -8,6 +8,10 @@ module gemv_var_fp32 #(
 
     parameter int unsigned FP32_SETTLE_CYCLES = 16,
 
+    // Keep column accumulation order. Overlap only independent
+    // operations within one four-element W/x beat.
+    parameter bit OVERLAP_MUL_ADD = 1'b1,
+
     // Implementation limits, not runtime matrix dimensions.
     parameter int unsigned MAX_ROWS           = 32768,
     parameter int unsigned MAX_COLS           = 8192
@@ -96,7 +100,13 @@ module gemv_var_fp32 #(
     // Constants
     // ============================================================
 
-    localparam logic [31:0] VERSION = 32'h4756_4D31; // "GVM1"
+    localparam logic [31:0] VERSION = 32'h4756_4D32; // "GVM2": BUILD_ID registers present
+
+    // BEGIN GENERATED BUILD_ID
+    // Opaque build token; source hashes are in the manifest.
+    localparam logic [127:0] BUILD_ID =
+        128'h1a67165bfaa445ed98c33b673a9b04db;
+    // END GENERATED BUILD_ID
 
     localparam logic [1:0] RESP_OKAY   = 2'b00;
     localparam logic [1:0] RESP_SLVERR = 2'b10;
@@ -273,6 +283,11 @@ module gemv_var_fp32 #(
     logic        add_in_ready;
     logic        add_out_valid;
     logic [31:0] add_result;
+
+    logic       overlap_next;
+    logic       add_step_ready;
+    logic       add_step_valid;
+    logic [1:0] mul_lane_index;
 
     // ============================================================
     // AXI transaction bookkeeping
@@ -550,6 +565,20 @@ module gemv_var_fp32 #(
             12'h03C: csr_read_data = row_index;
             12'h040: csr_read_data = current_col;
 
+            // Additive read-only identification registers.
+            // SCHED_INFO[31:16] = scheduling revision, currently 1.
+            // SCHED_INFO[0]     = OVERLAP_MUL_ADD.
+            // SCHED_INFO[15:1]  = reserved, zero.
+            12'h044: csr_read_data =
+                {16'h0001, 15'b0, OVERLAP_MUL_ADD};
+            12'h048: csr_read_data = FP32_SETTLE_CYCLES;
+
+            // One immutable 128-bit build token, low word first.
+            12'h04C: csr_read_data = BUILD_ID[31:0];
+            12'h050: csr_read_data = BUILD_ID[63:32];
+            12'h054: csr_read_data = BUILD_ID[95:64];
+            12'h058: csr_read_data = BUILD_ID[127:96];
+
             default: begin
                 csr_read_data = 32'b0;
                 csr_read_resp = RESP_SLVERR;
@@ -743,20 +772,50 @@ module gemv_var_fp32 #(
     // Column order is 0, 1, 2, ... COLS-1.
     // ============================================================
 
+    // In overlapped mode, ADD_SEND issues add(current)
+    // and mul(next) together for lanes 0, 1 and 2.
+    //
+    // fp32_serial.in_ready is independent of in_valid, and
+    // fp32_serial holds out_valid/result until acceptance.
+    // Cross-gating below therefore has no combinational loop
+    // and prevents either member of a pair retiring alone.
+    assign overlap_next =
+        OVERLAP_MUL_ADD && (lane_index != 2'd3);
+
+    assign add_step_ready =
+        add_in_ready && (!overlap_next || mul_in_ready);
+
+    assign add_step_valid =
+        add_out_valid && (!overlap_next || mul_out_valid);
+
+    assign mul_lane_index =
+        ((state == ST_ADD_SEND) && overlap_next) ?
+        (lane_index + 2'd1) : lane_index;
+
     fp32_mul #(
         .SETTLE_CYCLES(FP32_SETTLE_CYCLES)
     ) u_mul (
         .clk       (clk),
         .reset     (reset),
 
-        .in_valid  (!reset && (state == ST_MUL_SEND)),
+        .in_valid  (
+            !reset &&
+            ((state == ST_MUL_SEND) ||
+             ((state == ST_ADD_SEND) &&
+              overlap_next && add_in_ready))
+        ),
         .in_ready  (mul_in_ready),
 
-        .a         (w_beat_q[lane_index*32 +: 32]),
-        .b         (x_beat_q[lane_index*32 +: 32]),
+        .a         (w_beat_q[mul_lane_index*32 +: 32]),
+        .b         (x_beat_q[mul_lane_index*32 +: 32]),
 
         .out_valid (mul_out_valid),
-        .out_ready (!reset && (state == ST_MUL_WAIT)),
+        .out_ready (
+            !reset &&
+            ((state == ST_MUL_WAIT) ||
+             ((state == ST_ADD_WAIT) &&
+              overlap_next && add_out_valid))
+        ),
         .result    (mul_result)
     );
 
@@ -766,14 +825,20 @@ module gemv_var_fp32 #(
         .clk       (clk),
         .reset     (reset),
 
-        .in_valid  (!reset && (state == ST_ADD_SEND)),
+        .in_valid  (
+            !reset && (state == ST_ADD_SEND) &&
+            (!overlap_next || mul_in_ready)
+        ),
         .in_ready  (add_in_ready),
 
         .a         (accumulator),
         .b         (product),
 
         .out_valid (add_out_valid),
-        .out_ready (!reset && (state == ST_ADD_WAIT)),
+        .out_ready (
+            !reset && (state == ST_ADD_WAIT) &&
+            (!overlap_next || mul_out_valid)
+        ),
         .result    (add_result)
     );
 
@@ -1021,18 +1086,27 @@ module gemv_var_fp32 #(
                 // ------------------------------------------------
 
                 ST_ADD_SEND: begin
-                    if (add_in_ready)
+                    if (add_step_ready)
                         state <= ST_ADD_WAIT;
                 end
 
                 ST_ADD_WAIT: begin
-                    if (add_out_valid) begin
+                    if (add_step_valid) begin
 
                         if (lane_index != 2'd3) begin
-                            // More elements remain in this beat.
+                            // Commit the current addition in order.
                             accumulator <= add_result;
                             lane_index  <= lane_index + 2'd1;
-                            state       <= ST_MUL_SEND;
+
+                            if (OVERLAP_MUL_ADD) begin
+                                // mul(next) completed alongside
+                                // add(current). Its rounded result
+                                // becomes the next addend.
+                                product <= mul_result;
+                                state   <= ST_ADD_SEND;
+                            end else begin
+                                state <= ST_MUL_SEND;
+                            end
 
                         end else if (w_beat_index !=
                                      beats_per_row_q - 32'd1) begin

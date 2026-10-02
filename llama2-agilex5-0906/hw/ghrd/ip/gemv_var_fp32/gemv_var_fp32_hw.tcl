@@ -1,6 +1,6 @@
 # gemv_var_fp32_hw.tcl
 #
-# Variable-size serial FP32 GEMV:
+# Variable-size FP32 GEMV with optional multiply/add overlap:
 #
 #     y[ROWS] = W[ROWS][COLS] * x[COLS]
 #
@@ -31,7 +31,7 @@ set_module_property VERSION 1.0
 set_module_property GROUP "Custom"
 
 set_module_property DESCRIPTION \
-    "Serial variable-size FP32 GEMV with x RAM, AXI4-Lite CSR and single-beat AXI4 DDR access"
+    "Variable-size FP32 GEMV with optional intra-beat multiply/add overlap, x RAM and single-beat AXI4 DDR access"
 
 set_module_property AUTHOR "Custom"
 set_module_property INSTANTIATE_IN_SYSTEM_MODULE true
@@ -82,6 +82,7 @@ foreach spec {
     {AXI_ID_WIDTH        1     {1:16}}
     {AXI_PROT_VALUE      2     {0:7}}
     {FP32_SETTLE_CYCLES  16    {16 32 64}}
+    {OVERLAP_MUL_ADD     1     {0 1}}
     {MAX_ROWS           32768 {4:32768}}
     {MAX_COLS           8192  {4 8 16 32 64 128 256 512 1024 2048 4096 8192}}
 } {

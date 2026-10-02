@@ -68,7 +68,13 @@ enum {
     R_MAX_ROWS = 0x34,
     R_MAX_COLS = 0x38,
     R_ROW_INDEX = 0x3C,
-    R_COL_INDEX = 0x40
+    R_COL_INDEX = 0x40,
+    R_SCHED_INFO = 0x44,
+    R_FP32_SETTLE = 0x48,
+    R_BUILD_ID_0 = 0x4C,
+    R_BUILD_ID_1 = 0x50,
+    R_BUILD_ID_2 = 0x54,
+    R_BUILD_ID_3 = 0x58
 };
 
 typedef struct {
@@ -173,6 +179,108 @@ static uint32_t reg_read(unsigned slot, unsigned offset)
 
     return u;
 }
+
+/* BEGIN GEMV_DRIVER_IDENTITY_V1 */
+/* Expected BUILD_ID=1a67165bfaa445ed98c33b673a9b04db; SCHED_INFO=0x00010001; SETTLE=16 */
+static int check_var_identity(void)
+{
+    const uint32_t expected_version = UINT32_C(0x47564D32);
+    const uint32_t expected_id[4] = {
+        UINT32_C(0x3a9b04db),
+        UINT32_C(0x98c33b67),
+        UINT32_C(0xfaa445ed),
+        UINT32_C(0x1a67165b)
+    };
+    const uint32_t expected_sched = UINT32_C(0x00010001);
+    const uint32_t expected_settle = UINT32_C(16);
+
+    const unsigned id_offsets[4] = {
+        R_BUILD_ID_0, R_BUILD_ID_1, R_BUILD_ID_2, R_BUILD_ID_3
+    };
+
+    uint32_t version = reg_read(0, R_VERSION);
+
+    fprintf(stderr,
+            "[GEMV-ID] VERSION actual=0x%08" PRIx32
+            " expected=0x%08" PRIx32 "\n",
+            version, expected_version);
+    fflush(stderr);
+
+    /*
+     * The established VERSION register must confirm GVM2 before
+     * any access to BUILD_ID, SCHED_INFO or FP32_SETTLE.
+     */
+    if (version != expected_version) {
+        fprintf(stderr,
+                "[GEMV-ID] FAIL: VERSION mismatch; "
+                "extension registers were NOT read.\n");
+        return -1;
+    }
+
+    uint32_t actual_id[4];
+    int id_matches = 1;
+
+    for (unsigned i = 0; i < 4; ++i) {
+        actual_id[i] = reg_read(0, id_offsets[i]);
+        if (actual_id[i] != expected_id[i])
+            id_matches = 0;
+    }
+
+    /* Low-address CSR contains the least-significant 32-bit word. */
+    fprintf(stderr,
+            "[GEMV-ID] BUILD_ID actual="
+            "%08" PRIx32 "%08" PRIx32
+            "%08" PRIx32 "%08" PRIx32 "\n",
+            actual_id[3], actual_id[2],
+            actual_id[1], actual_id[0]);
+
+    fprintf(stderr,
+            "[GEMV-ID] BUILD_ID expected="
+            "%08" PRIx32 "%08" PRIx32
+            "%08" PRIx32 "%08" PRIx32 "\n",
+            expected_id[3], expected_id[2],
+            expected_id[1], expected_id[0]);
+    fflush(stderr);
+
+    if (!id_matches) {
+        fprintf(stderr,
+                "[GEMV-ID] FAIL: BUILD_ID mismatch; "
+                "shared DDR initialization was not started.\n");
+        return -1;
+    }
+
+    uint32_t sched = reg_read(0, R_SCHED_INFO);
+    uint32_t settle = reg_read(0, R_FP32_SETTLE);
+
+    fprintf(stderr,
+            "[GEMV-ID] SCHED_INFO actual=0x%08" PRIx32
+            " expected=0x%08" PRIx32 "\n",
+            sched, expected_sched);
+
+    fprintf(stderr,
+            "[GEMV-ID] SCHED_REV=%" PRIu32
+            " OVERLAP_MUL_ADD=%" PRIu32
+            " FP32_SETTLE_CYCLES=%" PRIu32
+            " expected_settle=%" PRIu32 "\n",
+            sched >> 16, sched & UINT32_C(1),
+            settle, expected_settle);
+
+    /*
+     * Compare the full schedule word, including revision and
+     * reserved bits, against this experiment's expected settings.
+     */
+    if (sched != expected_sched || settle != expected_settle) {
+        fprintf(stderr,
+                "[GEMV-ID] FAIL: scheduling parameter mismatch; "
+                "shared DDR initialization was not started.\n");
+        return -1;
+    }
+
+    fprintf(stderr,
+            "[GEMV-ID] PASS: VERSION, BUILD_ID and schedule match.\n");
+    return 0;
+}
+/* END GEMV_DRIVER_IDENTITY_V1 */
 
 static void reg_write(unsigned offset, uint32_t value)
 {
@@ -489,8 +597,14 @@ int gemv_accel_open(uint32_t dim)
         goto error;
     }
 
-    if (reg_read(0, R_VERSION) != UINT32_C(0x47564D31) ||
-        reg_read(1, R_VERSION) != UINT32_C(0x474D5631) ||
+    /*
+     * Check the variable-GEMV identity before mapping shared DDR.
+     * check_var_identity() gates all extension reads on GVM2.
+     */
+    if (check_var_identity() != 0)
+        goto error;
+
+    if (reg_read(1, R_VERSION) != UINT32_C(0x474D5631) ||
         reg_read(3, 0x18) != UINT32_C(0x46500001)) {
         fprintf(stderr, "Component VERSION/address mismatch.\n");
         goto error;

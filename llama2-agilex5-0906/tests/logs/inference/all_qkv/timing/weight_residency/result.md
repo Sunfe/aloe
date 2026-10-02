@@ -686,3 +686,337 @@ Document CPU timing variation, timer boundaries, and the separate
 5. **沿用当前 `perf + resident` 作为软件基准。**先验证结果，再比较 FPGA 周期、`START_to_DONE` 和完整前向耗时。
 
 请接下来提供上述**当前实际使用的可变尺寸 GEMV RTL、浮点封装和时钟配置**。拿到后就可以把下一项优化落实到具体状态和代码；修改仍按你的偏好提供完整文件或自动修改脚本。
+
+
+
+----
+
+```
+sudo env GEMV_MODE=verify GEMV_WEIGHTS=resident OMP_NUM_THREADS=1 \
+    ./run_fpga_resident_gvm2 stories15M.bin \
+    -z tokenizer.bin -m generate -t 0 -s 1 -n 2 \
+    -i "Once upon a time" \
+    > overlap_verify_n2_r3.stdout.txt \
+    2> overlap_verify_n2_r3.log
+
+run_rc=$?
+printf 'exit_status=%s\n' "$run_rc" >> overlap_verify_n2_r3.log
+
+sudo env GEMV_MODE=perf GEMV_WEIGHTS=resident OMP_NUM_THREADS=1 \
+    ./run_fpga_resident_gvm2 stories15M.bin \
+    -z tokenizer.bin -m generate -t 0 -s 1 -n 32 \
+    -i "Once upon a time" \
+    > overlap_perf_n32_r3.stdout.txt \
+    2> overlap_perf_n32_r3.log
+
+run_rc=$?
+printf 'exit_status=%s\n' "$run_rc" >> overlap_perf_n32_r3.log
+```
+
+
+
+```
+VERSION              = 0x47564D32
+BUILD_ID             = 1a67165bfaa445ed98c33b673a9b04db
+SCHED_INFO           = 0x00010001
+OVERLAP_MUL_ADD      = 1
+FP32_SETTLE_CYCLES   = 16
+```
+
+**本轮验证通过。** 当前板上已确认运行的是带 BUILD_ID 的 GVM2 映像，`OVERLAP_MUL_ADD=1`，`FP32_SETTLE_CYCLES=16`；新的 RTL 已产生预期的周期下降。
+
+结合上一轮 BUILD_ID 检查结果：
+
+```text
+VERSION              = 0x47564D32
+BUILD_ID             = 1a67165bfaa445ed98c33b673a9b04db
+SCHED_INFO           = 0x00010001
+OVERLAP_MUL_ADD      = 1
+FP32_SETTLE_CYCLES   = 16
+```
+
+如果 BUILD_ID 检查和本轮推理之间没有重新配置 FPGA 或重启导致重新加载其他映像，那么下面两份 `r3` 日志可以归属于这个 BUILD_ID。建议把之前的检查输出保存为：
+
+```text
+logs/inference/all_qkv/timing/weight_residency/build_id_check_r3.log
+```
+
+内容应包含：
+
+```text
+address 0x0000000020023024 = 0x47564d32
+address 0x000000002002304c = 0x3a9b04db
+address 0x0000000020023050 = 0x98c33b67
+address 0x0000000020023054 = 0xfaa445ed
+address 0x0000000020023058 = 0x1a67165b
+BUILD_ID MATCH: 1a67165bfaa445ed98c33b673a9b04db
+address 0x0000000020023044 = 0x00010001
+address 0x0000000020023048 = 0x00000010
+SCHED_REV=1 OVERLAP_MUL_ADD=1 FP32_SETTLE_CYCLES=16
+```
+
+下一次可以用下面的方式保存检查退出码：
+
+```bash
+sudo python3 ./gemv_build_id.py check \
+    gemv_build_1a67165bfaa445ed98c33b673a9b04db.json \
+    --mmio ./mmio_read \
+    > build_id_check_r3.log 2>&1
+
+rc=$?
+printf 'exit_status=%s\n' "$rc" >> build_id_check_r3.log
+```
+
+本轮两个推理测试的功能结果也通过：
+
+- `verify + resident`：36 次 GEMV，所有 Wq/Wk/Wv 输出均为 `288/288 bit-exact`。
+- `perf + resident`：576 次 GEMV，所有 Wq/Wk/Wv 输出均为 `288/288 bit-exact`。
+- 合计 **612 次 GEMV**。
+- 合计比较 **176,256 个 FP32 输出元素**。
+- 两次常驻权重初始化均为 `initial_readback=PASS`。
+- `perf` 日志明确记录 `exit_status=0`。
+- `verify` 日志到达最终计时汇总且没有错误，但提供的日志末尾没有显式记录 shell 退出码，result 中不单独填写 `verify exit_status=0`。
+
+**硬件周期已经达到预期。**
+
+本次 `perf + resident, n=32`：
+
+```text
+FPGA cycles_sum = 1,475,671,518
+qkv_calls       = 576
+平均 cycles/GEMV
+    = 1,475,671,518 / 576
+    = 2,561,929.72 cycles
+```
+
+本次 `verify + resident, n=2`：
+
+```text
+FPGA cycles_sum = 92,226,661
+qkv_calls       = 36
+平均 cycles/GEMV
+    = 2,561,851.69 cycles
+```
+
+两种模式的硬件周期一致，说明完整输入读回只增加软件验证开销，没有改变 GEMV 硬件执行周期。
+
+与上一阶段 `perf + resident` 串行基线相比：
+
+| 指标                | 串行 resident 基线 | GVM2 overlap r3 |              变化 |
+| ------------------- | -----------------: | --------------: | ----------------: |
+| 平均 cycles/GEMV    |       3,686,549.08 |    2,561,929.72 | 减少 1,124,619.36 |
+| 周期下降比例        |                  — |               — |        **30.51%** |
+| `START_to_DONE`     |         665.388 ms |      462.203 ms |   减少 203.185 ms |
+| `qkv_accel_api`     |         671.770 ms |      468.572 ms |   减少 203.198 ms |
+| `forward_mean_ms`   |         801.735 ms |      546.612 ms |   减少 255.123 ms |
+| achieved tok/s      |           1.369560 |        1.843154 |     提高约 34.58% |
+| `W_copy_to_DDR`     |           0.004 ms |        0.004 ms |      常驻状态保持 |
+| `remaining_forward` |         122.891 ms |       69.474 ms |    运行间存在变化 |
+
+硬件周期的改善是这次最可靠的结论：
+
+```text
+3,686,549.08 - 2,561,929.72
+= 1,124,619.36 cycles/GEMV
+```
+
+理论预测为：
+
+```text
+原始基线                         3,686,549.08
+预计乘加重叠减少                  1,119,744
+预计结果                         2,566,805.08 cycles/GEMV
+实际结果                         2,561,929.72 cycles/GEMV
+实际相对预测低                   4,875.36 cycles，约 0.19%
+```
+
+实测结果与之前根据 RTL 推导的约 `2.567M cycles/GEMV` 非常接近。由此可以确认：
+
+```text
+GVM2 映像已加载
+BUILD_ID 与本次构建清单匹配
+OVERLAP_MUL_ADD 已开启
+FP32_SETTLE_CYCLES=16
+乘加重叠调度已在硬件中生效
+```
+
+`forward_mean_ms` 和 `tok/s` 的改善幅度不能完全归因于 RTL，因为 `remaining_forward` 在不同运行之间存在波动；但 `CYCLES` 和 `START_to_DONE` 同时下降约 30.5%，已经直接证明 GEMV 硬件执行效率得到改善。`GEMV_CLOCK_HZ` 仍未设置，因此硬件耗时继续使用 cycles 表示，不能换算成已确认的硬件毫秒数。
+
+本次日志应归类为：
+
+```text
+tests/logs/inference/all_qkv/timing/weight_residency/
+├── build_id_check_r3.log
+├── overlap_verify_n2_r3.log
+├── overlap_verify_n2_r3.stdout.txt
+├── overlap_perf_n32_r3.log
+├── overlap_perf_n32_r3.stdout.txt
+├── README.md
+└── result.md
+```
+
+其中：
+
+- `build_id_check_r3.log`：当前 FPGA 映像身份、BUILD_ID 和调度参数。
+- `overlap_verify_n2_r3.log`：GVM2 overlap 映像下的短功能验证。
+- `overlap_verify_n2_r3.stdout.txt`：短验证生成文本。
+- `overlap_perf_n32_r3.log`：GVM2 overlap 映像下的 32 步性能测试。
+- `overlap_perf_n32_r3.stdout.txt`：32 步生成文本。
+
+这些文件继续放在现有 `weight_residency/` 目录，不要新建平行的 overlap 日志目录。`gemv_build_1a67165bfaa445ed98c33b673a9b04db.json` 建议继续保存在硬件工程的 `gemv_var_fp32` 目录中，同时在 `result.md` 记录其路径和 BUILD_ID。
+
+可以在现有 `result.md` 中追加下面内容：
+
+```markdown
+## GVM2 BUILD_ID overlap 验证：功能和周期优化通过
+
+### 构建身份
+
+本次测试前通过 BUILD_ID 检查确认板上运行的是本次构建：
+
+- VERSION：`0x47564D32`
+- BUILD_ID：`1a67165bfaa445ed98c33b673a9b04db`
+- BUILD_ID 清单：`gemv_build_1a67165bfaa445ed98c33b673a9b04db.json`
+- SCHED_REV：`1`
+- OVERLAP_MUL_ADD：`1`
+- FP32_SETTLE_CYCLES：`16
+
+BUILD_ID 按四个 32-bit CSR 从低地址到高地址读回：
+
+```text
+CSR+0x4C = 0x3A9B04DB
+CSR+0x50 = 0x98C33B67
+CSR+0x54 = 0xFAA445ED
+CSR+0x58 = 0x1A67165B
+```
+
+拼接结果为：
+
+```text
+1a67165bfaa445ed98c33b673a9b04db
+```
+
+因此，本轮测试可以与 GVM2 overlap 硬件构建关联。
+
+### 测试配置
+
+- 模型：`stories15M.bin`
+- tokenizer：`tokenizer.bin`
+- `dim=288`
+- `layers=6`
+- `heads=6`
+- `kv_heads=6`
+- Q/K/V：全部 6 层，共 18 个矩阵
+- GEMV CSR：`0x20023000`
+- 权重模式：`GEMV_WEIGHTS=resident`
+- 性能模式：`GEMV_MODE=perf`
+- 验证模式：`GEMV_MODE=verify`
+- 线程：`OMP_NUM_THREADS=1`
+- 温度：`0`
+- seed：`1`
+- prompt：`Once upon a time`
+
+### 功能验证
+
+`overlap_verify_n2_r3.log` 完成：
+
+- 2 次 forward。
+- 36 次 Q/K/V GEMV。
+- 每次输出 `288/288 bit-exact`。
+- 常驻权重数量：18。
+- 有效权重数据：5,971,968 字节。
+- 常驻池大小：5,974,272 字节。
+- `initial_readback=PASS`。
+- `FPGA cycles_sum=92,226,661`。
+- 平均 `2,561,851.69 cycles/GEMV`。
+
+日志到达最终 TIMING 汇总且未报告错误。
+提供的日志没有单独记录 shell 退出码。
+
+### 性能验证
+
+`overlap_perf_n32_r3.log` 完成：
+
+- 32 次 forward。
+- 576 次 Q/K/V GEMV。
+- Wq/Wk/Wv 各 192 次。
+- 所有输出均为 `288/288 bit-exact`。
+- `initial_readback=PASS`。
+- `exit_status=0`。
+- 生成输出文件已保存。
+
+关键结果：
+
+| 指标                |               结果 |
+| ------------------- | -----------------: |
+| `qkv_calls`         |                576 |
+| `FPGA cycles_sum`   |      1,475,671,518 |
+| 平均 cycles/GEMV    |       2,561,929.72 |
+| `START_to_DONE`     | 462.203 ms/forward |
+| `qkv_accel_api`     | 468.572 ms/forward |
+| `forward_mean_ms`   |            546.612 |
+| `achieved tok/s`    |           1.843154 |
+| `W_copy_to_DDR`     |   0.004 ms/forward |
+| `remaining_forward` |  69.474 ms/forward |
+| `load_ms`           |            645.582 |
+
+`load_ms` 是一次性常驻权重加载时间，
+不计入 `forward_mean_ms` 和 `achieved tok/s`。
+
+### 与串行 resident 基线对照
+
+对照基线为上一阶段 `perf + resident`：
+
+| 指标              | 串行 resident 基线 | GVM2 overlap r3 |    变化 |
+| ----------------- | -----------------: | --------------: | ------: |
+| 平均 cycles/GEMV  |       3,686,549.08 |    2,561,929.72 | -30.51% |
+| `START_to_DONE`   |         665.388 ms |      462.203 ms | -30.52% |
+| `qkv_accel_api`   |         671.770 ms |      468.572 ms | -30.25% |
+| `forward_mean_ms` |         801.735 ms |      546.612 ms | -31.82% |
+| achieved tok/s    |           1.369560 |        1.843154 | +34.58% |
+
+硬件周期减少：
+
+```text
+3,686,549.08 - 2,561,929.72
+= 1,124,619.36 cycles/GEMV
+```
+
+此前根据 RTL 的预期减少量为：
+
+```text
+1,119,744 cycles/GEMV
+```
+
+实测结果与预计结果相差约 4,875 cycles，
+相对预测约 0.19%，与预期调度收益一致。
+
+### 结论
+
+本轮验证通过：
+
+1. 板上 BUILD_ID 与构建清单匹配。
+2. GVM2 VERSION 正确。
+3. `OVERLAP_MUL_ADD=1` 已从硬件 CSR 读回。
+4. `FP32_SETTLE_CYCLES=16` 已从硬件 CSR 读回。
+5. 612 次 GEMV 的 CPU/FPGA 结果逐位一致。
+6. 32 步性能测试退出成功。
+7. 平均 GEMV 周期从约 369 万降至约 256 万。
+8. 硬件周期下降约 30.5%，与 RTL 调度预测一致。
+
+因此，组内乘加重叠优化已完成当前阶段的功能和周期验收。
+
+`GEMV_CLOCK_HZ` 未设置，当前不报告换算后的 FPGA 硬件时间。
+端到端 `forward_mean_ms` 和 `tok/s` 仍受 CPU 其他阶段运行波动影响；
+硬件优化收益以 `CYCLES` 和 `START_to_DONE` 为主要依据。
+
+### 文件
+
+```text
+build_id_check_r3.log
+overlap_verify_n2_r3.log
+overlap_verify_n2_r3.stdout.txt
+overlap_perf_n32_r3.log
+overlap_perf_n32_r3.stdout.txt
+```
+

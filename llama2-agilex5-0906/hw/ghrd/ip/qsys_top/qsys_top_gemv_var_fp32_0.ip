@@ -1783,6 +1783,11 @@ https://fpgasoftware.intel.com/eula.-->
           <ipxact:displayName>FP32_SETTLE_CYCLES</ipxact:displayName>
           <ipxact:value>16</ipxact:value>
         </ipxact:parameter>
+        <ipxact:parameter parameterId="OVERLAP_MUL_ADD" type="int">
+          <ipxact:name>OVERLAP_MUL_ADD</ipxact:name>
+          <ipxact:displayName>OVERLAP_MUL_ADD</ipxact:displayName>
+          <ipxact:value>1</ipxact:value>
+        </ipxact:parameter>
         <ipxact:parameter parameterId="MAX_ROWS" type="int">
           <ipxact:name>MAX_ROWS</ipxact:name>
           <ipxact:displayName>MAX_ROWS</ipxact:displayName>
