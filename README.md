@@ -1,38 +1,309 @@
-### 3 分钟了解如何进入开发
+# LLM Acceleration on Intel Agilex 5 FPGA
 
-欢迎使用云效代码管理 Codeup，通过阅读以下内容，你可以快速熟悉 Codeup ，并立即开始今天的工作。
+Hardware-accelerated LLM inference for Llama and lightweight language models on Intel Agilex 5 FPGA. This project explores multiple hardware-software co-design approaches for running small to medium language models with FPGA acceleration of compute-intensive operations.
 
-### 提交**文件**
+## Features
 
-Codeup 支持两种方式进行代码提交：网页端提交，以及本地 Git 客户端提交。
+- **FPGA-accelerated matrix operations** with configurable PE arrays (FP32 and INT8)
+- **Multiple model support**: Llama2 (15M-7B), TinyLlama, and GGUF format models
+- **Hardware-software partitioning** for optimal throughput and resource utilization
+- **Dual backend execution**: CPU reference and FPGA accelerated paths
+- **DMA-based data transfer** with shared memory between HPS and FPGA fabric
+- **Complete development flow**: RTL design, HLS synthesis, cross-compilation, deployment automation
+- **Comprehensive testing**: Unit tests, board-level validation, inference verification
 
-* 如需体验本地命令行操作，请先安装 Git 工具，安装方法参见[安装Git](https://help.aliyun.com/document_detail/153800.html)。
+## Architecture
 
-* 如需体验 SSH 方式克隆和提交代码，请先在平台账号内配置 SSH 公钥，配置方法参见[配置 SSH 密钥](https://help.aliyun.com/document_detail/153709.html)。
+The system partitions LLM inference across ARM HPS (Hard Processor System) and FPGA fabric:
 
-* 如需体验 HTTP 方式克隆和提交代码，请先在平台账号内配置克隆账密，配置方法参见[配置 HTTPS 克隆账号密码](https://help.aliyun.com/document_detail/153710.html)。
+- **Host (ARM Cortex-A)**: Model orchestration, tokenization, non-linear activations, control flow
+- **FPGA Fabric**: Matrix-vector/matrix-matrix multiplication, custom compute kernels
+- **Memory**: Shared DDR4 with DMA for efficient weight and activation transfer
 
-现在，你可以在 Codeup 中提交代码文件了，跟着文档「[__提交第一行代码__](https://help.aliyun.com/document_detail/153707.html?spm=a2c4g.153710.0.0.3c213774PFSMIV#6a5dbb1063ai5)」一起操作试试看吧。
+Current implementations:
+- **llama2-agilex5-0906**: Production implementation with validated board bringup
+- **tinyonagilex5**: Minimal accelerator with GGUF format support
+- **tinyonfpga**: Simulation-oriented FPGA implementation
+- **tinyllm/tinygguf**: CPU reference and model conversion utilities
 
-<img src="https://img.alicdn.com/imgextra/i3/O1CN013zHrNR1oXgGu8ccvY_!!6000000005235-0-tps-2866-1268.jpg" width="100%" />
+## Prerequisites
 
+### Hardware
+- Intel Agilex 5E Development Kit (DE25-Standard or compatible)
+- Minimum 1GB DDR4 system memory
 
-### 进行代码检测
+### Software
+- Intel Quartus Prime Pro Edition (25.1.1 or later)
+- ARM cross-compilation toolchain (`aarch64-linux-gnu-gcc`)
+- CMake 3.18+ or Make
+- Python 3.11+ (for test vectors and analysis tools)
 
-开发过程中，为了更好的维护你的代码质量，你可以开启 Codeup 内置开箱即用的「[代码检测服务](https://help.aliyun.com/document_detail/434321.html)」，开启后提交或合并请求的变更将自动触发检测，识别代码编写规范和安全漏洞问题，并及时提供结果报表和修复建议。
+## Quick Start
 
-<img src="https://img.alicdn.com/imgextra/i2/O1CN01BRzI1I1IO0CR2i4Aw_!!6000000000882-0-tps-2862-1362.jpg" width="100%" />
+### Using the Main Implementation (llama2-agilex5-0906)
 
-### 开展代码评审
+```bash
+cd llama2-agilex5-0906
 
-功能开发完毕后，通常你需要发起「[代码评审并执行合并](https://help.aliyun.com/document_detail/153872.html)」，Codeup 支持多人协作的代码评审服务，你可以通过「[保护分支设置合并规则](https://help.aliyun.com/document_detail/153873.html?spm=a2c4g.203108.0.0.430765d1l9tTRR#p-4on-aep-l5q)」策略及「[__合并请求设置__](https://help.aliyun.com/document_detail/153874.html?spm=a2c4g.153871.0.0.3d38686cJpcdJI)」对合并过程进行流程化管控，同时提供在线代码评审及冲突解决能力，让评审过程更加流畅。
+# Build hardware (requires Quartus environment)
+./hw/scripts/build.sh
 
-<img src="https://img.alicdn.com/imgextra/i1/O1CN01MaBDFH1WWcGnQqMHy_!!6000000002796-0-tps-2592-1336.jpg" width="100%" />
+# Cross-compile software
+cd sw
+make CROSS_COMPILE=aarch64-linux-gnu-
 
-### 成员协作
+# Deploy to board
+scp run_fpga root@<board_ip>:/root/
+scp tests/models/stories15M.bin root@<board_ip>:/root/
 
-是时候邀请成员一起编写卓越的代码工程了，请点击左下角「成员」邀请你的小伙伴开始协作吧！
+# Run inference on target
+ssh root@<board_ip>
+./run_fpga stories15M.bin
+```
 
-### 更多
+### Using TinyOnAgilex5 (GGUF Support)
 
-Git 使用教学、高级功能指引等更多说明，参见[Codeup帮助文档](https://help.aliyun.com/document_detail/153402.html)。
+```bash
+cd tinyonagilex5/sw
+
+# Build with FPGA backend
+make
+
+# Run inference
+./tiny_llm_fpga tiny_llama.gguf "Once upon a time"
+
+# Or CPU-only reference
+./tiny_llm_cpu tiny_llama.gguf "Once upon a time"
+```
+
+## Project Structure
+
+```
+.
+├── llama2-agilex5-0906/      # Main production implementation (validated on hardware)
+│   ├── hw/                    # Hardware design files
+│   │   ├── rtl/              # SystemVerilog accelerator cores
+│   │   ├── ip/               # Custom IP components
+│   │   └── ghrd/             # Golden hardware reference design
+│   ├── sw/                    # Software runtime
+│   │   ├── accel/            # FPGA accelerator API
+│   │   ├── ref/              # CPU reference implementation
+│   │   └── tools/            # Weight export and comparison
+│   ├── linux/                 # Device tree overlays and boot config
+│   ├── tests/                 # Board-level test suite
+│   └── docs/                  # Architecture and bringup notes
+│
+├── tinyonagilex5/            # Minimal LLM accelerator with GGUF support
+│   ├── hw/rtl/               # Accelerator units (matmul, RMSNorm, RoPE, etc.)
+│   ├── sw/                    # Lightweight runtime
+│   └── docs/                  # Design documentation
+│
+├── tinyonfpga/               # FPGA simulation framework
+├── tinyllm/                  # CPU-only reference implementation
+└── tinygguf/                 # GGUF model export utilities
+```
+
+## Building
+
+### Hardware Build (llama2-agilex5-0906)
+
+```bash
+cd llama2-agilex5-0906/hw/scripts
+
+# Full Quartus synthesis and place-route (2-4 hours)
+./build.sh
+
+# Generate RBF bitstream for configuration
+./gen_rbf.sh
+```
+
+The build produces bitstream files in `hw/ghrd/output_files/`.
+
+### Software Build
+
+```bash
+cd llama2-agilex5-0906/sw
+
+# Cross-compile for ARM target
+make CROSS_COMPILE=aarch64-linux-gnu-
+
+# Or native x86 build for simulation
+make
+```
+
+### Building Other Variants
+
+```bash
+# TinyOnAgilex5
+cd tinyonagilex5/sw
+make              # CPU version
+make fpga         # FPGA-accelerated version
+
+# GGUF export tools
+cd tinygguf
+gcc export_gguf_v2.c -o export_gguf -lm
+```
+
+## Board Setup and Deployment
+
+### Initial Board Configuration
+
+See [`llama2-agilex5-0906/docs/`](llama2-agilex5-0906/docs/) for detailed bringup instructions:
+
+1. **Program FPGA**: Load bitstream via JTAG or QSPI flash
+2. **Boot Linux**: Ensure device tree includes FPGA region and reserved memory
+3. **Configure shared memory**: Use device tree overlay in `linux/dts/`
+4. **Set permissions**: Enable userspace MMIO access to FPGA registers
+
+### Running Tests
+
+```bash
+cd llama2-agilex5-0906/tests
+
+# DDR coherency test (HPS ↔ FPGA data exchange)
+./test_ddr_hps_fpga_exchange.sh
+
+# FPGA DSP resource validation
+./test_fp32_dsp_board.sh
+
+# Variable-size GEMV kernel test
+./test_gemv_variable_fp32
+
+# Full inference smoke test
+cd ../sw
+./run_fpga tests/models/stories15M.bin
+```
+
+Test logs are saved to `tests/logs/`.
+
+## Model Support
+
+### Currently Supported
+
+- **Llama2**: 15M, 42M, 110M parameter models
+- **Stories models**: Minimal Llama2 variants for validation
+- **GGUF format**: Via tinyonagilex5 and tinygguf tools
+
+### Planned Support
+
+- **Llama 2.5B** models
+- **llama.cpp** integration for broader model compatibility
+- **Quantized models**: INT8 and mixed-precision inference
+
+## Performance
+
+Preliminary results on Agilex 5E Development Kit:
+
+| Implementation      | Model       | Backend | Tokens/sec | Notes                  |
+| ------------------- | ----------- | ------- | ---------- | ---------------------- |
+| llama2-agilex5-0906 | Stories 15M | CPU     | ~12        | ARM Cortex-A reference |
+| llama2-agilex5-0906 | Stories 15M | FPGA    | ~48        | FP32 PE array, 250MHz  |
+| tinyonagilex5       | TinyLlama   | FPGA    | TBD        | Under characterization |
+
+See `tests/logs/` for detailed timing breakdowns.
+
+## Configuration
+
+### Hardware Parameters
+
+Edit board configuration in `llama2-agilex5-0906/hw/ghrd/qsys_top.qsys`:
+- PE array dimensions
+- Clock frequencies
+- Memory controller settings
+
+### Runtime Configuration
+
+Model and inference parameters are typically specified via command-line:
+
+```bash
+# FPGA-accelerated inference with timing
+./run_fpga_timing stories15M.bin
+
+# CPU reference for golden validation
+./run_cpu_ref stories15M.bin
+```
+
+## Documentation
+
+### llama2-agilex5-0906
+- Architecture notes: `docs/01_architecture.md`, `docs/02_regmap.md`
+- Bringup guide: `docs/03_bringup_shturl`, `docs/Agilex 5E(DE25-Standard)design.md`
+- Implementation series: `docs/[fpga]llama2_c移植到agilex5设计的实现(5-9).md`
+
+### Design Resources
+- DDR validation: `docs/[llama移植]ddr_test_master验证.md`
+- Memory layout: Check device tree overlays in `linux/dts/`
+
+## Tools
+
+### Weight Conversion
+
+```bash
+# Export PyTorch model to binary format
+cd llama2-agilex5-0906/sw/tools
+python export_weights.py --model <checkpoint.pth> --output weights.bin
+
+# Convert to GGUF format
+cd ../../../tinygguf
+./export_gguf <input.bin> <output.gguf>
+```
+
+### Inference Validation
+
+```bash
+# Compare FPGA vs CPU outputs
+cd llama2-agilex5-0906/sw/tools
+python compare.py --fpga out_fpga.txt --cpu out_cpu.txt
+```
+
+## Troubleshooting
+
+### FPGA Not Accessible
+
+Check that:
+1. Bitstream is loaded (`lspci` should show Intel FPGA device)
+2. Device tree includes FPGA bridge and memory regions
+3. `/dev/mem` or UIO device has correct permissions
+
+### Memory Allocation Failures
+
+Ensure reserved memory region is defined in device tree (see `linux/dts/reserved-memory.dtsi`).
+
+### Performance Lower Than Expected
+
+- Verify FPGA clock frequency: check `hw/ghrd/qsys_top.qsys` PLL settings
+- Profile with timing version: `./run_fpga_timing`
+- Check for DDR bandwidth bottlenecks using test tools in `tests/board/`
+
+## Contributing
+
+When adding new accelerator units:
+1. Add RTL to `hw/rtl/`
+2. Create corresponding test in `hw/tb/`
+3. Update software API in `sw/accel/`
+4. Add validation test to `tests/`
+
+## Roadmap
+
+- [x] Llama2 15M/42M inference on Agilex 5E
+- [x] GGUF format support
+- [x] FP32 GEMV acceleration
+- [ ] INT8 quantized inference
+- [ ] Llama 2.5B model support
+- [ ] llama.cpp backend integration
+- [ ] Multi-layer pipelining
+- [ ] On-chip weight caching for small models
+
+## License
+
+See individual LICENSE files in subdirectories. Core implementations follow their respective upstream licenses.
+
+## References
+
+- Intel Agilex 5 FPGA Documentation
+- [llama2.c](https://github.com/karpathy/llama2.c) by Andrej Karpathy
+- [llama.cpp](https://github.com/ggerganov/llama.cpp) GGUF specification
+
+---
+
+**Status**: Active development. `llama2-agilex5-0906` validated on hardware. Other variants under integration testing.
