@@ -148,8 +148,6 @@ gcc export_gguf_v2.c -o export_gguf -lm
 
 ### Initial Board Configuration
 
-See [`llama2-agilex5-0906/docs/`](llama2-agilex5-0906/docs/) for detailed bringup instructions:
-
 1. **Program FPGA**: Load bitstream via JTAG or QSPI flash
 2. **Boot Linux**: Ensure device tree includes FPGA region and reserved memory
 3. **Configure shared memory**: Use device tree overlay in `linux/dts/`
@@ -225,13 +223,7 @@ Model and inference parameters are typically specified via command-line:
 
 ## Documentation
 
-### llama2-agilex5-0906
-- Architecture notes: `docs/01_architecture.md`, `docs/02_regmap.md`
-- Bringup guide: `docs/03_bringup_shturl`, `docs/Agilex 5E(DE25-Standard)design.md`
-- Implementation series: `docs/[fpga]llama2_c移植到agilex5设计的实现(5-9).md`
-
 ### Design Resources
-- DDR validation: `docs/[llama移植]ddr_test_master验证.md`
 - Memory layout: Check device tree overlays in `linux/dts/`
 
 ## Tools
