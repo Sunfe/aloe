@@ -1247,8 +1247,8 @@ module gemv_var_fp32 #(
         if (AXI_PROT_VALUE > 7)
             $fatal(1, "AXI_PROT_VALUE must be 0..7");
 
-        if (FP32_SETTLE_CYCLES < 16)
-            $fatal(1, "FP32_SETTLE_CYCLES must be >=16");
+       if (FP32_SETTLE_CYCLES < 1)
+            $fatal(1, "FP32_SETTLE_CYCLES must be >=1");
 
         if (MAX_ROWS < 4 ||
             MAX_ROWS > 32768 ||

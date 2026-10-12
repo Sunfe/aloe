@@ -1,4 +1,6 @@
-module fp32_board_test (
+module fp32_board_test #(
+    parameter int unsigned FP32_SETTLE_CYCLES = 16
+) (
     input  logic        clk,
     input  logic        reset,
 
@@ -49,23 +51,10 @@ module fp32_board_test (
     assign busy = (state != ST_IDLE);
 
     // CSR accesses never wait for the arithmetic operation.
-    // Software polls STATUS instead.
     assign avs_waitrequest = 1'b0;
 
-    function automatic logic [31:0] merge32 (
-        input logic [31:0] old_value,
-        input logic [31:0] new_value,
-        input logic [3:0]  byte_enable
-    );
-        merge32 = old_value;
-        for (int i = 0; i < 4; i++) begin
-            if (byte_enable[i])
-                merge32[i*8 +: 8] = new_value[i*8 +: 8];
-        end
-    endfunction
-
     fp32_mul #(
-        .SETTLE_CYCLES(16)
+        .SETTLE_CYCLES(FP32_SETTLE_CYCLES)
     ) u_mul (
         .clk       (clk),
         .reset     (reset),
@@ -81,7 +70,7 @@ module fp32_board_test (
     );
 
     fp32_add #(
-        .SETTLE_CYCLES(16)
+        .SETTLE_CYCLES(FP32_SETTLE_CYCLES)
     ) u_add (
         .clk       (clk),
         .reset     (reset),
@@ -129,13 +118,16 @@ module fp32_board_test (
             cycle_count     <= 32'b0;
             completed_count <= 32'b0;
         end else begin
+
             if (busy && cycle_count != 32'hFFFF_FFFF)
                 cycle_count <= cycle_count + 32'd1;
 
             case (state)
+
                 ST_IDLE: begin
                     if (avs_write) begin
                         case (avs_address)
+
                             4'h0: begin
                                 if (avs_byteenable[0]) begin
                                     // START takes priority over CLEAR.
@@ -157,13 +149,17 @@ module fp32_board_test (
 
                             4'h2: begin
                                 a_reg <= merge32(
-                                    a_reg, avs_writedata, avs_byteenable
+                                    a_reg,
+                                    avs_writedata,
+                                    avs_byteenable
                                 );
                             end
 
                             4'h3: begin
                                 b_reg <= merge32(
-                                    b_reg, avs_writedata, avs_byteenable
+                                    b_reg,
+                                    avs_writedata,
+                                    avs_byteenable
                                 );
                             end
 
@@ -181,6 +177,7 @@ module fp32_board_test (
                 ST_WAIT: begin
                     if ((!op_add && mul_out_valid) ||
                         ( op_add && add_out_valid)) begin
+
                         result_reg <= op_add ? add_result : mul_result;
                         done <= 1'b1;
                         completed_count <= completed_count + 32'd1;
@@ -192,8 +189,22 @@ module fp32_board_test (
                     state <= ST_IDLE;
                     done  <= 1'b0;
                 end
+
             endcase
         end
     end
+
+    function automatic logic [31:0] merge32 (
+        input logic [31:0] old_value,
+        input logic [31:0] new_value,
+        input logic [3:0]  byte_enable
+    );
+        merge32 = old_value;
+
+        for (int i = 0; i < 4; i++) begin
+            if (byte_enable[i])
+                merge32[i*8 +: 8] = new_value[i*8 +: 8];
+        end
+    endfunction
 
 endmodule

@@ -1,8 +1,163 @@
 <sld_project_info>
   <sld_infos>
+    <sld_info hpath="soc_inst|subsys_periph|button_pio" library="button_pio" name="button_pio">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME button_pio HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
     <sld_info hpath="soc_inst|subsys_hps|f2sdram_adapter" library="f2sdram_adapter" name="f2sdram_adapter">
       <assignment_values>
         <assignment_value text="QSYS_NAME f2sdram_adapter HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|ext_hps_f2sdram_master" library="ext_hps_f2sdram_master" name="ext_hps_f2sdram_master">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME ext_hps_f2sdram_master HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|clk_100" library="clk_100" name="clk_100">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME clk_100 HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|ddr_test_master_6" library="qsys_top_ddr_test_master_6" name="ddr_test_master_6">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME qsys_top_ddr_test_master_6 HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|altera_ace5lite_cache_coherency_translator_0" library="altera_ace5lite_cache_coherency_translator_0" name="altera_ace5lite_cache_coherency_translator_0">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME altera_ace5lite_cache_coherency_translator_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|gemv_var_fp32_0|gemv_var_fp32_0|u_mul|u_serial|g_mul.u_core" library="gemv_fp32_mul_ip" name="g_mul.u_core">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME gemv_fp32_mul_ip HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|gemv_var_fp32_0" library="qsys_top_gemv_var_fp32_0" name="gemv_var_fp32_0">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME qsys_top_gemv_var_fp32_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|gemv_4x4_test_1|gemv_4x4_test_1|u_add|u_serial|g_add.u_core" library="gemv_fp32_add_ip" name="g_add.u_core">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME gemv_fp32_add_ip HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst" library="qsys_top" name="soc_inst">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME qsys_top HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="pll_inst" library="pll" name="pll_inst">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME pll HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|ocm" library="ocm" name="ocm">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME ocm HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|gemv_var_fp32_0|gemv_var_fp32_0|u_add|u_serial|g_add.u_core" library="gemv_fp32_add_ip" name="g_add.u_core">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME gemv_fp32_add_ip HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|gemv_4x4_test_1|gemv_4x4_test_1|u_mul|u_serial|g_mul.u_core" library="gemv_fp32_mul_ip" name="g_mul.u_core">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME gemv_fp32_mul_ip HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|fp32_board_test_0|fp32_board_test_0|u_mul|u_serial|g_mul.u_core" library="gemv_fp32_mul_ip" name="g_mul.u_core">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME gemv_fp32_mul_ip HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|fp32_board_test_0|fp32_board_test_0|u_add|u_serial|g_add.u_core" library="gemv_fp32_add_ip" name="g_add.u_core">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME gemv_fp32_add_ip HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|gemv_4x4_test_1" library="qsys_top_gemv_4x4_test_1" name="gemv_4x4_test_1">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME qsys_top_gemv_4x4_test_1 HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_hps|emif_hps" library="emif_io96b_hps" name="emif_hps">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME emif_io96b_hps HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_hps|emif_hps|emif_io96b_hps" library="emif_io96b_hps_emif_io96b_hps_400_ewmteya" name="emif_io96b_hps">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME emif_io96b_hps_emif_io96b_hps_400_ewmteya HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_periph|dipsw_pio" library="dipsw_pio" name="dipsw_pio">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME dipsw_pio HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_periph|pb_cpu_0" library="pb_cpu_0" name="pb_cpu_0">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME pb_cpu_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_periph|led_pio" library="led_pio" name="led_pio">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME led_pio HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_debug|jtag_clk" library="jtag_clk" name="jtag_clk">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME jtag_clk HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_hps|emif_hps|emif_io96b_hps|refclk_bridge" library="emif_io96b_hps_emif_io96b_hps_400_ewmteya_refclk_bridge" name="refclk_bridge">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME emif_io96b_hps_emif_io96b_hps_400_ewmteya_refclk_bridge HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_debug|jtag_rst_in" library="jtag_rst_in" name="jtag_rst_in">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME jtag_rst_in HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_hps" library="hps_subsys" name="subsys_hps">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME hps_subsys HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_hps|agilex_hps" library="agilex_hps" name="agilex_hps">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME agilex_hps HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_periph|periph_clk" library="periph_clk" name="periph_clk">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME periph_clk HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_hps|emif_hps|emif_io96b_hps|emif_0_ddr4comp" library="emif_io96b_hps_emif_io96b_hps_400_ewmteya_emif_0_ddr4comp" name="emif_0_ddr4comp">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME emif_io96b_hps_emif_io96b_hps_400_ewmteya_emif_0_ddr4comp HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_periph|periph_rst_in" library="periph_rst_in" name="periph_rst_in">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME periph_rst_in HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_periph|sysid" library="sysid" name="sysid">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME sysid HAS_SOPCINFO 1 GENERATION_ID 0"/>
+      </assignment_values>
+    </sld_info>
+    <sld_info hpath="soc_inst|subsys_debug|hps_m" library="hps_m" name="hps_m">
+      <assignment_values>
+        <assignment_value text="QSYS_NAME hps_m HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
     <sld_info hpath="soc_inst|subsys_hps|emif_hps|emif_io96b_hps|refclk_gpio" library="emif_io96b_hps_emif_io96b_hps_400_ewmteya_refclk_gpio" name="refclk_gpio">
@@ -15,49 +170,9 @@
         <assignment_value text="QSYS_NAME peripheral_subsys HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
-    <sld_info hpath="soc_inst|ext_hps_f2sdram_master" library="ext_hps_f2sdram_master" name="ext_hps_f2sdram_master">
+    <sld_info hpath="soc_inst|subsys_debug|fpga_m" library="fpga_m" name="fpga_m">
       <assignment_values>
-        <assignment_value text="QSYS_NAME ext_hps_f2sdram_master HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|ddr_test_master_6" library="qsys_top_ddr_test_master_6" name="ddr_test_master_6">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME qsys_top_ddr_test_master_6 HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|clk_100" library="clk_100" name="clk_100">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME clk_100 HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|altera_ace5lite_cache_coherency_translator_0" library="altera_ace5lite_cache_coherency_translator_0" name="altera_ace5lite_cache_coherency_translator_0">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME altera_ace5lite_cache_coherency_translator_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst" library="qsys_top" name="soc_inst">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME qsys_top HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_periph|sysid" library="sysid" name="sysid">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME sysid HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="pll_inst" library="pll" name="pll_inst">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME pll HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_periph|periph_rst_in" library="periph_rst_in" name="periph_rst_in">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME periph_rst_in HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_hps|agilex_hps" library="agilex_hps" name="agilex_hps">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME agilex_hps HAS_SOPCINFO 1 GENERATION_ID 0"/>
+        <assignment_value text="QSYS_NAME fpga_m HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
     <sld_info hpath="soc_inst|subsys_debug" library="jtag_subsys" name="subsys_debug">
@@ -65,79 +180,9 @@
         <assignment_value text="QSYS_NAME jtag_subsys HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
-    <sld_info hpath="soc_inst|subsys_debug|fpga_m" library="fpga_m" name="fpga_m">
+    <sld_info hpath="soc_inst|subsys_debug|hps_f2sdram" library="hps_f2sdram" name="hps_f2sdram">
       <assignment_values>
-        <assignment_value text="QSYS_NAME fpga_m HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_hps|emif_hps|emif_io96b_hps" library="emif_io96b_hps_emif_io96b_hps_400_ewmteya" name="emif_io96b_hps">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME emif_io96b_hps_emif_io96b_hps_400_ewmteya HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_periph|pb_cpu_0" library="pb_cpu_0" name="pb_cpu_0">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME pb_cpu_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_periph|button_pio" library="button_pio" name="button_pio">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME button_pio HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_periph|led_pio" library="led_pio" name="led_pio">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME led_pio HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_periph|dipsw_pio" library="dipsw_pio" name="dipsw_pio">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME dipsw_pio HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_hps|emif_hps" library="emif_io96b_hps" name="emif_hps">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME emif_io96b_hps HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_periph|periph_clk" library="periph_clk" name="periph_clk">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME periph_clk HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_hps|emif_hps|emif_io96b_hps|refclk_bridge" library="emif_io96b_hps_emif_io96b_hps_400_ewmteya_refclk_bridge" name="refclk_bridge">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME emif_io96b_hps_emif_io96b_hps_400_ewmteya_refclk_bridge HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_hps|emif_hps|emif_io96b_hps|emif_0_ddr4comp" library="emif_io96b_hps_emif_io96b_hps_400_ewmteya_emif_0_ddr4comp" name="emif_0_ddr4comp">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME emif_io96b_hps_emif_io96b_hps_400_ewmteya_emif_0_ddr4comp HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_hps" library="hps_subsys" name="subsys_hps">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME hps_subsys HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_debug|jtag_rst_in" library="jtag_rst_in" name="jtag_rst_in">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME jtag_rst_in HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|subsys_debug|jtag_clk" library="jtag_clk" name="jtag_clk">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME jtag_clk HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|ocm" library="ocm" name="ocm">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME ocm HAS_SOPCINFO 1 GENERATION_ID 0"/>
-      </assignment_values>
-    </sld_info>
-    <sld_info hpath="soc_inst|user_rst_clkgate_0" library="user_rst_clkgate_0" name="user_rst_clkgate_0">
-      <assignment_values>
-        <assignment_value text="QSYS_NAME user_rst_clkgate_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
+        <assignment_value text="QSYS_NAME hps_f2sdram HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
     <sld_info hpath="soc_inst|rst_in" library="rst_in" name="rst_in">
@@ -145,19 +190,19 @@
         <assignment_value text="QSYS_NAME rst_in HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
-    <sld_info hpath="soc_inst|subsys_debug|hps_f2sdram" library="hps_f2sdram" name="hps_f2sdram">
+    <sld_info hpath="soc_inst|fp32_board_test_0" library="qsys_top_fp32_board_test_0" name="fp32_board_test_0">
       <assignment_values>
-        <assignment_value text="QSYS_NAME hps_f2sdram HAS_SOPCINFO 1 GENERATION_ID 0"/>
+        <assignment_value text="QSYS_NAME qsys_top_fp32_board_test_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
-    <sld_info hpath="soc_inst|subsys_debug|hps_m" library="hps_m" name="hps_m">
+    <sld_info hpath="soc_inst|user_rst_clkgate_0" library="user_rst_clkgate_0" name="user_rst_clkgate_0">
       <assignment_values>
-        <assignment_value text="QSYS_NAME hps_m HAS_SOPCINFO 1 GENERATION_ID 0"/>
+        <assignment_value text="QSYS_NAME user_rst_clkgate_0 HAS_SOPCINFO 1 GENERATION_ID 0"/>
       </assignment_values>
     </sld_info>
     <sld_info hpath="auto_fab_0" library="alt_sld_fab_0" name="auto_fab_0">
       <assignment_values>
-        <assignment_value text="QSYS_NAME alt_sld_fab_0 HAS_SOPCINFO 1 GENERATION_ID 0 ENTITY_NAME alt_sld_fab SLD_FAB 1 DESIGN_HASH 721d752793ca61fa7385"/>
+        <assignment_value text="QSYS_NAME alt_sld_fab_0 HAS_SOPCINFO 1 GENERATION_ID 0 ENTITY_NAME alt_sld_fab SLD_FAB 1 DESIGN_HASH 77494d1340bb69b45e57"/>
       </assignment_values>
     </sld_info>
   </sld_infos>

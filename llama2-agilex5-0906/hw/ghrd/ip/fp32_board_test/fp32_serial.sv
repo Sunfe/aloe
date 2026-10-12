@@ -1,8 +1,16 @@
 module fp32_binary_serial #(
     parameter bit MULTIPLY = 1'b1,
 
-    // Conservative settling budget for the initial serial design.
-    // This is NOT a declaration of the DSP core's exact latency.
+    /*
+     * Wrapper wait budget.
+     *
+     * This is not automatically the exact latency reported by
+     * the Quartus floating-point DSP IP. It is the number of
+     * wrapper wait cycles used before capturing the DSP result.
+     *
+     * The value must be validated on the board or in a timing-
+     * accurate simulation for the selected IP configuration.
+     */
     parameter int unsigned SETTLE_CYCLES = 16
 ) (
     input  logic        clk,
@@ -31,19 +39,37 @@ module fp32_binary_serial #(
     logic busy_q;
     logic [COUNT_W-1:0] count_q;
 
-    // No new request while calculating or holding an unread result.
-    assign in_ready = !reset && !busy_q && !out_valid;
+    /*
+     * This wrapper accepts a new operation only when the current
+     * operation is complete and the previous result has been
+     * consumed.
+     */
+    assign in_ready =
+        !reset &&
+        !busy_q &&
+        !out_valid;
 
 generate
         if (MULTIPLY) begin : g_mul
+
+            /*
+             * The generated Agilex 5 floating-point multiplier
+             * exposes clr0/clr1 in the IP description.
+             *
+             * ena=3'b111 keeps all enabled IP stages advancing.
+             */
             gemv_fp32_mul_ip u_core (
                 .fp32_mult_a  (a_q),
                 .fp32_mult_b  (b_q),
+                .clr0         (reset),
+                .clr1         (reset),
                 .clk          (clk),
                 .ena          (3'b111),
                 .fp32_result  (core_result)
             );
+
         end else begin : g_add
+
             gemv_fp32_add_ip u_core (
                 .fp32_adder_a (a_q),
                 .fp32_adder_b (b_q),
@@ -53,6 +79,7 @@ generate
                 .ena          (3'b111),
                 .fp32_result  (core_result)
             );
+
         end
     endgenerate
 
@@ -65,17 +92,23 @@ generate
             out_valid <= 1'b0;
             result    <= 32'b0;
         end else begin
-            // Retire a result only when the consumer accepts it.
+
+            /*
+             * Retire a result only when the consumer accepts it.
+             */
             if (out_valid && out_ready)
                 out_valid <= 1'b0;
 
-            // Capture exactly one pair of operands.
+            /*
+             * Capture exactly one operation.
+             */
             if (in_valid && in_ready) begin
                 a_q     <= a;
                 b_q     <= b;
                 busy_q  <= 1'b1;
                 count_q <= COUNT_INIT;
             end else if (busy_q) begin
+
                 if (count_q == '0) begin
                     result    <= core_result;
                     out_valid <= 1'b1;
@@ -83,15 +116,20 @@ generate
                 end else begin
                     count_q <= count_q - 1'b1;
                 end
+
             end
         end
     end
 
+    /*
+     * The previous implementation required SETTLE_CYCLES >= 16.
+     * That restriction prevented board calibration at 1/2/4/8.
+     */
     // synthesis translate_off
     initial begin
-        if (SETTLE_CYCLES < 16)
+        if (SETTLE_CYCLES < 1)
             $fatal(1,
-                "Initial serial wrapper requires SETTLE_CYCLES >= 16");
+                "SETTLE_CYCLES must be >= 1");
     end
     // synthesis translate_on
 

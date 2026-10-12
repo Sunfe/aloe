@@ -1,0 +1,77 @@
+Model config: dim=288 layers=6 heads=6 kv_heads=6
+Q/K/V shapes: each 288 x 288; enabling all layers
+[GEMV-ID] VERSION actual=0x47564d32 expected=0x47564d32
+[GEMV-ID] BUILD_ID actual=1a67165bfaa445ed98c33b673a9b04db
+[GEMV-ID] BUILD_ID expected=1a67165bfaa445ed98c33b673a9b04db
+[GEMV-ID] SCHED_INFO actual=0x00010001 expected=0x00010001
+[GEMV-ID] SCHED_REV=1 OVERLAP_MUL_ADD=1 FP32_SETTLE_CYCLES=8 expected_settle=8
+[GEMV-ID] PASS: VERSION, BUILD_ID and schedule match.
+GEMV mode: input_readback=verify weights=resident
+GEMV ready: CSR=0x20023000, dim=288, mode=verify, full_input_readback=on
+GEMV checks: guards=on, output_poison=on, CSR_readback=on, completion=on; W_copy=initial_load_only
+[WEIGHTS] mode=resident matrices=18 payload_bytes=5971968 pool_bytes=5974272 load_ms=767.061 initial_readback=PASS
+Wq verify: pos=0 token=1 layer=0 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=0 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=0 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=1 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=1 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=1 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=2 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=2 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=2 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=3 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=3 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=3 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=4 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=4 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=4 288/288 bit-exact
+Wq verify: pos=0 token=1 layer=5 288/288 bit-exact
+Wk verify: pos=0 token=1 layer=5 288/288 bit-exact
+Wv verify: pos=0 token=1 layer=5 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=0 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=0 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=0 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=1 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=1 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=1 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=2 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=2 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=2 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=3 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=3 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=3 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=4 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=4 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=4 288/288 bit-exact
+Wq verify: pos=1 token=9038 layer=5 288/288 bit-exact
+Wk verify: pos=1 token=9038 layer=5 288/288 bit-exact
+Wv verify: pos=1 token=9038 layer=5 288/288 bit-exact
+achieved tok/s: 0.723589
+
+[TIMING] forward_calls=2 forward_total_ms=5066.913 forward_mean_ms=2533.456
+[TIMING] Wq calls=12 cpu_ref_ms=2.770 accel_api_ms=892.953 compare_ms=0.027 log_ms=0.664 cycles_mean=1738656.7 cycles_max=1739351
+[TIMING] Wk calls=12 cpu_ref_ms=2.875 accel_api_ms=892.888 compare_ms=0.026 log_ms=0.411 cycles_mean=1738471.3 cycles_max=1738653
+[TIMING] Wv calls=12 cpu_ref_ms=2.848 accel_api_ms=892.910 compare_ms=0.025 log_ms=0.414 cycles_mean=1738508.1 cycles_max=1738662
+[TIMING] qkv_calls=36
+[TIMING] qkv_cpu_reference      total_ms=     8.493 per_forward_ms=    4.247 forward_pct=  0.17
+[TIMING] qkv_accel_api          total_ms=  2678.751 per_forward_ms= 1339.375 forward_pct= 52.87
+[TIMING] qkv_result_compare     total_ms=     0.078 per_forward_ms=    0.039 forward_pct=  0.00
+[TIMING] qkv_verify_log         total_ms=     1.489 per_forward_ms=    0.745 forward_pct=  0.03
+[TIMING] qkv_helper_other       total_ms=     0.041 per_forward_ms=    0.021 forward_pct=  0.00
+[TIMING] remaining_forward      total_ms=  2378.061 per_forward_ms= 1189.030 forward_pct= 46.93
+[TIMING] The following stages are INSIDE qkv_accel_api;
+[TIMING] do not add them to qkv_accel_api again.
+[TIMING] accel_preflight        total_ms=     0.086 per_forward_ms=    0.043 forward_pct=  0.00
+[TIMING] buffer_prepare         total_ms=     1.441 per_forward_ms=    0.721 forward_pct=  0.03
+[TIMING] W_copy_to_DDR          total_ms=     0.004 per_forward_ms=    0.002 forward_pct=  0.00
+[TIMING] X_copy_to_DDR          total_ms=     1.173 per_forward_ms=    0.586 forward_pct=  0.02
+[TIMING] input_precheck         total_ms=  1023.059 per_forward_ms=  511.530 forward_pct= 20.19
+[TIMING] CSR_configuration      total_ms=     0.426 per_forward_ms=    0.213 forward_pct=  0.01
+[TIMING] START_to_DONE          total_ms=   629.401 per_forward_ms=  314.701 forward_pct= 12.42
+[TIMING] completion_check       total_ms=     0.052 per_forward_ms=    0.026 forward_pct=  0.00
+[TIMING] input_postcheck        total_ms=  1019.343 per_forward_ms=  509.671 forward_pct= 20.12
+[TIMING] Y_copy_to_CPU          total_ms=     3.735 per_forward_ms=    1.868 forward_pct=  0.07
+[TIMING] accel_api_other        total_ms=     0.031 per_forward_ms=    0.015 forward_pct=  0.00
+[TIMING] FPGA cycles_sum=62587633
+[TIMING] GEMV_CLOCK_HZ unset: FPGA time remains in cycles.
+exit_status=0

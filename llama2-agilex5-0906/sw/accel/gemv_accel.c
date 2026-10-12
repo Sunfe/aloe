@@ -192,7 +192,7 @@ static int check_var_identity(void)
         UINT32_C(0x1a67165b)
     };
     const uint32_t expected_sched = UINT32_C(0x00010001);
-    const uint32_t expected_settle = UINT32_C(16);
+    const uint32_t expected_settle = UINT32_C(8);
 
     const unsigned id_offsets[4] = {
         R_BUILD_ID_0, R_BUILD_ID_1, R_BUILD_ID_2, R_BUILD_ID_3

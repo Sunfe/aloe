@@ -1781,7 +1781,7 @@ https://fpgasoftware.intel.com/eula.-->
         <ipxact:parameter parameterId="FP32_SETTLE_CYCLES" type="int">
           <ipxact:name>FP32_SETTLE_CYCLES</ipxact:name>
           <ipxact:displayName>FP32_SETTLE_CYCLES</ipxact:displayName>
-          <ipxact:value>16</ipxact:value>
+          <ipxact:value>8</ipxact:value>
         </ipxact:parameter>
         <ipxact:parameter parameterId="OVERLAP_MUL_ADD" type="int">
           <ipxact:name>OVERLAP_MUL_ADD</ipxact:name>

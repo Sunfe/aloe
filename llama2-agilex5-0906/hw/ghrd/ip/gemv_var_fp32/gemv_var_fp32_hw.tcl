@@ -81,7 +81,7 @@ foreach spec {
     {AXI_DATA_WIDTH      128   {128}}
     {AXI_ID_WIDTH        1     {1:16}}
     {AXI_PROT_VALUE      2     {0:7}}
-    {FP32_SETTLE_CYCLES  16    {16 32 64}}
+    {FP32_SETTLE_CYCLES  16    {1:64}}
     {OVERLAP_MUL_ADD     1     {0 1}}
     {MAX_ROWS           32768 {4:32768}}
     {MAX_COLS           8192  {4 8 16 32 64 128 256 512 1024 2048 4096 8192}}
